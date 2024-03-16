@@ -6,6 +6,10 @@
     <x-banner />
     
     <div class="main-content">
-        Prueba 1 de LARAVEL 11
+       
+    <h1 class="text-3xl font-bold underline text-center">
+        Hello world!
+    </h1>
+
     </div>
 </x-layouts.app>

@@ -1,3 +1,5 @@
 <div>
-    <!-- Happiness is not something readymade. It comes from your own actions. - Dalai Lama -->
+    
+<h4>Esto es el banner</h4>
+
 </div>

@@ -21,6 +21,6 @@ class banner extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.home.banner');
+        return view('components.banner');
     }
 }
