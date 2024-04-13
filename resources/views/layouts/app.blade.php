@@ -41,7 +41,6 @@
             <main style="min-height: 10vh;">
                 {{ $slot }}
             </main>
-            
         </div>
         <x-footer />
         @livewireScripts 

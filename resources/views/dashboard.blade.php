@@ -24,16 +24,18 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900 dark:text-gray-100">
-                    {{ __("Tu estas logueado en el sistema!") }}
-                </div>
+            <div role="alert" class="alert">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                    class="stroke-info shrink-0 w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="item-center">Tu Estas Logueado en el Sistema.</span>
             </div>
         </div>
     </div>
 
-
-    <main class="mt-2 mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+    <!--main class="grid h-20 card rounded-box place-items-center border-opacity-50">
         <div class="grid gap-6 lg:grid-cols-2 lg:gap-8">
             <a href="https://laravel.com/docs" id="docs-card"
                 class="flex flex-col items-start gap-6 overflow-hidden rounded-lg bg-white p-6 shadow-[0px_14px_34px_0px_rgba(0,0,0,0.08)] ring-1 ring-white/[0.05] transition duration-300 hover:text-black/70 hover:ring-black/20 focus:outline-none focus-visible:ring-[#FF2D20] md:row-span-3 lg:p-10 lg:pb-10 dark:bg-zinc-900 dark:ring-zinc-800 dark:hover:text-white/70 dark:hover:ring-zinc-700 dark:focus-visible:ring-[#FF2D20]">
@@ -55,7 +57,7 @@
                     </div>
                 </div>
 
-                <div class="relative flex items-center gap-6 lg:items-end">
+                <div class="artboard artboard-horizontal phone-2">
                     <div id="docs-card-content" class="flex items-start gap-6 lg:flex-col">
                         <div
                             class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#FF2D20]/10 sm:size-16">
@@ -68,7 +70,7 @@
                             </svg>
                         </div>
 
-                        <div class="pt-3 sm:pt-5 lg:pt-0">
+                        <div class="pt-3 sm:pt-5">
                             <h2 class="text-xl font-semibold text-black dark:text-white">Documentation</h2>
 
                             <p class="mt-4 text-sm/relaxed">
@@ -98,7 +100,7 @@
                     </svg>
                 </div>
 
-                <div class="pt-3 sm:pt-5">
+                <div class="artboard artboard-horizontal phone-1 ">
                     <h2 class="text-xl font-semibold text-black dark:text-white">Laracasts</h2>
 
                     <p class="mt-4 text-sm/relaxed">
@@ -187,7 +189,8 @@
                 </div>
             </div>
         </div>
-    </main>
+        
+    </main-->
 
     {{--<script>
     const themeToggle = document.getElementById('themeToggle');
@@ -197,4 +200,29 @@
         document.documentElement.setAttribute('data-theme', theme);
     });
     </script>--}}
+
+    <main class="grid card rounded-box place-items-center">
+
+        <div class="flex flex-col w-full lg:flex-row">
+            <div class="lg:w-3/4">
+                <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center ">content
+
+                </div>
+            </div>
+            <div class="divider lg:divider-horizontal"></div>
+            <div class="lg:w-1/4">
+                <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center mb-2">contenido de la segunda columna
+
+                </div>
+                <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center">Contenido de la tercera columna
+
+                </div>
+            </div>
+        </div>
+        <!--div class="flex flex-col w-full lg:flex-row mt-4">
+            <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center">content</div>
+            <div class="divider lg:divider-horizontal"></div>
+            <div class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center">content</div>
+        </div-->
+    </main>
 </x-app-layout>
