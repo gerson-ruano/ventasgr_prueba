@@ -38,7 +38,8 @@
             @endif
 
             <!-- Page Content -->
-            <main style="min-height: 10vh;">
+            <main>
+                {{--style="min-height: 10vh;"--}}
                 {{ $slot }}
             </main>
         </div>
