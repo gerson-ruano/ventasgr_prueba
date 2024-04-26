@@ -11,7 +11,7 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-
+        <link rel="stylesheet" href="{{'fontawesome-free-5.15.4/css/all.min.css'}}">
 
         <!-- Scripts -->
         {{--@vite(['resources/css/app.css', 'resources/js/app.js'])--}}
@@ -23,20 +23,19 @@
         
         {{--<div class="min-h-screen bg-gray-100 dark:bg-gray-900">--}}
         <div>
-        
             <livewire:layout.navigation />
-
+            <x-menu-modulos />
 
             <!-- Page Heading -->
             @if (isset($header))
-
-                <header class="bg-white dark:bg-gray-800 shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                <header class="menu lg:menu-horizontal w-full">
+                    <div class="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
+                
             @endif
-
+            
             <!-- Page Content -->
             <main>
                 {{--style="min-height: 10vh;"--}}
