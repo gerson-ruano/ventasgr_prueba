@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class menu-modulos extends Component
+class menu_modulos extends Component
 {
     /**
      * Create a new component instance.
