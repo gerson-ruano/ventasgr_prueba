@@ -1,37 +1,95 @@
+<style>
+    details {
+        position: relative;
+        z-index: 1;
+    }
+</style>
 <ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0">
-    <li><a>
+    <li><a class="" href="{{url('dashboard')}}">
             <i class="fas fa-shopping-cart">
-            </i>Ventas</a></li>
+            </i>Venta</a></li>
     <li>
         <details close>
-            <summary> <i class="fas fa-project-diagram"></i>Gestion Stocks</summary>
+            <summary class="flex item-center">
+                <i class="fas fa-project-diagram mr-1"></i>Gestion Stocks
+            </summary>
             <ul>
-                <li><a>Categorias</a></li>
-                <li><a>Productos</a></li>
-                <li><a>Monedas</a></li>
+                <li class="">
+                    <a href="{{url('categories')}}" class="flex items-center">
+                        <i class="fas fa-tags mr-1"></i>Categorias
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('dashboard')}}" class="flex items-center">
+                        <i class="fas fa-shopping-basket mr-1"></i>Productos
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('dashboard')}}" class="flex items-center">
+                        <i class="fas fa-money-bill-alt mr-1"></i>Monedas
+                    </a>
+                </li>
             </ul>
         </details>
     </li>
     <li>
         <details close>
-            <summary><i class="fas fa-project-diagram"></i>Reporteria</summary>
+            <summary class="flex item-center">
+                <i class="fas fa-print mr-1"></i>Reporteria
+            </summary>
             <ul>
-                <li><a>Cierre de Caja</a></li>
-                <li><a>Ventas</a></li>
-                <li><a>Estadistica</a></li>
+                <li class="">
+                    <a href="{{url('/')}}" class="flex items-center">
+                        <i class="fas fa-cash-register mr-1"></i>Cierre de caja
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('/')}}" class="flex items-center">
+                        <i class="fas fa-file-contract mr-1"></i>Ventas
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('/')}}" class="flex items-center">
+                        <i class="fas fa-chart-bar mr-1"></i>Estadistica
+                    </a>
+                </li>
+            </ul>
+        </details>
+    </li>
+    <li class="ml-1">
+        <details close>
+            <summary class="flex item-center">
+                <i class="fas fa-users mr-1"></i>Gestion Usuarios
+            </summary>
+            <ul>
+                <li class="">
+                    <a href="{{url('/')}}">
+                        <i class="fas fa-street-view mr-1"></i>Roles
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('/')}}">
+                        <i class="fas fa-unlock-alt mr-1"></i>Permisos
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('/')}}">
+                        <i class="fas fa-check-square mr-1"></i>Asignar
+                    </a>
+                </li>
+                <li class="">
+                    <a href="{{url('/')}}">
+                        <i class="fas fa-user mr-1"></i>Usuarios
+                    </a>
+                </li>
             </ul>
         </details>
     </li>
     <li>
-        <details close>
-            <summary><i class="fas fa-users"></i>Gestion Usuarios</summary>
-            <ul>
-                <li><a>Roles</a></li>
-                <li><a>Permisos</a></li>
-                <li><a>Asignar</a></li>
-                <li><a>Usuarios</a></li>
-            </ul>
-        </details>
+        <label class="input input-bordered flex items-center gap-2 ">
+            <input type="text" class="grow" placeholder="Busqueda" />
+            <i class="fas fa-search"></i>
+        </label>
     </li>
     <li class="ml-auto">
         <label class="flex cursor-pointer gap-2">
@@ -49,115 +107,31 @@
         </label>
     </li>
 </ul>
-
-
-<!--div id="menu" class="lg:sidebar lg:sidebar-left lg:sidebar-primary w-64 bg-base-200"-->
-<!--button id="menu-button" class="btn btn-primary btn-outline lg:hidden">Mostrar</button-->
-
-<!--ul class="menu">
-        <ul class="menu bg-base-200">
-            <li><a>Ventas</a></li>
-            <li>
-                <details close>
-                    <summary>Gestion de Stocks</summary>
-                    <ul>
-                        <li><a>Categorias <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg></a></li>
-                        <li><a>Productos <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        <li><a>Monedas <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        </li>
-                    </ul>
-                </details>
-            </li>
-            <li>
-                <details close>
-                    <summary>Reporteria</summary>
-                    <ul>
-                        <li><a>Cierre Caja <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg></a></li>
-                        <li><a>Ventas <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        <li><a>Estadistica <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        </li>
-                    </ul>
-                </details>
-            </li>
-            <li>
-                <details close>
-                    <summary>Gestion de Usuarios</summary>
-                    <ul>
-                        <li><a>Roles <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                </svg></a>
-                        </li>
-                        <li><a>Permisos <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        <li><a>Asignar <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        <li><a>Usuarios <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
-                                    viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg></a></li>
-                        <li>
-                        </li>
-                    </ul>
-                </details>
-            </li>
-        </ul>
-</div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var menu = document.getElementById('menu');
-        var menuButton = document.getElementById('menu-button');
+    document.addEventListener('DOMContentLoaded', function () {
+        const detailsList = document.querySelectorAll('details');
+        
+        // Event listener para cerrar el details al hacer clic en cualquier parte de la página
+        document.addEventListener('click', function(event) {
+            detailsList.forEach(function(details) {
+                if (details.open && !details.contains(event.target)) {
+                    details.open = false;
+                }
+            });
+        });
 
-        // Quitamos la clase 'hidden' para mostrar el menú inicialmente
-        menu.classList.remove('hidden');
-
-        menuButton.addEventListener('click', function() {
-            if (menu.classList.contains('hidden')) {
-                menu.classList.remove('hidden');
-                this.innerText = 'Ocultar Menú';
-            } else {
-                menu.classList.add('hidden');
-                this.innerText = 'Mostrar Menú';
-            }
+        // Event listener para gestionar el comportamiento de apertura y cierre de los detalles
+        detailsList.forEach(function(details) {
+            details.addEventListener('toggle', function() {
+                if (details.open) {
+                    detailsList.forEach(function(otherDetails) {
+                        if (otherDetails !== details && otherDetails.open) {
+                            otherDetails.open = false;
+                        }
+                    });
+                }
+            });
         });
     });
-</script-->
+</script>
+
