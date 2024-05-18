@@ -17,6 +17,7 @@ class Categories extends Component
     public function render()
     {
         $data = Category::all();
+        //dd($categories);
         
         return view('livewire.category.categories', ['categories' => $data])
         ->extends('layouts.app')

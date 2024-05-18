@@ -21,6 +21,6 @@ class menu_modulos extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.menu-modulos');
+        return view('layouts.theme.menu-modulos');
     }
 }

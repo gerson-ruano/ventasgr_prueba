@@ -16,12 +16,24 @@ new class extends Component
     }
 }; ?>
 
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+@php
+$labelColor = 'text-blue-500'; // Definir el color aquí
+$links = [
+'profile' => __('Profile'),
+'dashboard' => __('Home'),
+'categories' => __('Stock'),
+// Añade más rutas aquí según sea necesario
+];
+@endphp
+
+<nav x-data="{ open: false }"
+    class="menu bg-base-200 dark:bg-gray-500 border-b border-gray-100 dark:border-gray-700 dark:text-gray-500">
+
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
-            
+
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('dashboard') }}" wire:navigate>
@@ -30,11 +42,24 @@ new class extends Component
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                {{--<div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
+                        {{ __('Home') }}
+                </x-nav-link>
+            </div>--}}
+            <div class="space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                @foreach ($links as $route => $label)
+                @if (request()->routeIs($route))
+                <x-nav-link :href="route($route)" :active="request()->routeIs($route)" wire:navigate
+                    class="font-medium {{ $labelColor }} dark:text-white">
+                    {{ $label }}
+                </x-nav-link>
+                @else
+                <x-nav-link :href="route($route)" wire:navigate class="hidden">
+                    {{ $label }}
+                </x-nav-link>
+                @endif
+                @endforeach
             </div>
 
             <!-- Settings Dropdown -->

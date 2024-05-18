@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Livewire\Categories;
+use App\Livewire\Categories;
+
 
 Route::view('/', 'welcome');
 
@@ -14,9 +15,10 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::view('categories', 'livewire.category.categories')
+Route::get('categories', 'livewire.category.categories')
+//Route::get('categories', Categories::class)->name('categories');
 ->middleware(['auth'])
-->name('dashboard');
+->name('categories');
 
 //Route::view('categories', Categories::class);
 
