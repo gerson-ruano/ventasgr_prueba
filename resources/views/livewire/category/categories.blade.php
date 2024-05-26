@@ -1,87 +1,79 @@
-{{--<x-slot name="title">Inicio - Mi Aplicación</x-slot>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-white-200 leading-tight">
-            {{ __('Category') }}
-</h2>
-</x-slot>--}}
-
-{{--<main class="grid card rounded-box place-items-center mt-2">--}}
-
-    {{--<div class="container">
-            <h1>Categories lista</h1>
-            @if($categories->isEmpty())
-            <p>No categories found.</p>
-            @else
-            <ul>
-                @foreach($categories as $category)
-                <li>{{ $category->name }}</li>
-    <!-- Suponiendo que 'name' es un campo en tu modelo Category -->
-    @endforeach
-    </ul>
-    @endif
-    </div>--}}
-
-    <div class="flex flex-col w-full lg:flex-row lg:space-y-0|">
-        <div class="lg:w-3/4">
-            <div
-                class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-0 lg:mr-2">
-                Muestra el carrito de Productos
-                <h2>Este sera el carrito de compras para los productos agregadops al</h2>
-                <br><br>
-                <p>
-                    afaghfdghaj adsjhsgbdahjgbd
-                    asgdjhasgdjhgahj
-                    askdjhaskuhdaksjhdkjas
-                    asdjkashgdujkgahsjdhgsa
-                    akhsdkujhsajdkasjd
-                    asdkghawdugyhqwuigqeuwi
-                    adfsiujfdghaiughdfjaksgd
-                    adfiuhfidugyhaqwiudrfghyauifdh
-                    asdfkasuhdkashdjkasg
-                    adfaghsjdgawsjhdgashj
-                    afsjgfujyasgfdjhagsdjh
-                    asjdgayujasdgjyhdsgjyhd
-                    asasjgdfjayhsgdjhas
-                    asdjdgasyjhugdasyhj
-                    asdfgajydgfasjyh
-                    asyfdgasyujgdfasjyhgdf
-                    asjghdhajsfdhas
-                    aasgfdhasfdh
-                </p>
-
-
-            </div>
-        </div>
-        <!--div class="divider lg:divider-horizontal"></div-->
-        <div class="lg:w-1/4">
-            <div
-                class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-2 lg:ml-0 lg:mr-2">
-                contenido de la segunda columna
-
-            </div>
-            <div
-                class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-2 lg:ml-0 lg:mr-2">
-                Contenido de la tercera columna
-
-            </div>
-            <div
-                class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-2 lg:ml-0 lg:mr-2">
-                Contenido de la cuarta columna
-
-            </div>
-            <div
-                class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-2 lg:ml-0 lg:mr-2">
-                Contenido de la quinta columna
-
-            </div>
-
-        </div>
+<div>
+    <!-- Header Section -->
+    <div class="text-center">
+        <h4 class="card-title">
+            <b>{{ $componentName }} | {{ $pageTitle }}</b>
+        </h4>
     </div>
-    <!--div class="flex flex-col w-full lg:flex-row lg:space-y-0">
-        <div class="lg:w-3/4">
-                <div class="grid flex-grow  h-32 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-0 lg:mr-2">GRID IZQUIERDO 
-                    
 
-                </div>
-            </div-->
-{{--</main>--}}
+    <!-- Tabs Section -->
+    <div class="text-center">
+        <button class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
+            wire:click="$dispatch('openModal')">Open Modal</button>
+    </div>
+
+    <!-- Table Section -->
+    <div class="overflow-x-auto bg-base-300">
+        <table class="table ">
+            <thead>
+                <tr class="bg-primary-content dark:bg-gray-800">
+                    <th class="text-base-800 dark:text-base-100">No.</th>
+                    <th class="text-base-800 dark:text-base-100">Descripción</th>
+                    <th class="text-gray-500 dark:text-base-100">Imagen</th>
+                    <th class="text-gray-500 dark:text-base-100">Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($categories as $index => $category)
+                <tr>
+                    <td>{{ $index + 1 }}</td>
+                    <td>{{ $category->name }}</td>
+                    <td>
+                        {{--<img src="{{ $category->imagen }}" alt="imagen de ejemplo" class="w-16 h-16
+                        object-cover">--}}
+                    </td>
+                    <td class="text-center">
+                        <a href="javascript:void(0)" wire:click="editCategory({{ $category->id }})"
+                            class="btn btn-dark mtmobile" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <x-primary-button wire:click="editCategory({{ $category->id }})">Editar</x-primary-button>
+                        <x-primary-button wire:click="deleteCategory({{ $category->id }})">Eliminar</x-primary-button>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th>No.</th>
+                    <th>Descripción</th>
+                    <th>Imagen</th>
+                    <th>Acción</th>
+                </tr>
+            </tfoot>
+        </table>
+        {{ $categories->links() }}
+    </div>
+
+
+    <!-- Modals Section -->
+
+    <livewire:reusable-modal />
+
+</div>
+
+</div>
+
+@push('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    Livewire.on('show-modal', () => {
+        document.querySelector('.modal').classList.add('modal-open');
+    });
+
+    Livewire.on('hide-modal', () => {
+        document.querySelector('.modal').classList.remove('modal-open');
+    });
+});
+</script>
+@endpush
