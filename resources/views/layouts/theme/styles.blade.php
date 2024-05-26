@@ -7,6 +7,6 @@
 
  <!-- Scripts -->
  {{--@vite(['resources/css/app.css', 'resources/js/app.js'])--}}
- @vite(['resources/js/pages/dashboard.js', 'resources/css/app.css'])
+ @vite(['resources/js/pages/dashboard.js', 'resources/js/app.js','resources/css/app.css'])
  @livewireStyles
  <script src="//unpkg.com/alpinejs" defer></script>

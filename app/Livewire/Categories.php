@@ -6,9 +6,6 @@ use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\Storage;
-use Livewire\Attributes\On;
-use Illuminate\Validation\ValidationException;
 
 class Categories extends Component
 
@@ -17,15 +14,14 @@ class Categories extends Component
     use WithPagination;
 
     public $name, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $isModalOpen = false;
     private $pagination = 5;
 
-    protected $listeners = ['openModal' => 'openModal'];
 
     public function mount()
     {
         $this->pageTitle = 'Listado';
         $this->componentName = 'Categorias';
-        $this->openModal = false;
     }
 
 
@@ -36,13 +32,8 @@ class Categories extends Component
 
     public function render()
     {
-        //if(strlen($this->search) > 0)
-            //$data = Category::where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
-
-        //else
-            $data = Category::orderBy('id', 'desc')->paginate($this->pagination);
-
-        //$data = Category::paginate(10);
+        
+        $data = Category::orderBy('id', 'desc')->paginate($this->pagination);
         return view('livewire.category.categories', ['categories' => $data])
         ->extends('layouts.app')
         ->section('content');
@@ -55,7 +46,19 @@ class Categories extends Component
         $this->selected_id = $record->id;
         $this->image = null;
 
+        $this->openModal();
         $this->dispatch('show-modal');
+    }
+
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+        $this->resetUI();
     }
 
     public function storeCategory()
@@ -90,6 +93,7 @@ class Categories extends Component
 
         // Restablecer UI y emitir eventos
         $this->resetUI();
+        $this->closeModal();
         $this->dispatch('category-added', ['name' => $this->name]);
     }
 
@@ -130,9 +134,14 @@ class Categories extends Component
             }
         }
         $this->resetUI();
-        $this->emit('category-updated', 'Categoria Actualizada');
+        $this->closeModal();
+        $this->dispatch('category-updated', 'Categoria Actualizada');
 
     }
+
+    protected $listeners = [
+        'deleteRow' => 'Destroy'
+    ];
 
     public function resetUI()
     {
@@ -142,7 +151,7 @@ class Categories extends Component
         $this->selected_id = 0;
     }
 
-    public function deleteCategory(Category $category)
+    public function Destroy(Category $category)
     {
         // Eliminar la categoría y su imagen asociada si existe
         $imageName = $category->image;

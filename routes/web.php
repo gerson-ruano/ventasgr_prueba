@@ -15,10 +15,14 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 
-Route::get('categories', 'livewire.category.categories')
-//Route::get('categories', Categories::class)->name('categories');
+/*Route::get('categories', 'livewire.category.categories')
+Route::get('categories', Categories::class)->name('category')
 ->middleware(['auth'])
-->name('categories');
+->name('categories');*/
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('categories', Categories::class)->name('categories');
+});
 
 //Route::view('categories', Categories::class);
 

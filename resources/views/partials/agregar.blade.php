@@ -1,50 +1,50 @@
 <!-- Modal de Crear/Editar Categoría -->
 <dialog id="theModal" class="modal">
-        <div class="modal-box">
-            <h3 class="font-bold text-lg text-center">
-                <b>{{ $componentName }}</b> | {{ $selected_id > 0 ? 'EDITAR' : 'CREAR' }}
-            </h3>
-            <div class="modal-action flex justify-center">
-                <form wire:submit.prevent="storeCategory">
-                    <div class="form-control">
-                        <label for="category_name" class="label">Nombre:</label>
-                        <input id="category_name" type="text" placeholder="Ej. Cursos"
-                            class="input input-bordered input-info" wire:model.lazy="name" />
-                        @error('name') <span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
+    <div class="modal-box">
+        <h3 class="font-bold text-lg text-center">
+            <b>{{ $componentName }}</b> | {{ $selected_id > 0 ? 'EDITAR' : 'CREAR' }}
+        </h3>
+        <div class="modal-action flex justify-center">
+            <form wire:submit.prevent="storeCategory">
+                <div class="form-control">
+                    <label for="category_name" class="label">Nombre:</label>
+                    <input id="category_name" type="text" placeholder="Ej. Cursos"
+                        class="input input-bordered input-info" wire:model.lazy="name" />
+                    @error('name') <span class="text-danger">{{ $message }}</span>@enderror
+                </div>
 
-                    <div class="form-control mt-3">
-                        <label for="category_image" class="label">Imagen:</label>
-                        <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs"
-                            wire:model="image" accept="image/x-png, image/gif, image/jpg" />
-                        @error('image') <span class="text-danger">{{ $message }}</span>@enderror
-                    </div>
+                <div class="form-control mt-3">
+                    <label for="category_image" class="label">Imagen:</label>
+                    <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs"
+                        wire:model="image" accept="image/x-png, image/gif, image/jpg" />
+                    @error('image') <span class="text-danger">{{ $message }}</span>@enderror
+                </div>
 
-                    <div class="modal-footer text-center mt-4">
-                        <button type="button" class="btn btn-default"
-                            onclick="document.getElementById('theModal').close()">Cancelar</button>
-                        <button type="submit" class="btn btn-success">Guardar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </dialog>
-
-    <!-- Error Modal -->
-    <dialog id="errorModal" class="modal">
-        <div class="modal-box">
-            <h3 class="font-bold text-lg text-center text-red-600">
-                Error
-            </h3>
-            <div class="modal-action flex justify-center">
-                <ul id="errorMessages"></ul>
                 <div class="modal-footer text-center mt-4">
                     <button type="button" class="btn btn-default"
-                        onclick="document.getElementById('errorModal').close()">Cerrar</button>
+                        onclick="document.getElementById('theModal').close()">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Guardar</button>
                 </div>
+            </form>
+        </div>
+    </div>
+</dialog>
+
+<!-- Error Modal -->
+<dialog id="errorModal" class="modal">
+    <div class="modal-box">
+        <h3 class="font-bold text-lg text-center text-red-600">
+            Error
+        </h3>
+        <div class="modal-action flex justify-center">
+            <ul id="errorMessages"></ul>
+            <div class="modal-footer text-center mt-4">
+                <button type="button" class="btn btn-default"
+                    onclick="document.getElementById('errorModal').close()">Cerrar</button>
             </div>
         </div>
-    </dialog>
+    </div>
+</dialog>
 </div>
 
 

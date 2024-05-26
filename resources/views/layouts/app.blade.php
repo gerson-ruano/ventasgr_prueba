@@ -54,8 +54,8 @@
     {{--<livewire:category.categories />--}}
 
     <!-- Scripts -->
-    @livewireScripts
-    {{--@stack('scripts')--}}
+    
+    @stack('scripts')
     @include('layouts.theme.scripts')
 
 </body>

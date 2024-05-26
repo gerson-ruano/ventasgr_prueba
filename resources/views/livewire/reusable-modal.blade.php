@@ -1,4 +1,4 @@
-<div
+{{--<div
     x-data="{ open: @entangle('isOpen') }"
     x-show="open"
     x-transition:enter="transition ease-out duration-200"
@@ -41,3 +41,74 @@
         </div>
     </div>
 </div>
+
+
+
+<div>
+    <!-- Botón para abrir el modal -->
+    <button class="btn btn-primary" wire:click="openModal">Abrir Modal</button>
+
+    <!-- Modal -->
+    @if ($isOpen)
+        <div class="fixed inset-0 flex items-center justify-center z-50">
+            <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
+
+            <div class="bg-white p-6 rounded-lg shadow-lg z-10">
+                <h2 class="text-lg font-semibold mb-4">Título del Modal</h2>
+                <p class="mb-4">Contenido del modal...</p>
+                <button class="btn btn-secondary" wire:click="closeModal">Cerrar</button>
+            </div>
+        </div>
+    @endif
+</div>
+
+
+<div>
+    <!-- Botón para abrir el modal -->
+    <button class="btn btn-primary" wire:click="openModal">Abrir Modal</button>
+    @if ($isOpen)
+    <dialog id="my_modal" class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg text-center">Categorías | Agregar</h3>
+            <div class="modal-action flex justify-center">
+                <form method="dialog">
+                    <div class="form-control">
+                        <label for="category_name" class="label">Nombre:</label>
+                        <input id="category_name" type="text" placeholder="Ej. Cursos"
+                            class="input input-bordered input-info" wire:model.lazy="name" />
+                        @error('name') <span class="text-danger">{{$message}}</span>@enderror
+</div>
+
+<div class="form-control mt-3">
+    <label for="category_image" class="label">Imagen:</label>
+    <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs" wire:model="image"
+        accept="image/x-png, image/gif, image/jpg" onchange="return false;" />
+    <label for="category_image" class="label">Imagen: {{$image}}</label>
+    @error('image') <span class="text-danger">{{$message}}</span>@enderror
+</div>
+
+<div class="modal-footer text-center">
+    <button type="button" class="btn btn-default" wire:click="closeModal">Cancelar</button>
+    <button type="submit" class="btn btn-success">Guardar</button>
+</div>
+</form>
+</div>
+</div>
+</dialog>
+@endif
+</div>--}}
+
+
+@if($isOpen)
+    <div class="fixed inset-0 flex items-center justify-center z-50">
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
+        <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-1/3 h-auto">
+            <h2 class="text-lg font-semibold mb-4 text-center">{{ $title }}</h2>
+            <div>{!! $content !!}</div>
+            <div class="flex justify-end mt-4">
+                <button type="button" class="btn btn-ghost mr-2" wire:click="closeModal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+@endif
+
