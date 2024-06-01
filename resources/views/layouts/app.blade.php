@@ -9,7 +9,6 @@
     {{--<link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />--}}
 
     @include('layouts.theme.styles')
-
 </head>
 
 <body class="fondo-app font-sans antialiased">
@@ -22,7 +21,6 @@
 
         <!-- Menu Login -->
         <livewire:layout.navigation />
-
 
         {{--@if (isset($header))
         <header class="menu lg:menu-horizontal w-full">
@@ -48,14 +46,11 @@
     </main>
 
     </div>
-
     <!-- Footer -->
     @include('layouts.theme.footer')
-    {{--<livewire:category.categories />--}}
 
     <!-- Scripts -->
-    
-    @stack('scripts')
+    {{--@stack('scripts')--}}
     @include('layouts.theme.scripts')
 
 </body>

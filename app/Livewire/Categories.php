@@ -44,9 +44,9 @@ class Categories extends Component
         $this->isModalOpen = true;
     }
 
-    #[On('category-updated')]
-    //#[On('category-added')]
-    #[On('category-deleted')]
+    #[On('noty-updated')]
+    #[On('noty-added')]
+    #[On('noty-deleted')]
     public function closeModal()
     {
         $this->isModalOpen = false;
@@ -83,13 +83,12 @@ class Categories extends Component
             $category->image = $customFileName;
             $category->save();
         }
-        $this->closeModal();
-        $this->dispatch('category-added', name: $category->name);
+    
+        $this->dispatch('noty-added', type: 'CATEGORÍA', name: $category->name);
     }
 
     public function editCategory($id)
     {
-        //dd($id);
         $record = Category::find($id, ['id', 'name', 'image']);
         $this->name = $record->name;
         $this->selected_id = $record->id;
@@ -135,27 +134,7 @@ class Categories extends Component
             }
         }
 
-        $this->closeModal();
-        $this->dispatch('category-updated', name: $category->name);
-
-    }
-
-    protected $listeners = [
-        'deleteRow' => 'destroy' 
-    ];
-
-    #[On('category-added')]
-    public function refresh()
-    {
-        $this->render();
-    }
-
-    public function resetUI()
-    {
-        $this->name = '';
-        $this->image = null;
-        $this->search = '';
-        $this->selected_id = 0;
+        $this->dispatch('noty-updated', type: 'CATEGORÍA', name: $category->name);
     }
 
     public function destroy($id)
@@ -173,11 +152,23 @@ class Categories extends Component
             }
 
             // Restablecer UI y emitir evento
-            $this->dispatch('category-deleted', name: $category->name);
+            $this->dispatch('noty-deleted', type: 'CATEGORÍA', name: $category->name);
         } else {
             // Manejo de caso donde la categoría no se encuentra
-            $this->dispatch('category-not-found', name: $category->id);
+            $this->dispatch('noty-not-found', type: 'CATEGORÍA', name: $category->id);
         }
+    }
+
+    protected $listeners = [
+        'deleteRow' => 'destroy' 
+    ];
+
+    public function resetUI()
+    {
+        $this->name = '';
+        $this->image = null;
+        $this->search = '';
+        $this->selected_id = 0;
     }
     
 }
