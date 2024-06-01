@@ -8,7 +8,7 @@
 
     <!-- Tabs Section -->
     <div class="text-center">
-        <button class="btn btn-info mb-2" wire:click="openModal">Nueva Categoría</button>
+        <button class="btn btn-accent mb-2" wire:click="openModal">Nueva Categoría</button>
     </div>
 
     <!-- Table Section -->
@@ -19,6 +19,7 @@
                     <th class="text-base-800 dark:text-base-100">No.</th>
                     <th class="text-base-800 dark:text-base-100">Descripción</th>
                     <th class="text-gray-500 dark:text-base-100">Imagen</th>
+                    <th class="text-gray-500 dark:text-base-100">Acción</th>
                     <th class="text-gray-500 dark:text-base-100">Acción</th>
                 </tr>
             </thead>
@@ -33,22 +34,17 @@
 
                     </td>
                     <td class="text-center">
-                        <button class="btn btn-accent" wire:click="editCategory({{ $category->id }})"><i
+                        <button class="btn btn-info" wire:click="editCategory({{ $category->id }})"><i
                                 class="fas fa-edit"></i></button>
-                        {{--<button class="btn btn-outline"
-                            wire:click="deleteConfirmation('{{ $category->id }}',
-                        '{{ $category->products->count() }}')">
-                        <i class="fas fa-trash-alt"></i>
-                        </button>--}}
+                        {{--dd($category->id)--}}
+                    </td>
 
+                    <td class="text-center">
                         <a href="javascript:void(0)"
-                            onclick="Confirm('{{ $category->id }}', '{{ $category->products->count() }}')"
-                            class="btn btn-dark" title="delete">
+                            onclick="Confirm('{{ $category->id }}', '{{ $category->products->count() }}','{{ $category->name }}')"
+                            class="btn btn-outline" title="delete" wire:click="$refresh">
                             <i class="fas fa-trash"></i>
                         </a>
-
-                       
-
                     </td>
                 </tr>
                 @endforeach
@@ -65,11 +61,13 @@
         {{ $categories->links() }}
     </div>
     @if($isModalOpen)
+    {{--dd($isModalOpen)--}}
     <div class="fixed inset-0 flex items-center justify-center z-50">
         <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
-        <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-1/3 h-1/3">
+        <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-lg mx-4">
             <h2 class="text-lg font-semibold mb-4 text-center">
-                {{ $selected_id ? 'Editar Categoría' : 'Nueva Categoría' }}</h2>
+                {{ $selected_id ? 'Editar Categoría' : 'Nueva Categoría' }}
+            </h2>
 
             <form wire:submit.prevent="{{ $selected_id ? 'updateCategory' : 'storeCategory' }}">
                 <div class="mb-4">
@@ -87,15 +85,15 @@
                 </div>
 
                 <div class="flex justify-end mt-4">
-                    <button type="button" class="btn btn-ghost mr-2" wire:click="closeModal">Cancelar</button>
-                    <button type="submit" class="btn {{ $selected_id ? 'btn-success' : 'btn-info' }}">
+                    <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
+                    <button type="submit" class="btn {{ $selected_id ? 'btn-info' : 'btn-success' }}">
                         {{ $selected_id ? 'Actualizar' : 'Guardar' }}
                     </button>
-
                 </div>
             </form>
         </div>
     </div>
+
     @endif
 
 </div>
@@ -103,7 +101,7 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    window.Confirm = function(id, products) {
+    window.Confirm = function(id, products, categoryname) {
         if (products > 0) {
             Swal.fire({
                 title: 'No se puede eliminar la categoría',
@@ -114,20 +112,93 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         Swal.fire({
-            title: "¿Estás seguro?",
+            title: `¿Estás seguro de eliminar la categoría "${categoryname}"?`,
             text: "¡No podrás revertir esto!",
-            icon: "warning",
+            icon: "question",
             showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
+            confirmButtonColor: "#a10c10",
+            cancelButtonColor: "#727885",
             confirmButtonText: "Sí, eliminarla!"
         }).then((result) => {
             if (result.isConfirmed) {
-                Livewire.dispatch('categories', 'deleteRow', id);
-                Swal.close()
-
+                Livewire.dispatch('deleteRow', {
+                    id: id
+                });
+                /*Swal.fire({
+                    //position: "top-end",
+                    icon: "success",
+                    title: `La categoría "${categoryname}" ha sido eliminada?`,
+                    showConfirmButton: false,
+                    timer: 1500
+                });*/
             }
         });
     }
+    // Escuchar el evento `category-added`
+    Livewire.on('category-added', (data) => {
+        //console.log('Category Added Event Data:', data); // Verifica qué se está recibiendo
+        if (data && data.name) {
+            Swal.fire({
+                icon: "success",
+                iconColor: "#0ca152", //color verde oscuro
+                title: `La categoría "${data.name}"se agregó con exito!`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "categoría agregada" no tienen el formato esperado.',
+                data);
+        }
+    });
+
+    // Escuchar el evento `category-updated`
+    Livewire.on('category-updated', (data) => {
+        if (data && data.name) {
+            Swal.fire({
+                icon: "success",
+                iconColor: "#0c4ca1", //color Azul oscuro
+                title: `La categoría "${data.name}" se actualizó con exito!`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "categoría actualizada" no tienen el formato esperado.',
+                data);
+        }
+    });
+
+    Livewire.on('category-deleted', (data) => {
+        if (data && data.name) {
+            Swal.fire({
+                icon: "error",
+                title: `La categoría "${data.name}" se ha eliminado!`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
+                data);
+        }
+    });
+
+    // Escuchar el evento `category-deleted`
+    Livewire.on('category-not-found', (data) => {
+        if (data && data.name) {
+            Swal.fire({
+                icon: "error",
+                title: `La categoría "${data.id}" no se encuentra!`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
+                data);
+        }
+    });
+
 });
 </script>

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Category;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
 
 class Categories extends Component
 
@@ -24,7 +25,6 @@ class Categories extends Component
         $this->componentName = 'Categorias';
     }
 
-
     public function paginationView()
     {
         return 'vendor.livewire.tailwind';
@@ -32,33 +32,26 @@ class Categories extends Component
 
     public function render()
     {
-        
         $data = Category::orderBy('id', 'desc')->paginate($this->pagination);
         return view('livewire.category.categories', ['categories' => $data])
         ->extends('layouts.app')
-        ->section('content');
+        ->section('content'); 
     }
 
-    public function editCategory($id)
-    {
-        $record = Category::find($id, ['id', 'name', 'image']);
-        $this->name = $record->name;
-        $this->selected_id = $record->id;
-        $this->image = null;
-
-        $this->openModal();
-        $this->dispatch('show-modal');
-    }
-
+    
     public function openModal()
     {
         $this->isModalOpen = true;
     }
 
+    #[On('category-updated')]
+    //#[On('category-added')]
+    #[On('category-deleted')]
     public function closeModal()
     {
         $this->isModalOpen = false;
         $this->resetUI();
+        $this->resetValidation();
     }
 
     public function storeCategory()
@@ -90,11 +83,19 @@ class Categories extends Component
             $category->image = $customFileName;
             $category->save();
         }
-
-        // Restablecer UI y emitir eventos
-        $this->resetUI();
         $this->closeModal();
-        $this->dispatch('category-added', ['name' => $this->name]);
+        $this->dispatch('category-added', name: $category->name);
+    }
+
+    public function editCategory($id)
+    {
+        //dd($id);
+        $record = Category::find($id, ['id', 'name', 'image']);
+        $this->name = $record->name;
+        $this->selected_id = $record->id;
+        $this->image = null;
+
+        $this->openModal();
     }
 
     public function updateCategory()
@@ -133,15 +134,21 @@ class Categories extends Component
                 }
             }
         }
-        $this->resetUI();
+
         $this->closeModal();
-        $this->dispatch('category-updated', 'Categoria Actualizada');
+        $this->dispatch('category-updated', name: $category->name);
 
     }
 
     protected $listeners = [
-        'deleteRow' => 'Destroy'
+        'deleteRow' => 'destroy' 
     ];
+
+    #[On('category-added')]
+    public function refresh()
+    {
+        $this->render();
+    }
 
     public function resetUI()
     {
@@ -151,19 +158,26 @@ class Categories extends Component
         $this->selected_id = 0;
     }
 
-    public function Destroy(Category $category)
+    public function destroy($id)
     {
-        // Eliminar la categoría y su imagen asociada si existe
-        $imageName = $category->image;
-        $category->delete();
+        $category = Category::find($id);
 
-        if ($imageName != null) {
-            unlink('storage/categories/' . $imageName);
+        if ($category) {
+            $imageName = $category->image;
+            $category->delete();
+
+            if ($imageName != null) {
+                if (file_exists(storage_path('app/public/categories/' . $imageName))) {
+                    unlink(storage_path('app/public/categories/' . $imageName));
+                }
+            }
+
+            // Restablecer UI y emitir evento
+            $this->dispatch('category-deleted', name: $category->name);
+        } else {
+            // Manejo de caso donde la categoría no se encuentra
+            $this->dispatch('category-not-found', name: $category->id);
         }
-
-        // Restablecer UI y emitir evento
-        $this->resetUI();
-        $this->dispatch('category-deleted', ['name' => $category->name]);
     }
     
 }
