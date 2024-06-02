@@ -20,12 +20,12 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('dashboard')}}" class="flex items-center">
+                    <a href="{{url('products')}}" class="flex items-center">
                         <i class="fas fa-shopping-basket mr-1"></i>Productos
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('dashboard')}}" class="flex items-center">
+                    <a href="{{url('coins')}}" class="flex items-center">
                         <i class="fas fa-money-bill-alt mr-1"></i>Monedas
                     </a>
                 </li>

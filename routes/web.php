@@ -1,7 +1,11 @@
 <?php
 
+
+
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Categories;
+use App\Livewire\Products;
+use App\Livewire\Coins;
 
 
 Route::view('/', 'welcome');
@@ -22,6 +26,8 @@ Route::get('categories', Categories::class)->name('category')
 
 Route::middleware(['auth'])->group(function () {
     Route::get('categories', Categories::class)->name('categories');
+    Route::get('products', Products::class)->name('products');
+    Route::get('coins', Coins::class)->name('coins');
 });
 
 //Route::view('categories', Categories::class);

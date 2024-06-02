@@ -1,7 +1,7 @@
 @livewireScripts
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    window.Confirm = function(id, products, entityName) {
+    window.Confirm = function(id, products, entityName, name) {
         if (products > 0) {
             Swal.fire({
                 title: 'No se puede eliminar la ${entityName}',
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         Swal.fire({
-            title: `¿Estás seguro de eliminar la ${entityName}?`,
+            title: `¿Estás seguro de eliminar '${name}' de ${entityName}?`,
             text: "¡No podrás revertir esto!",
             icon: "question",
             showCancelButton: true,
@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data && data.type && data.name) {
             Swal.fire({
                 icon: "error",
-                title: `se eliminó "${data.name}" exitosamente!`,
+                title: `se eliminó ${data.type} "${data.name}" exitosamente!`,
                 showConfirmButton: false,
                 timer: 1500
             });
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data && data.type && data.name) {
             Swal.fire({
                 icon: "error",
-                title: `la "${data.id}" no se encuentra!`,
+                title: `la ${data.type} con "${data.id}" no se encuentra!`,
                 showConfirmButton: false,
                 timer: 1500
             });

@@ -3,24 +3,25 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-use App\Models\Category;
 use App\Models\Product;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
+use Livewire\Attributes\On;
+use App\Models\Category;
 
 class Products extends Component
 {
-
     use WithFileUploads;
     use WithPagination;
 
     public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $isModalOpen = false;
 
     private $pagination = 5;
     
     public function paginationView()
     {
-        return 'vendor.livewire.bootstrap';
+        return 'vendor.livewire.tailwind';
     }
 
     public function mount()
@@ -31,33 +32,35 @@ class Products extends Component
     }
     public function render()
     {
-        if(strlen($this->search) > 0)
-            $products = Product::join('categories as c','c.id','products.category_id')
-                ->select('products.*','c.name as category')
-                ->where('products.name', 'like', '%' . $this->search . '%')
-                ->orWhere('products.barcode', 'like', '%' . $this->search . '%')
-                ->orWhere('c.name', 'like', '%'. $this->search . '%')
-                ->orderBy('products.name', 'asc')
-                ->paginate($this->pagination);
-        else
-            $products = Product::join('categories as c','c.id','products.category_id')
-                    ->select('products.*','c.name as category')
-                    ->orderBy('products.name', 'asc')
-                    ->paginate($this->pagination);
+        $data = Product::orderBy('id', 'desc')->paginate($this->pagination);
 
-        return view('livewire.products.components', [
-            'data' => $products,
-            'categories' => Category::orderBy('name','asc')->get()
-        ])
-        ->extends('layouts.theme.app')
+        
+        return view('livewire.products.components', ['products' => $data, 'categories' => Category::orderBy('name','asc')->get()])
+        ->extends('layouts.app')
         ->section('content');
+
     }
 
-        public function Store()
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    #[On('noty-updated')]
+    #[On('noty-added')]
+    #[On('noty-deleted')]
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+        $this->resetUI();
+        $this->resetValidation();
+    }
+        public function store()
     {
         $rules = [
             'name' => 'required|unique:products|min:3',
             'cost' => 'required',
+            'barcode' => 'required',
             'price' => 'required',
             'stock' => 'required',
             'alerts' => 'required',
@@ -68,9 +71,12 @@ class Products extends Component
             'name.required' => 'Nombre del producto requerido',
             'name.unique' => 'Ya existe el nombre del producto',
             'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
+            'barcode.required' => 'El codigo es requerido',
+            'price.required' => 'El precio es requerido',
             'cost.required' => 'El costo es requerido',
             'stock.required' => 'El stock es requerido',
             'alerts.required' => 'Ingresa el valor minimo de existencia',
+            'categoryid.required' => 'Elige una categoria',
             'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
         ];
 
@@ -95,11 +101,10 @@ class Products extends Component
             $product->save();
         }
 
-        $this->resetUI();
-        $this->emit('product-added', 'Producto Registrado');
+        $this->dispatch('noty-added', type: 'PRODUCTO', name: $product->name);
     }
 
-    public function Edit(Product $product){
+    public function edit(Product $product){
         $this->selected_id = $product->id;
         $this->name = $product->name;
         $this->barcode = $product->barcode;
@@ -110,13 +115,14 @@ class Products extends Component
         $this->categoryid = $product->category_id;
         $this->image = null;
 
-        $this->emit('modal-show','Show modal');
+        $this->openModal();
     }
 
-    public function Update()
+    public function update()
     {
         $rules = [
-            'name' => "required|min:3|unique:products,name,{$this->selected_id}",
+            'name' => "min:3|unique:products,name,{$this->selected_id}",
+            'barcode' => 'required',
             'cost' => 'required',
             'price' => 'required',
             'stock' => 'required',
@@ -125,7 +131,7 @@ class Products extends Component
         ];
 
         $messages = [
-            'name.required' => 'Nombre del producto requerido',
+            //'name.required' => 'Nombre del producto requerido',
             'name.unique' => 'Ya existe el nombre del producto',
             'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
             'cost.required' => 'El costo es requerido',
@@ -165,8 +171,7 @@ class Products extends Component
             }
         }
 
-        $this->resetUI();
-        $this->emit('product-updated', 'Producto Actualizado');
+        $this->dispatch('noty-updated', type: 'PRODUCTO', name: $product->name);
     }
 
     public function resetUI()
@@ -185,10 +190,11 @@ class Products extends Component
 
     }
 
-    protected $listeners = ['deleteRow' => 'Destroy'];
+    protected $listeners = ['deleteRow' => 'destroy'];
 
-    public function Destroy(Product $product){
-        $imageTemp = $product->image;
+    public function destroy($id){
+        
+        /*$imageTemp = $product->image;
         $product->delete();
 
         if($imageTemp !=null){
@@ -197,7 +203,27 @@ class Products extends Component
             }
         }
 
-        $this->resetUI();
-        $this->emit('product-deleted', 'Producto Eliminado');
+        //$this->resetUI();
+        $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
+    }*/
+
+    $product = Product::find($id);
+
+        if ($product) {
+            $imageName = $product->image;
+            $product->delete();
+
+            if ($imageName != null) {
+                if (file_exists(storage_path('app/public/products/' . $imageName))) {
+                    unlink(storage_path('app/public/products/' . $imageName));
+                }
+            }
+
+            // Restablecer UI y emitir evento
+            $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
+        } else {
+            // Manejo de caso donde la categoría no se encuentra
+            $this->dispatch('noty-not-found', type: 'PRODUCTO', name: $product->id);
+        }
     }
 }

@@ -24,6 +24,7 @@ class Categories extends Component
         $this->pageTitle = 'Listado';
         $this->componentName = 'Categorias';
     }
+    
 
     public function paginationView()
     {
@@ -54,7 +55,7 @@ class Categories extends Component
         $this->resetValidation();
     }
 
-    public function storeCategory()
+    public function store()
     {
         // Validación de reglas
         $rules = [
@@ -87,7 +88,7 @@ class Categories extends Component
         $this->dispatch('noty-added', type: 'CATEGORÍA', name: $category->name);
     }
 
-    public function editCategory($id)
+    public function edit($id)
     {
         $record = Category::find($id, ['id', 'name', 'image']);
         $this->name = $record->name;
@@ -97,14 +98,14 @@ class Categories extends Component
         $this->openModal();
     }
 
-    public function updateCategory()
+    public function update()
     {
         $rules = [
-            'name' => "required|min:3|unique:categories,name,{$this->selected_id}"
+            'name' => "min:3|unique:categories,name,{$this->selected_id}"
         ];
 
         $messages = [
-            'name.required' => 'Nombre de Categoria Requerido',
+            //'name.required' => 'Nombre de Categoria Requerido',
             'name.min' => 'El nombre de la categoria debe tener al menos 3 caracteres',
             'name.unique' => 'El nombre de la categoria ya existe'
         ];
@@ -160,7 +161,7 @@ class Categories extends Component
     }
 
     protected $listeners = [
-        'deleteRow' => 'destroy' 
+        'deleteRow' => 'destroyCategory' 
     ];
 
     public function resetUI()
