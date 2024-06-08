@@ -14,8 +14,25 @@
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>
 
+            {{--<div class="mb-4">
+                <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
+                <input type="file" wire:model="image" id="image"
+                    class="file-input file-input-bordered file-input-accent w-full mt-1">
+                @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+            </div>--}}
+
             <div class="mb-4">
                 <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
+                @if ($image)
+                    <div class="flex justify-center mb-2">
+                        <img src="{{ $image->temporaryUrl() }}" alt="Imagen de {{ $name }}" class="h-32 w-32 object-cover">
+                    </div>
+                @elseif ($imageUrl)
+                    <div class="flex justify-center mb-2">
+                        <img src="{{ $imageUrl }}" alt="Imagen de {{ $name }}" class="h-32 w-32 object-cover">
+                    </div>
+                @endif
+
                 <input type="file" wire:model="image" id="image"
                     class="file-input file-input-bordered file-input-accent w-full mt-1">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror

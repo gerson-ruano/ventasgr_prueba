@@ -7,6 +7,7 @@ use App\Models\Category;
 use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Storage;
 
 class Categories extends Component
 
@@ -14,7 +15,7 @@ class Categories extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $name, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $name, $search, $image, $imageUrl, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
     private $pagination = 5;
 
@@ -59,7 +60,8 @@ class Categories extends Component
     {
         // Validación de reglas
         $rules = [
-            'name' => 'required|unique:categories|min:3'
+            'name' => 'required|unique:categories|min:3',
+            'image' => 'nullable|image|max:1024'
         ];
 
         // Mensajes de validación personalizados
@@ -93,6 +95,7 @@ class Categories extends Component
         $record = Category::find($id, ['id', 'name', 'image']);
         $this->name = $record->name;
         $this->selected_id = $record->id;
+        $this->imageUrl = $record->image ? Storage::url('categories/' . $record->image) : null;
         $this->image = null;
 
         $this->openModal();
@@ -100,8 +103,10 @@ class Categories extends Component
 
     public function update()
     {
+        //dd($this->selected_id);
         $rules = [
-            'name' => "min:3|unique:categories,name,{$this->selected_id}"
+            'name' => "min:3|unique:categories,name,{$this->selected_id}",
+            'image' => 'nullable|image|max:1024'
         ];
 
         $messages = [
@@ -161,13 +166,14 @@ class Categories extends Component
     }
 
     protected $listeners = [
-        'deleteRow' => 'destroyCategory' 
+        'deleteRow' => 'destroy' 
     ];
 
     public function resetUI()
     {
         $this->name = '';
         $this->image = null;
+        $this->imageUrl = null;
         $this->search = '';
         $this->selected_id = 0;
     }

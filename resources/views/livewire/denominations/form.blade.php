@@ -10,11 +10,12 @@
 
             <div class="mb-4">
                 <label for="type" class="block text-sm font-medium text-gray-700">Tipo</label>
+                {{--dd($type)--}}
                 <select wire:model="type" class="select select-info w-full">
                     <option value="Elegir" disabled>Elegir</option>
-                    <option value="Billete">Billete</option>
-                    <option value="Moneda">Moneda</option>
-                    <option value="Otro">Otro</option>
+                    <option value="BILLETE">Billete</option>
+                    <option value="MONEDA">Moneda</option>
+                    <option value="OTRO">Otro</option>
                 </select>
                 @error('type') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>
@@ -28,7 +29,7 @@
             @endforeach
             </select>
             @error('type') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                </div>--}}
+    </div>--}}
 
     <div class="mb-4">
         <label for="category_value" class="block text-sm font-medium text-gray-700">Value</label>
@@ -39,6 +40,16 @@
 
     <div class="mb-4">
         <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
+        @if ($image)
+        <div class="flex justify-center mb-2">
+            <img src="{{ $image->temporaryUrl() }}" alt="Imagen de {{ $type }}" class="h-32 w-32 object-cover">
+        </div>
+        @elseif ($imageUrl)
+        <div class="flex justify-center mb-2">
+            <img src="{{ $imageUrl }}" alt="Imagen de {{ $type }}" class="h-32 w-32 object-cover">
+        </div>
+        @endif
+
         <input type="file" wire:model="image" id="image"
             class="file-input file-input-bordered file-input-accent w-full mt-1">
         @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror

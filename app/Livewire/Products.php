@@ -8,13 +8,14 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 
 class Products extends Component
 {
     use WithFileUploads;
     use WithPagination;
 
-    public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $selected_id, $pageTitle, $componentName;
+    public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $imageUrl, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
 
     private $pagination = 5;
@@ -104,15 +105,18 @@ class Products extends Component
         $this->dispatch('noty-added', type: 'PRODUCTO', name: $product->name);
     }
 
-    public function edit(Product $product){
-        $this->selected_id = $product->id;
+    public function edit($id)
+    {
+        $product = Product::find($id, ['id', 'name', 'barcode','cost','price','stock','alerts','category_id','image']);
         $this->name = $product->name;
+        $this->selected_id = $product->id;
         $this->barcode = $product->barcode;
         $this->cost = $product->cost;
         $this->price = $product->price;
         $this->stock = $product->stock;
         $this->alerts = $product->alerts;
         $this->categoryid = $product->category_id;
+        $this->imageUrl = $product->image ? Storage::url('products/' . $product->image) : null;
         $this->image = null;
 
         $this->openModal();
@@ -120,6 +124,7 @@ class Products extends Component
 
     public function update()
     {
+        //dd($this->selected_id);
         $rules = [
             'name' => "min:3|unique:products,name,{$this->selected_id}",
             'barcode' => 'required',
@@ -183,6 +188,7 @@ class Products extends Component
         $this->price ='';
         $this->stock ='';
         $this->alerts ='';
+        $this->imageUrl = null;
         $this->search ='';
         $this->categoryid ='Elegir';
         $this->image = null;

@@ -7,13 +7,14 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use App\Models\Denomination;
 use Livewire\Attributes\On;
+use Illuminate\Support\Facades\Storage;
 
 class Coins extends Component
 {
     use WithFileUploads;
     use WithPagination;
 
-    public $type, $value, $componentName, $pageTitle, $selected_id, $image, $search;
+    public $type, $value, $componentName, $pageTitle, $selected_id, $image, $imageUrl, $search;
 
     public $isModalOpen = false;
     private $pagination = 5;
@@ -22,7 +23,7 @@ class Coins extends Component
     {
         $this->componentName = 'Denominaciones';
         $this->pageTitle = 'Listado';
-        $this->type = 'Elegir';
+        $this->type = null;
     }
 
     public function paginationView()
@@ -32,8 +33,7 @@ class Coins extends Component
     public function render()
     {
         $data = Denomination::orderBy('id', 'desc')->paginate($this->pagination);
-        return view('livewire.denominations.components', ['coins' => $data ,
-        'denominations' => Denomination::select('type')->distinct()->orderBy('type', 'asc')->get()])
+        return view('livewire.denominations.components', ['coins' => $data])
         ->extends('layouts.app')
         ->section('content'); 
     }
@@ -91,6 +91,7 @@ class Coins extends Component
         $this->type = $record->type;
         $this->value = $record->value;
         $this->selected_id = $record->id;
+        $this->imageUrl = $record->image ? Storage::url('denominations/' . $record->image) : null;
         $this->image = null;
 
         $this->openModal();
@@ -168,9 +169,10 @@ class Coins extends Component
 
     public function resetUI()
     {
-        $this->type = '';
+        $this->type = 'Elegir';
         $this->value = '';
         $this->image = null;
+        $this->imageUrl = null;
         $this->search = '';
         $this->selected_id = 0;
     }
