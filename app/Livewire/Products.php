@@ -17,8 +17,30 @@ class Products extends Component
 
     public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $imageUrl, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
-
     private $pagination = 5;
+
+    protected $rules = [
+        'name' => 'required|unique:products|min:3',
+            'cost' => 'required',
+            'barcode' => 'required',
+            'price' => 'required',
+            'stock' => 'required',
+            'alerts' => 'required',
+            'categoryid' => 'required|not_in:Elegir'
+    ];
+
+    protected $messages = [
+        'name.required' => 'Nombre del producto requerido',
+            'name.unique' => 'Ya existe el nombre del producto',
+            'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
+            'barcode.required' => 'El codigo es requerido',
+            'price.required' => 'El precio es requerido',
+            'cost.required' => 'El costo es requerido',
+            'stock.required' => 'El stock es requerido',
+            'alerts.required' => 'Ingresa el valor minimo de existencia',
+            'categoryid.required' => 'Elige una categoria',
+            'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
+    ];
     
     public function paginationView()
     {
@@ -58,30 +80,8 @@ class Products extends Component
     }
         public function store()
     {
-        $rules = [
-            'name' => 'required|unique:products|min:3',
-            'cost' => 'required',
-            'barcode' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-            'alerts' => 'required',
-            'categoryid' => 'required|not_in:Elegir'
-        ];
-
-        $messages = [
-            'name.required' => 'Nombre del producto requerido',
-            'name.unique' => 'Ya existe el nombre del producto',
-            'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
-            'barcode.required' => 'El codigo es requerido',
-            'price.required' => 'El precio es requerido',
-            'cost.required' => 'El costo es requerido',
-            'stock.required' => 'El stock es requerido',
-            'alerts.required' => 'Ingresa el valor minimo de existencia',
-            'categoryid.required' => 'Elige una categoria',
-            'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
-        ];
-
-        $this->validate($rules, $messages);
+        // Validación de reglas
+        $this->validate();
 
         $product = Product::create([
             'name' => $this->name,
@@ -124,28 +124,11 @@ class Products extends Component
 
     public function update()
     {
-        //dd($this->selected_id);
-        $rules = [
-            'name' => "min:3|unique:products,name,{$this->selected_id}",
-            'barcode' => 'required',
-            'cost' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-            'alerts' => 'required',
-            'categoryid' => 'required|not_in:Elegir'
-        ];
+        // Actualización de reglas de validación para la edición
+        $this->rules['name'] = "required|min:3|unique:products,name,{$this->selected_id}";
 
-        $messages = [
-            //'name.required' => 'Nombre del producto requerido',
-            'name.unique' => 'Ya existe el nombre del producto',
-            'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
-            'cost.required' => 'El costo es requerido',
-            'stock.required' => 'El stock es requerido',
-            'alerts.required' => 'Ingresa el valor minimo de existencia',
-            'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
-        ];
-
-        $this->validate($rules, $messages);
+        // Validación
+        $this->validate();
 
         $product = Product::find($this->selected_id);
 

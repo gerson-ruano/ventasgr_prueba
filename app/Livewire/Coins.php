@@ -19,6 +19,18 @@ class Coins extends Component
     public $isModalOpen = false;
     private $pagination = 5;
 
+    protected $rules = [
+        'type' => 'required|not_in:Elegir',
+        'value' => 'required|unique:denominations'
+    ];
+
+    protected $messages = [
+        'type.required' => 'El tipo es requerido',
+        'type.not_in' => 'Elige un valor para el tipo distinto a Elegir',
+        'value.required' => 'El valor es requerido',
+        'value.unique' => 'Ya existe el valor'
+    ];
+
     public function mount()
     {
         $this->componentName = 'Denominaciones';
@@ -55,19 +67,8 @@ class Coins extends Component
 
     public function store()
     {
-        $rules = [
-            'type' => 'required|not_in:Elegir',
-            'value' => 'required|unique:denominations'
-        ];
-
-        $messages = [
-            'type.required' => 'El tipo es requerido',
-            'type.not_in' => 'Elige un valor para el tipo distinto a Elegir',
-            'value.required' => 'El valor es requerido',
-            'value.unique' => 'Ya existe el valor'
-        ];
-
-        $this->validate($rules, $messages);
+        // Validación de reglas
+        $this->validate();
 
         $denomination = Denomination::create([
             'type' => $this->type,
@@ -99,19 +100,11 @@ class Coins extends Component
 
     public function update()
     {
-        $rules = [
-            'type' => 'required|not_in:Elegir',
-            'value' => "required|unique:denominations,value,{$this->selected_id}"
-        ];
+        // Actualización de reglas de validación para la edición
+        $this->rules['value'] = "required|unique:denominations,value,{$this->selected_id}";
 
-        $messages = [
-            'type.required' => 'El tipo es requerido',
-            'type.not_in' => 'Elige un tipo valido',
-            'value.required' => 'El valor es requerido',
-            'value.unique' => 'El valor ya existe'
-        ];
-
-        $this->validate($rules, $messages);
+        // Validación
+        $this->validate();
 
         $denomination = Denomination::find($this->selected_id);
         $denomination->update([

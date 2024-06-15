@@ -8,6 +8,7 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\CategoryRequest;
 
 class Categories extends Component
 
@@ -19,6 +20,18 @@ class Categories extends Component
     public $isModalOpen = false;
     private $pagination = 5;
 
+    protected $rules = [
+        'name' => 'required|unique:categories|min:3',
+        'image' => 'nullable|image|max:1024',
+    ];
+
+    protected $messages = [
+        'name.required' => 'Nombre de la categoría es requerido',
+        'name.unique' => 'Ya existe el nombre de la categoría',
+        'name.min' => 'El nombre de la categoría debe tener al menos 3 caracteres',
+        'image.image' => 'El archivo debe ser una imagen',
+        'image.max' => 'La imagen no debe superar los 1024 kilobytes',
+    ];
 
     public function mount()
     {
@@ -35,7 +48,7 @@ class Categories extends Component
     public function render()
     {
         $data = Category::orderBy('id', 'desc')->paginate($this->pagination);
-        return view('livewire.category.categories', ['categories' => $data])
+        return view('livewire.category.components', ['categories' => $data])
         ->extends('layouts.app')
         ->section('content'); 
     }
@@ -59,20 +72,7 @@ class Categories extends Component
     public function store()
     {
         // Validación de reglas
-        $rules = [
-            'name' => 'required|unique:categories|min:3',
-            'image' => 'nullable|image|max:1024'
-        ];
-
-        // Mensajes de validación personalizados
-        $messages = [
-            'name.required' => 'Nombre de la categoría es requerido',
-            'name.unique' => 'Ya existe el nombre de la categoría',
-            'name.min' => 'El nombre de la categoría debe tener al menos 3 caracteres'
-        ];
-
-        // Validación
-        $this->validate($rules, $messages);
+        $this->validate();
 
         // Crear la categoría
         $category = Category::create([
@@ -103,19 +103,11 @@ class Categories extends Component
 
     public function update()
     {
-        //dd($this->selected_id);
-        $rules = [
-            'name' => "min:3|unique:categories,name,{$this->selected_id}",
-            'image' => 'nullable|image|max:1024'
-        ];
+        // Actualización de reglas de validación para la edición
+        $this->rules['name'] = "required|min:3|unique:categories,name,{$this->selected_id}";
 
-        $messages = [
-            //'name.required' => 'Nombre de Categoria Requerido',
-            'name.min' => 'El nombre de la categoria debe tener al menos 3 caracteres',
-            'name.unique' => 'El nombre de la categoria ya existe'
-        ];
-
-        $this->validate($rules, $messages);
+        // Validación
+        $this->validate();
 
         $category = Category::find($this->selected_id);
         $category->update([
@@ -139,7 +131,6 @@ class Categories extends Component
                 }
             }
         }
-
         $this->dispatch('noty-updated', type: 'CATEGORÍA', name: $category->name);
     }
 

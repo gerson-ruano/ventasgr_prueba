@@ -1,15 +1,15 @@
 <style>
-    details {
-        position: relative;
-        z-index: 1;
-    }
+details {
+    position: relative;
+    z-index: 1;
+}
 </style>
 <ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0">
     <li><a class="" href="{{url('dashboard')}}">
             <i class="fas fa-shopping-cart">
             </i>Venta</a></li>
     <li>
-        <details close>
+        <details>
             <summary class="flex item-center">
                 <i class="fas fa-project-diagram mr-1"></i>Gestion Stocks
             </summary>
@@ -33,7 +33,7 @@
         </details>
     </li>
     <li>
-        <details close>
+        <details>
             <summary class="flex item-center">
                 <i class="fas fa-print mr-1"></i>Reporteria
             </summary>
@@ -57,7 +57,7 @@
         </details>
     </li>
     <li class="ml-1">
-        <details close>
+        <details>
             <summary class="flex item-center">
                 <i class="fas fa-users mr-1"></i>Gestion Usuarios
             </summary>
@@ -78,7 +78,7 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}">
+                    <a href="{{url('users')}}">
                         <i class="fas fa-user mr-1"></i>Usuarios
                     </a>
                 </li>
@@ -106,7 +106,4 @@
             </svg>
         </label>
     </li>
-</ul>
-{{--@include('livewire.layouts.theme.dashboard')--}}
-@push('livewire.layouts.theme.mensage')
-@endpush
+</ul>   

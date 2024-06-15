@@ -1,6 +1,6 @@
 <div>
     <!-- Header Section -->
-    <div class="flex justify-between items-center mt-1 mb-1 mr-1 ml-1">
+    <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
         </h4>

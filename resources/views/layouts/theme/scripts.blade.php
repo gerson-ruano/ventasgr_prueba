@@ -1,6 +1,7 @@
 @livewireScripts
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+    // Escuchar el evento `Eliminar`
     window.Confirm = function(id, products, entityName, name) {
         if (products > 0) {
             Swal.fire({
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
-    // Escuchar el evento `category-added`
+    // Escuchar el evento `added`
     Livewire.on('noty-added', (data) => {
         //console.log('Event Data:', data);
         if (data && data.type && data.name) {
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Escuchar el evento `category-updated`
+    // Escuchar el evento `updated`
     Livewire.on('noty-updated', (data) => {
         if (data && data.type && data.name) {
             Swal.fire({
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    //Escuchar el evento `category-updated`
+    //Escuchar el evento `deleted`
     Livewire.on('noty-deleted', (data) => {
         if (data && data.type && data.name) {
             Swal.fire({
@@ -85,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Escuchar el evento `category-deleted`
+    // Escuchar el evento `not-found`
     Livewire.on('noty-not-found', (data) => {
         if (data && data.type && data.name) {
             Swal.fire({
@@ -99,6 +100,29 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
                 data);
         }
+    });
+
+    //Eventos para el Menu de Modulos de Plantilla
+    const detailsList = document.querySelectorAll('details');
+    // Cerrar detalles cuando se hace clic fuera de ellos
+    document.addEventListener('click', function(event) {
+        detailsList.forEach(function(details) {
+            if (details.open && !details.contains(event.target)) {
+                details.open = false;
+            }
+        });
+    });
+    // Asegurarse de que solo un <details> se abre a la vez
+    detailsList.forEach(function(details) {
+        details.addEventListener('toggle', function() {
+            if (details.open) {
+                detailsList.forEach(function(otherDetails) {
+                    if (otherDetails !== details && otherDetails.open) {
+                        otherDetails.open = false;
+                    }
+                });
+            }
+        });
     });
 });
 </script>

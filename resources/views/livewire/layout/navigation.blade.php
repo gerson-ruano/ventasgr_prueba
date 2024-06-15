@@ -19,9 +19,12 @@ new class extends Component
 @php
 $labelColor = 'text-blue-500'; // Definir el color aquí
 $links = [
-'profile' => __('Profile'),
-'dashboard' => __('Home'),
-'categories' => __('Stock'),
+'profile' => __('Perfil'),
+'dashboard' => __('Inicio'),
+'categories' => __('Categorias'),
+'products' => __('Productos'),
+'coins' => __('Denominaciones'),
+'users' => __('Usuarios'),
 // Añade más rutas aquí según sea necesario
 ];
 @endphp

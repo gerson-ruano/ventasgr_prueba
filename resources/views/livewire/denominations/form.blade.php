@@ -7,10 +7,8 @@
         </h2>
 
         <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
-
             <div class="mb-4">
                 <label for="type" class="block text-sm font-medium text-gray-700">Tipo</label>
-                {{--dd($type)--}}
                 <select wire:model="type" class="select select-info w-full">
                     <option value="Elegir" disabled>Elegir</option>
                     <option value="BILLETE">Billete</option>
@@ -20,48 +18,37 @@
                 @error('type') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>
 
-            {{--<div class="mb-4">
-                <label for="category_select" class="block text-sm font-medium text-gray-700">Tipo</label>
-                <select wire:model="type" id="category_select" class="select select-info w-full">
-                    <option value="Elegir" disabled>Elegir</option>
-                    @foreach ($denominations as $coin)
-                    <option value="{{ $coin->id }}">{{ $coin->type }}</option>
-            @endforeach
-            </select>
-            @error('type') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-    </div>--}}
+            <div class="mb-4">
+                <label for="category_value" class="block text-sm font-medium text-gray-700">Value</label>
+                <input id="category_value" type="number" placeholder="Ej. 10"
+                    class="input input-bordered input-info mt-1 w-full" wire:model.lazy="value" />
+                @error('value') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+            </div>
 
-    <div class="mb-4">
-        <label for="category_value" class="block text-sm font-medium text-gray-700">Value</label>
-        <input id="category_value" type="number" placeholder="Ej. 10"
-            class="input input-bordered input-info mt-1 w-full" wire:model.lazy="value" />
-        @error('value') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+            <div class="mb-4">
+                <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
+                @if ($image)
+                <div class="flex justify-center mb-2">
+                    <img src="{{ $image->temporaryUrl() }}" alt="Imagen de {{ $type }}" class="h-32 w-32 object-cover">
+                </div>
+                @elseif ($imageUrl)
+                <div class="flex justify-center mb-2">
+                    <img src="{{ $imageUrl }}" alt="Imagen de {{ $type }}" class="h-32 w-32 object-cover">
+                </div>
+                @endif
+
+                <input type="file" wire:model="image" id="image"
+                    class="file-input file-input-bordered file-input-accent w-full mt-1">
+                @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+            </div>
+
+            <div class="flex justify-end mt-4">
+                <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
+                <button type="submit" class="btn {{ $selected_id ? 'btn-info' : 'btn-success' }}">
+                    {{ $selected_id ? 'Actualizar' : 'Guardar' }}
+                </button>
+            </div>
+        </form>
     </div>
-
-    <div class="mb-4">
-        <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
-        @if ($image)
-        <div class="flex justify-center mb-2">
-            <img src="{{ $image->temporaryUrl() }}" alt="Imagen de {{ $type }}" class="h-32 w-32 object-cover">
-        </div>
-        @elseif ($imageUrl)
-        <div class="flex justify-center mb-2">
-            <img src="{{ $imageUrl }}" alt="Imagen de {{ $type }}" class="h-32 w-32 object-cover">
-        </div>
-        @endif
-
-        <input type="file" wire:model="image" id="image"
-            class="file-input file-input-bordered file-input-accent w-full mt-1">
-        @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
-    </div>
-
-    <div class="flex justify-end mt-4">
-        <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
-        <button type="submit" class="btn {{ $selected_id ? 'btn-info' : 'btn-success' }}">
-            {{ $selected_id ? 'Actualizar' : 'Guardar' }}
-        </button>
-    </div>
-    </form>
-</div>
 </div>
 @endif
