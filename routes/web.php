@@ -4,6 +4,8 @@ use App\Livewire\Categories;
 use App\Livewire\Products;
 use App\Livewire\Coins;
 use App\Livewire\Users;
+use App\Livewire\Roles;
+use App\Livewire\Permisos;
 
 
 Route::view('/', 'welcome');
@@ -21,6 +23,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('products', Products::class)->name('products');
     Route::get('coins', Coins::class)->name('coins');
     Route::get('users', Users::class)->name('users');
+    Route::get('roles', Roles::class)->name('roles');
+    Route::get('permisos', Permisos::class)->name('permisos');
 });
 
 

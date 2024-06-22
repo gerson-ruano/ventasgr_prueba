@@ -8,7 +8,6 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\CategoryRequest;
 
 class Categories extends Component
 
@@ -47,6 +46,9 @@ class Categories extends Component
 
     public function render()
     {
+        if(strlen($this->search) > 0){
+            $data = Category::where('name', 'like', '%' . $this->search . '%');
+        }
         $data = Category::orderBy('id', 'desc')->paginate($this->pagination);
         return view('livewire.category.components', ['categories' => $data])
         ->extends('layouts.app')

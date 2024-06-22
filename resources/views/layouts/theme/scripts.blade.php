@@ -102,6 +102,21 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    Livewire.on('noty-error', (data) => {
+        if (data && data.type && data.name) {
+            Swal.fire({
+                icon: "error",
+                title: `la ${data.type} con "${data.id}" no se encuentra!`,
+                showConfirmButton: false,
+                timer: 1500
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
+                data);
+        }
+    });
+
     //Eventos para el Menu de Modulos de Plantilla
     const detailsList = document.querySelectorAll('details');
     // Cerrar detalles cuando se hace clic fuera de ellos

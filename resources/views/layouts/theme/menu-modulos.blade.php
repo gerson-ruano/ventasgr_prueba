@@ -63,12 +63,12 @@ details {
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('/')}}">
+                    <a href="{{url('roles')}}">
                         <i class="fas fa-street-view mr-1"></i>Roles
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}">
+                    <a href="{{url('permisos')}}">
                         <i class="fas fa-unlock-alt mr-1"></i>Permisos
                     </a>
                 </li>
@@ -85,11 +85,10 @@ details {
             </ul>
         </details>
     </li>
-    <li>
-        <label class="input input-bordered flex items-center gap-2 ">
-            <input type="text" class="grow" placeholder="Busqueda" />
-            <i class="fas fa-search"></i>
-        </label>
+    <li class="">
+        <div>
+            @include('partials.searchbox')
+        </div>
     </li>
     <li class="ml-auto">
         <label class="flex cursor-pointer gap-2">
@@ -106,4 +105,4 @@ details {
             </svg>
         </label>
     </li>
-</ul>   
+</ul>
