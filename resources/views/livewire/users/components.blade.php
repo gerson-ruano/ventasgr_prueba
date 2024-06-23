@@ -16,6 +16,7 @@
             <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
                     <th class="py-2 px-4 text-center">No.</th>
+                    <th class="py-2 px-4 text-left">Usuario</th>
                     <th class="py-2 px-4 text-left">Telefono</th>
                     <th class="py-2 px-4 text-left">Correo Electronico</th>
                     <th class="py-2 px-4 text-left">Estado</th>
@@ -28,10 +29,18 @@
                 <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                     <td class="py-2 px-4 text-center">
                         {{ ($users->currentPage() - 1) * $users->perPage() + $index + 1 }}</td>
-                    <td class="py-2 px-4 text-left">{{ $user->telefono }}</td>
+                    <td class="py-2 px-4 text-left">{{ $user->name }}</td>
+                    <td class="py-2 px-4 text-left">@if($user->phone > 0)
+                        <h6>{{ $user->phone }}</h6>
+                        @else
+                        <h6>Sin numero</h6>
+                        @endif
+                    </td>
                     <td class="py-2 px-4 text-left">{{ $user->email }}</td>
-                    <td class="py-2 px-4 text-left">{{ $user->status }}</td>
-                    <td class="py-2 px-4 text-left">{{ $user->perfil }}</td>
+                    <td class="py-2 px-4 text-left"><span
+                            class="badge {{ $user->status == 'Active' ? 'badge-success' : 'badge-warning'}} text-uppercase">{{ $user->status }}</span>
+                    </td>
+                    <td class="py-2 px-4 text-left"><B>{{ $user->profile }}<B></td>
                     <td class="py-2 px-4 text-center">
                         <img src="{{ $user->imagen }}" alt="Imagen de {{ $user->name }}"
                             class="rounded h-20 w-20 object-cover mx-auto">
@@ -41,7 +50,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $user->id }}','0','userOS','{{ $user->name }}')" title="Eliminar">
+                            onclick="Confirm('{{ $user->id }}','0','USUARIOS','{{ $user->name }}')" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -51,6 +60,7 @@
             <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>
                     <th class="py-2 px-4 text-center">No.</th>
+                    <th class="py-2 px-4 text-left">Usuario</th>
                     <th class="py-2 px-4 text-left">Telefono</th>
                     <th class="py-2 px-4 text-left">Correo Electronico</th>
                     <th class="py-2 px-4 text-left">Estado</th>

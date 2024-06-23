@@ -116,6 +116,7 @@ class Roles extends Component
 
     }
 
+    //Esta funcion no se utiliza en teoria se utiliza en USERS
     public function AsignarRoles($rolesList)
     {
         if($this->userSelected > 0)

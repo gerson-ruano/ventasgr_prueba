@@ -25,6 +25,9 @@ $links = [
 'products' => __('Productos'),
 'coins' => __('Denominaciones'),
 'users' => __('Usuarios'),
+'roles' => __('Roles'),
+'permisos' => __('Permisos'),
+'asignar' => __('Asignar'),
 // Añade más rutas aquí según sea necesario
 ];
 @endphp
@@ -70,8 +73,10 @@ $links = [
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium 
+                            rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 
+                            focus:outline-none transition ease-in-out duration-150">
+                            <div x-data="{{ json_encode(['name' => auth()->user()->name]  ) }}" x-text="name"
                                 x-on:profile-updated.window="name = $event.detail.name"></div>
 
                             <div class="ms-1">
@@ -120,7 +125,7 @@ $links = [
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" wire:navigate>
-                {{ __('Dashboard') }}
+                {{ __('Inicio') }}
             </x-responsive-nav-link>
         </div>
 

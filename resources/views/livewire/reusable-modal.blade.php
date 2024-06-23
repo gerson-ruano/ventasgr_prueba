@@ -99,16 +99,24 @@
 </div>--}}
 
 
-@if($isOpen)
-    <div class="fixed inset-0 flex items-center justify-center z-50">
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
-        <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-1/3 h-auto">
-            <h2 class="text-lg font-semibold mb-4 text-center">{{ $title }}</h2>
-            <div>{!! $content !!}</div>
-            <div class="flex justify-end mt-4">
-                <button type="button" class="btn btn-ghost mr-2" wire:click="closeModal">Cancelar</button>
+@if ($isOpen)
+<div class="modal-backdrop fade show"></div>
+<div class="modal fade show d-block" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{ $title }}</h5>
+                <button type="button" class="close" wire:click="closeModal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {{ $content }}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" wire:click="closeModal">Close</button>
             </div>
         </div>
     </div>
+</div>
 @endif
-
