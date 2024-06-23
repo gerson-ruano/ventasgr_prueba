@@ -203,7 +203,8 @@ class Users extends Component
     }
 
     protected $listeners = [
-        'deleteRow' => 'destroy'
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch',
         
     ];
 
@@ -211,31 +212,37 @@ class Users extends Component
     {
         $user = User::find($id);
 
-    if (!$user) {
-        // Manejo de caso donde el usuario no se encuentra
-        $this->dispatch('noty-not-found', type: 'USUARIO', name: $user->id);
-        return;
-    }
+        if (!$user) {
+            // Manejo de caso donde el usuario no se encuentra
+            $this->dispatch('noty-not-found', type: 'USUARIO', name: $user->id);
+            return;
+        }
 
-    // Contar las ventas asociadas al usuario
-    $salesCount = Sale::where('user_id', $user->id)->count();
+        // Contar las ventas asociadas al usuario
+        $salesCount = Sale::where('user_id', $user->id)->count();
+        
+        if ($salesCount > 0) {
+            // Manejo de caso donde el usuario tiene ventas asociadas
+            $this->dispatch('showNotification', 'No se puede eliminar el Usuario porque tiene ventas asociadas', 'warning');
+            return;
+        }
+
+        // Guardar el nombre de la imagen antes de eliminar el usuario
+        $imageName = $user->image;
+        $user->delete();
+
+        // Eliminar la imagen del almacenamiento si existe
+        if ($imageName && file_exists(storage_path('app/public/users/' . $imageName))) {
+            unlink(storage_path('app/public/users/' . $imageName));
+        }
+
+        // Emitir evento de notificación de eliminación exitosa
+        $this->dispatch('noty-deleted', type: 'USUARIO', name: 'Eliminado!.');
+    }
     
-    if ($salesCount > 0) {
-        // Manejo de caso donde el usuario tiene ventas asociadas
-        $this->dispatch('showNotification', 'No se puede eliminar el Usuario porque tiene ventas asociadas', 'warning');
-        return;
+    public function updateSearch($search)
+    {
+        $this->search = $search;
     }
-
-    // Guardar el nombre de la imagen antes de eliminar el usuario
-    $imageName = $user->image;
-    $user->delete();
-
-    // Eliminar la imagen del almacenamiento si existe
-    if ($imageName && file_exists(storage_path('app/public/users/' . $imageName))) {
-        unlink(storage_path('app/public/users/' . $imageName));
-    }
-
-    // Emitir evento de notificación de eliminación exitosa
-    $this->dispatch('noty-deleted', type: 'USUARIO', name: 'Eliminado!.');
-    }
+    
 }

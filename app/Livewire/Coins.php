@@ -44,7 +44,14 @@ class Coins extends Component
     }
     public function render()
     {
-        $data = Denomination::orderBy('id', 'desc')->paginate($this->pagination);
+        $query = Denomination::orderBy('id', 'desc');
+
+        if ($this->search) {
+            $query->where('type', 'like', '%' . $this->search . '%');
+        }
+    
+        $data = $query->paginate($this->pagination);
+
         return view('livewire.denominations.components', ['coins' => $data])
         ->extends('layouts.app')
         ->section('content'); 
@@ -157,7 +164,8 @@ class Coins extends Component
 
 
     protected $listeners = [
-        'deleteRow' => 'destroy' 
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch', 
     ];
 
     public function resetUI()
@@ -168,5 +176,10 @@ class Coins extends Component
         $this->imageUrl = null;
         $this->search = '';
         $this->selected_id = 0;
+    }
+
+    public function updateSearch($search)
+    {
+        $this->search = $search;
     }
 }

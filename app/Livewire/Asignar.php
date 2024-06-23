@@ -26,11 +26,11 @@ class Asignar extends Component
         $this->componentName = 'Asignar Permisos';
     }
 
-    public function updatedRole($value)
+    /*public function updatedRole($value)
     {
         $this->role = $value;
         $this->render();
-    }
+    }*/
 
 
     public function render()

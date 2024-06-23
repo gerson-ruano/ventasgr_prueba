@@ -2,7 +2,7 @@
     <!-- Header Section -->
     <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
         <div class="mr-2">
-        <livewire:components.searchbox />
+            <livewire:components.searchbox />
         </div>
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
@@ -22,6 +22,9 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Mostrar notificación cuando no hay resultados -->
+                @include('livewire.components.no-results', ['result' => $categories ,'name' => $componentName])
+        
                 @foreach($categories as $index => $category)
                 <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                     <td class="py-2 px-4 text-center">
@@ -43,6 +46,7 @@
                     </td>
                 </tr>
                 @endforeach
+                
             </tbody>
             <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>

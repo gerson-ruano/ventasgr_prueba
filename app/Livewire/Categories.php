@@ -163,7 +163,8 @@ class Categories extends Component
     }
 
     protected $listeners = [
-        'deleteRow' => 'destroy' 
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch',
     ];
 
     public function resetUI()
@@ -173,6 +174,11 @@ class Categories extends Component
         $this->imageUrl = null;
         $this->search = '';
         $this->selected_id = 0;
+    }
+
+    public function updateSearch($search)
+    {
+        $this->search = $search;
     }
     
 }

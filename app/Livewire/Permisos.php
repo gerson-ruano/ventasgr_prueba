@@ -116,7 +116,8 @@ class Permisos extends Component
     }
 
     protected $listeners = [
-        'deleteRow' => 'destroy' 
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch', 
     ];
 
     public function resetUI()
@@ -125,5 +126,9 @@ class Permisos extends Component
         $this->search = '';
         $this->selected_id = 0;
         $this->resetValidation();
+    }
+    public function updateSearch($search)
+    {
+        $this->search = $search;
     }
 }

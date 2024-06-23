@@ -55,10 +55,20 @@ class Products extends Component
     }
     public function render()
     {
-        $data = Product::orderBy('id', 'desc')->paginate($this->pagination);
+        $query = Product::orderBy('id', 'desc');
 
-        
-        return view('livewire.products.components', ['products' => $data, 'categories' => Category::orderBy('name','asc')->get()])
+        // Aplicar filtro de búsqueda por nombre
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        // Obtener productos paginados
+        $products = $query->paginate($this->pagination);
+
+
+        return view('livewire.products.components', [
+            'products' => $products, 
+            'categories' => Category::orderBy('name','asc')->get()])
         ->extends('layouts.app')
         ->section('content');
 
@@ -179,7 +189,10 @@ class Products extends Component
 
     }
 
-    protected $listeners = ['deleteRow' => 'destroy'];
+    protected $listeners = [
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch',
+    ];
 
     public function destroy($id){
         
@@ -214,5 +227,10 @@ class Products extends Component
             // Manejo de caso donde la categoría no se encuentra
             $this->dispatch('noty-not-found', type: 'PRODUCTO', name: $product->id);
         }
+    }
+
+    public function updateSearch($search)
+    {
+        $this->search = $search;
     }
 }

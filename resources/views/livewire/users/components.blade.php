@@ -25,6 +25,8 @@
                     <th class="py-2 px-4 text-center">Acción</th>
             </thead>
             <tbody>
+                <!-- Mostrar notificación cuando no hay resultados -->
+                @include('livewire.components.no-results', ['result' => $users ,'name' => $componentName])
                 @foreach($users as $index => $user)
                 <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                     <td class="py-2 px-4 text-center">

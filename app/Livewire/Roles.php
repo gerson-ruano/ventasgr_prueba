@@ -15,7 +15,6 @@ class Roles extends Component
     use WithPagination;
 
     public $roleName, $search, $selected_id, $pageTitle, $componentName;
-
     public $isModalOpen = false;
     private $pagination = 5;
 
@@ -132,7 +131,8 @@ class Roles extends Component
     }
 
     protected $listeners = [
-        'deleteRow' => 'destroy' 
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch',
     ];
 
     public function resetUI()
@@ -142,6 +142,9 @@ class Roles extends Component
         $this->selected_id = 0;
         $this->resetValidation();
     }
-
+    public function updateSearch($search)
+    {
+        $this->search = $search;
+    }
 
 }
