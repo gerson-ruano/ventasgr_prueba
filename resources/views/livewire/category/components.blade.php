@@ -2,7 +2,7 @@
     <!-- Header Section -->
     <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
         <div class="mr-2">
-            @include('partials.searchbox')
+        <livewire:components.searchbox />
         </div>
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}

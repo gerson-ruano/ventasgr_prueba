@@ -46,13 +46,17 @@ class Categories extends Component
 
     public function render()
     {
-        if(strlen($this->search) > 0){
-            $data = Category::where('name', 'like', '%' . $this->search . '%');
-        }
-        $data = Category::orderBy('id', 'desc')->paginate($this->pagination);
-        return view('livewire.category.components', ['categories' => $data])
+        $query = Category::orderBy('id', 'desc');
+
+    if ($this->search) {
+        $query->where('name', 'like', '%' . $this->search . '%');
+    }
+
+    $categories = $query->paginate($this->pagination);
+
+    return view('livewire.category.components', compact('categories'))
         ->extends('layouts.app')
-        ->section('content'); 
+        ->section('content');
     }
 
     

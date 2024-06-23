@@ -2,15 +2,14 @@
     <!-- Header Section -->
     <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
         <div class="mr-2">
-            @include('partials.searchbox')
+        <livewire:components.searchbox />
         </div>
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
         </h4>
         <button class="btn btn-accent ml-4" wire:click="openModal">Nuevo Permiso</button>
     </div>
-    
-    
+
     <!-- Table Section -->
     <div class="overflow-x-auto bg-base-300 p-4 rounded-lg shadow-lg max-w-5xl mx-auto">
         <table class="table-auto w-full">
@@ -53,4 +52,5 @@
         </div>
     </div>
     @include('livewire.permisos.form')
+    
 </div>

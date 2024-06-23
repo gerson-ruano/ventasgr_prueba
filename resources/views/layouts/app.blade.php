@@ -46,7 +46,7 @@
     <!-- Scripts -->
     {{--@stack('scripts')--}}
     @include('layouts.theme.scripts')
-
+    
 </body>
 
 </html>

@@ -1,6 +1,9 @@
 <div>
     <!-- Header Section -->
     <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
+        <div class="mr-2">
+            <livewire:components.searchbox />
+        </div>
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
         </h4>
@@ -38,8 +41,7 @@
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $user->id }}','0','userOS','{{ $user->name }}')"
-                            title="Eliminar">
+                            onclick="Confirm('{{ $user->id }}','0','userOS','{{ $user->name }}')" title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
@@ -48,7 +50,7 @@
             </tbody>
             <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>
-                <th class="py-2 px-4 text-center">No.</th>
+                    <th class="py-2 px-4 text-center">No.</th>
                     <th class="py-2 px-4 text-left">Telefono</th>
                     <th class="py-2 px-4 text-left">Correo Electronico</th>
                     <th class="py-2 px-4 text-left">Estado</th>

@@ -73,7 +73,7 @@ details {
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}">
+                    <a href="{{url('asignar')}}">
                         <i class="fas fa-check-square mr-1"></i>Asignar
                     </a>
                 </li>
@@ -87,7 +87,7 @@ details {
     </li>
     <li class="">
         <div>
-            @include('partials.searchbox')
+        <livewire:components.searchbox />
         </div>
     </li>
     <li class="ml-auto">

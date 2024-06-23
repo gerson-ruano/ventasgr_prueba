@@ -37,11 +37,15 @@ class Permisos extends Component
     }
     public function render()
     {
-        if(strlen($this->search) > 0)
-        $data = Permission::where('name','like', '%' . $this->search . '%')->paginate($this->pagination);
-    else
-        $data = Permission::orderBy('id', 'desc')->paginate($this->pagination);
-        return view('livewire.permisos.components', ['permisos' => $data])
+        $query = Permission::orderBy('id', 'desc');
+        
+        if(strlen($this->search) > 0) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $data = $query->paginate($this->pagination);
+
+        return view('livewire.permisos.components',['permisos' => $data])
         ->extends('layouts.app')
         ->section('content'); 
     }
@@ -102,12 +106,13 @@ class Permisos extends Component
         $rolesCount = Permission::find($id)->getRoleNames()->count();
         if($rolesCount > 0)
         {
-            $this->dispatch('noty-not-found', type: 'PERMISO', name:  $this->permissionName);
+            $this->dispatch('showNotification', 'No se puede eliminar el role porque tiene permisos asociados', 'warning');
             return;
         }
 
         Permission::find($id)->delete();
         $this->dispatch('noty-deleted', type: 'PERMISO', name:  'eliminado');
+        
     }
 
     protected $listeners = [

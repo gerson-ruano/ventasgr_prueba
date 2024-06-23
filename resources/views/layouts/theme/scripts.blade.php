@@ -1,3 +1,5 @@
+
+<livewire:components.notification />
 @livewireScripts
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -138,6 +140,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
         });
+    });
+
+    //Notificaciones Push
+    Livewire.on('notification-auto-hide', event => {
+        //console.log('Evento recibido:', event);
+        setTimeout(() => {
+            //console.log('Cerrando notificación...');
+            Livewire.dispatch('closeNotification');
+        }, 4000); // Aquí puedes ajustar el tiempo de espera en milisegundos
     });
 });
 </script>
