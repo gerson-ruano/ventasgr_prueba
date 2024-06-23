@@ -6,53 +6,53 @@
             {{ $selected_id ? 'Editar Producto' : 'Nuevo  Producto' }}
         </h2>
 
-        <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
+        <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="mb-4">
                     <label for="category_name" class="block text-sm font-medium text-gray-700">Nombre</label>
                     <input id="category_name" type="text" placeholder="Ej. Cursos"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="name" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="name" />
                     @error('name') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_codigo" class="block text-sm font-medium text-gray-700">Código</label>
                     <input id="category_codigo" type="text" placeholder="Ej. 1234"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="barcode" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="barcode" />
                     @error('barcode') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_cost" class="block text-sm font-medium text-gray-700">Costo</label>
                     <input id="category_cost" type="text" placeholder="Ej. 0.00"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="cost" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="cost" />
                     @error('cost') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_precio" class="block text-sm font-medium text-gray-700">Precio</label>
                     <input id="category_precio" type="text" placeholder="Ej. 0.00"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="price" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="price" />
                     @error('price') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_stock" class="block text-sm font-medium text-gray-700">Stock</label>
                     <input id="category_stock" type="number" placeholder="Ej. 0"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="stock" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="stock" />
                     @error('stock') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_alerts" class="block text-sm font-medium text-gray-700">Alertas</label>
                     <input id="category_alerts" type="number" placeholder="Ej. 10"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="alerts" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="alerts" />
                     @error('alerts') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_select" class="block text-sm font-medium text-gray-700">Categoría</label>
-                    <select wire:model="categoryid" id="category_select" class="select select-info w-full">
+                    <select wire:model.live="categoryid" id="category_select" class="select select-info w-full">
                         <option value="Elegir" disabled>Elegir</option>
                         @foreach ($categories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -74,7 +74,7 @@
                     </div>
                     @endif
 
-                    <input type="file" wire:model="image" id="image"
+                    <input type="file" wire:model.live="image" id="image"
                         class="file-input file-input-bordered file-input-accent w-full mt-1">
                     @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>

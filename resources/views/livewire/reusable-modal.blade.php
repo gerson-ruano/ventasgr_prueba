@@ -1,5 +1,5 @@
 {{--<div
-    x-data="{ open: @entangle('isOpen') }"
+    x-data="{ open: @entangle('isOpen').live }"
     x-show="open"
     x-transition:enter="transition ease-out duration-200"
     x-transition:enter-start="opacity-0"
@@ -75,13 +75,13 @@
                     <div class="form-control">
                         <label for="category_name" class="label">Nombre:</label>
                         <input id="category_name" type="text" placeholder="Ej. Cursos"
-                            class="input input-bordered input-info" wire:model.lazy="name" />
+                            class="input input-bordered input-info" wire:model.blur="name" />
                         @error('name') <span class="text-danger">{{$message}}</span>@enderror
 </div>
 
 <div class="form-control mt-3">
     <label for="category_image" class="label">Imagen:</label>
-    <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs" wire:model="image"
+    <input type="file" class="file-input file-input-bordered file-input-accent w-full max-w-xs" wire:model.live="image"
         accept="image/x-png, image/gif, image/jpg" onchange="return false;" />
     <label for="category_image" class="label">Imagen: {{$image}}</label>
     @error('image') <span class="text-danger">{{$message}}</span>@enderror

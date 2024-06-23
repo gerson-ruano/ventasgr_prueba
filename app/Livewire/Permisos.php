@@ -110,9 +110,9 @@ class Permisos extends Component
             return;
         }
 
+        $permiso = Permission::find($id);
         Permission::find($id)->delete();
-        $this->dispatch('noty-deleted', type: 'PERMISO', name:  'eliminado');
-        
+        $this->dispatch('noty-deleted', type: 'PERMISO', name:  $permiso->name);
     }
 
     protected $listeners = [

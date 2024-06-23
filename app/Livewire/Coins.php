@@ -148,10 +148,10 @@ class Coins extends Component
             }
 
             // Restablecer UI y emitir evento
-            $this->dispatch('noty-deleted', type: 'DENOMINATIÓN', name: $denomination->type);
+            $this->dispatch('noty-deleted', type: 'DENOMINACIÓN', name: $denomination->type);
         } else {
             // Manejo de caso donde la categoría no se encuentra
-            $this->dispatch('noty-not-found', type: 'DENOMINATIÓN', name: $denomination->id);
+            $this->dispatch('noty-not-found', type: 'DENOMINACIÓN', name: $denomination->id);
         }
     }
 

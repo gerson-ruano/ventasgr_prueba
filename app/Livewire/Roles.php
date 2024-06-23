@@ -109,10 +109,11 @@ class Roles extends Component
             $this->dispatch('showNotification', 'No se puede eliminar el rol porque tiene permisos asociados', 'warning');
             return;
         }
-
+        
+        $role = Role::find($id);
         Role::find($id)->delete();
         // Restablecer UI y emitir evento
-        $this->dispatch('noty-deleted', type: 'ROL', name:  'eliminado');
+        $this->dispatch('noty-deleted', type: 'ROL', name: $role->name);
 
     }
 

@@ -9,7 +9,7 @@
             </svg>
             <form class="form-inline search-full form-inline search" role="search">
                 <div class="search-bar">
-                    <input id="code" type="text" wire:keydown.enter.prevent="$emit('scan-code', $('#code').val())"
+                    <input id="code" type="text" wire:keydown.enter.prevent="$dispatch('scan-code', $('#code').val())"
                         class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
                 </div>
             </form>

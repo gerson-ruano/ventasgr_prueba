@@ -6,19 +6,19 @@
             {{ $selected_id ? 'Editar Usuario' : 'Nuevo  Usuario' }}
         </h2>
 
-        <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
+        <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="mb-4">
                     <label for="category_name" class="block text-sm font-medium text-gray-700">Nombre</label>
                     <input id="category_name" type="text" placeholder="Ej. Juan"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="name" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="name" />
                     @error('name') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_codigo" class="block text-sm font-medium text-gray-700">Telefono</label>
                     <input id="category_codigo" type="text" placeholder="Ej. 1234 2345"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="phone" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="phone" />
                     @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
@@ -26,14 +26,14 @@
                     <label for="category_cost" class="block text-sm font-medium text-gray-700">Correo
                         Electronico</label>
                     <input id="category_cost" type="email" placeholder="Ej. admin@gmail.com"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="email" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="email" />
                     @error('email') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
                     <label for="category_password" class="block text-sm font-medium text-gray-700">Contraseña</label>
                     <input id="category_password" type="password" placeholder="Ej. ********"
-                        class="input input-bordered input-info mt-1 w-full" wire:model.lazy="password" />
+                        class="input input-bordered input-info mt-1 w-full" wire:model.blur="password" />
                     @error('password') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
@@ -41,7 +41,7 @@
 
                 <div class="mb-4">
                     <label for="category_select" class="block text-sm font-medium text-gray-700">Estado</label>
-                    <select wire:model.lazy="status" class="select select-info w-full">
+                    <select wire:model.blur="status" class="select select-info w-full">
                         <option value="Elegir" selected>Elegir</option>
                         <option value="Active" selected>Activado</option>
                         <option value="Locked" selected>Boqueado</option>
@@ -51,7 +51,7 @@
 
                 <div class="mb-4">
                     <label for="category_select" class="block text-sm font-medium text-gray-700">Asignar Role</label>
-                    <select wire:model.lazy="profile" class="select select-info w-full">
+                    <select wire:model.blur="profile" class="select select-info w-full">
                         <option value="Elegir" selected>Elegir</option>
                         @foreach ($roles as $role)
                         <option value="{{ $role->name }}" selected>{{$role->name}}</option>
@@ -73,7 +73,7 @@
                     </div>
                     @endif
 
-                    <input type="file" wire:model="image" id="image"
+                    <input type="file" wire:model.live="image" id="image"
                         class="file-input file-input-bordered file-input-accent w-full mt-1">
                     @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>

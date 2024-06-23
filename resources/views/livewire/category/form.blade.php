@@ -6,17 +6,17 @@
             {{ $selected_id ? 'Editar Categoría' : 'Nueva Categoría' }}
         </h2>
 
-        <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
+        <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="mb-4">
                 <label for="category_name" class="block text-sm font-medium text-gray-700">Nombre</label>
                 <input id="category_name" type="text" placeholder="Ej. Cursos"
-                    class="input input-bordered input-info mt-1 w-full" wire:model.lazy="name" />
+                    class="input input-bordered input-info mt-1 w-full" wire:model.blur="name" />
                 @error('name') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>
 
             {{--<div class="mb-4">
                 <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
-                <input type="file" wire:model="image" id="image"
+                <input type="file" wire:model.live="image" id="image"
                     class="file-input file-input-bordered file-input-accent w-full mt-1">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>--}}
@@ -33,7 +33,7 @@
                     </div>
                 @endif
 
-                <input type="file" wire:model="image" id="image"
+                <input type="file" wire:model.live="image" id="image"
                     class="file-input file-input-bordered file-input-accent w-full mt-1">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>

@@ -6,10 +6,10 @@
             {{ $selected_id ? 'Editar Denominación' : 'Nueva Denominación' }}
         </h2>
 
-        <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
+        <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="mb-4">
                 <label for="type" class="block text-sm font-medium text-gray-700">Tipo</label>
-                <select wire:model="type" class="select select-info w-full">
+                <select wire:model.live="type" class="select select-info w-full">
                     <option value="Elegir" disabled>Elegir</option>
                     <option value="BILLETE">Billete</option>
                     <option value="MONEDA">Moneda</option>
@@ -21,7 +21,7 @@
             <div class="mb-4">
                 <label for="category_value" class="block text-sm font-medium text-gray-700">Value</label>
                 <input id="category_value" type="number" placeholder="Ej. 10"
-                    class="input input-bordered input-info mt-1 w-full" wire:model.lazy="value" />
+                    class="input input-bordered input-info mt-1 w-full" wire:model.blur="value" />
                 @error('value') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>
 
@@ -37,7 +37,7 @@
                 </div>
                 @endif
 
-                <input type="file" wire:model="image" id="image"
+                <input type="file" wire:model.live="image" id="image"
                     class="file-input file-input-bordered file-input-accent w-full mt-1">
                 @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>
