@@ -13,7 +13,7 @@ class Permisos extends Component
 
     public $permissionName, $search, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
-    private $pagination = 5;
+    private $pagination = 10;
 
     protected $rules = [
         'permissionName' => 'required|min:3|unique:permissions,name'

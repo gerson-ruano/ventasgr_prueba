@@ -30,13 +30,16 @@
                         {{ ($roles->currentPage() - 1) * $roles->perPage() + $index + 1 }}</td>
                     <td class="py-2 px-4 text-center">{{ $rol->name }}</td>
                     <td class="py-2 px-4 text-center">
-                        <button class="btn btn-info mr-2" wire:click="edit({{ $rol->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $rol->id }}', '','ROLES','{{ $rol->name }}')" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="flex flex-col sm:flex-row items-center justify-center">
+                            <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
+                                wire:click="edit({{ $rol->id }})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline btn-danger"
+                                onclick="Confirm('{{ $rol->id }}','{{ $componentName }}','{{ $rol->name }}')" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

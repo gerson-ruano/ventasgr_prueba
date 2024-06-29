@@ -16,15 +16,16 @@
             <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
                     <th class="text-lg font-medium py-2 px-4 text-center">No.</th>
-                    <th class="text-lg font-medium py-2 px-4 text-left">Descripción</th>
+                    <th class="text-lg font-medium py-2 px-4 text-left">Descripcion</th>
                     <th class="text-lg font-medium py-2 px-4 text-center">Imagen</th>
                     <th class="text-lg font-medium py-2 px-4 text-center">Acción</th>
                 </tr>
             </thead>
             <tbody>
+                {{--dd($categories)--}}
                 <!-- Mostrar notificación cuando no hay resultados -->
                 @include('livewire.components.no-results', ['result' => $categories ,'name' => $componentName])
-        
+
                 @foreach($categories as $index => $category)
                 <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                     <td class="py-2 px-4 text-center">
@@ -32,21 +33,21 @@
                     <td class="py-2 px-4 text-left">{{ $category->name }}</td>
                     <td class="py-2 px-4 text-center">
                         <img src="{{ $category->imagen }}" alt="Imagen de {{ $category->name }}"
-                            class="rounded h-20 w-20 object-cover mx-auto">
+                            class="rounded-lg h-12 w-12 object-cover mx-auto">
                     </td>
                     <td class="py-2 px-4 text-center">
-                        <button class="btn btn-info mr-2" wire:click="edit({{ $category->id }})" title="Editar">
+                        <button class="btn btn-sm btn-info mr-2" wire:click="edit({{ $category->id }})" title="Editar">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $category->id }}', '{{ $category->products->count() }}','CATEGORÍAS','{{ $category->name }}')"
+                        <button class="btn btn-sm btn-outline btn-danger"
+                            onclick="Confirm('{{ $category->id }}','{{ $componentName }}','{{ $category->name }}','{{ $category->products->count() }}','PRODUCTOS', )"
                             title="Eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
                 @endforeach
-                
+
             </tbody>
             <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>

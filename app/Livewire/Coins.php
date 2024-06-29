@@ -17,7 +17,7 @@ class Coins extends Component
     public $type, $value, $componentName, $pageTitle, $selected_id, $image, $imageUrl, $search;
 
     public $isModalOpen = false;
-    private $pagination = 5;
+    private $pagination = 10;
 
     protected $rules = [
         'type' => 'required|not_in:Elegir',

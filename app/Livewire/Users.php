@@ -20,7 +20,7 @@ class Users extends Component
     public $name, $phone, $email, $status, $image, $password, $selected_id, $fileLoaded, $profile;
     public $pageTitle, $componentName, $search, $perfilSeleccionado, $imageUrl;
 
-    private $pagination = 5;
+    private $pagination = 10;
     public $isModalOpen = false;
 
     protected $rules = [
@@ -229,6 +229,8 @@ class Users extends Component
 
         // Guardar el nombre de la imagen antes de eliminar el usuario
         $imageName = $user->image;
+        $userDelete = $user->name;
+        
         $user->delete();
 
         // Eliminar la imagen del almacenamiento si existe
@@ -237,7 +239,7 @@ class Users extends Component
         }
 
         // Emitir evento de notificación de eliminación exitosa
-        $this->dispatch('noty-deleted', type: 'USUARIO', name: 'Eliminado!.');
+        $this->dispatch('noty-deleted', type: 'USUARIO', name: $userDelete);
     }
     
     public function updateSearch($search)

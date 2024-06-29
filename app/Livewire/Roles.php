@@ -16,7 +16,7 @@ class Roles extends Component
 
     public $roleName, $search, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
-    private $pagination = 5;
+    private $pagination = 10;
 
     protected $rules = [
         'roleName' => 'required|min:3|unique:roles,name'

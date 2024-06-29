@@ -17,7 +17,7 @@ class Categories extends Component
 
     public $name, $search, $image, $imageUrl, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
-    private $pagination = 5;
+    private $pagination = 10;
 
     protected $rules = [
         'name' => 'required|unique:categories|min:3',

@@ -45,16 +45,20 @@
                     <td class="py-2 px-4 text-left"><B>{{ $user->profile }}<B></td>
                     <td class="py-2 px-4 text-center">
                         <img src="{{ $user->imagen }}" alt="Imagen de {{ $user->name }}"
-                            class="rounded h-20 w-20 object-cover mx-auto">
+                            class="rounded-lg h-12 w-12 object-cover mx-auto">
                     </td>
                     <td class="py-2 px-4 text-center">
-                        <button class="btn btn-info mr-2" wire:click="edit({{ $user->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $user->id }}','0','USUARIOS','{{ $user->name }}')" title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="flex flex-col sm:flex-row items-center justify-center">
+                            <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
+                            wire:click="edit({{ $user->id }})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline btn-danger"
+                            onclick="Confirm('{{ $user->id }}','{{ $componentName }}','{{ $user->name }}')"
+                                title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

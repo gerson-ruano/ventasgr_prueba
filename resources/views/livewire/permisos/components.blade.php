@@ -29,14 +29,17 @@
                         {{ ($permisos->currentPage() - 1) * $permisos->perPage() + $index + 1 }}</td>
                     <td class="py-2 px-4 text-center">{{ $permiso->name }}</td>
                     <td class="py-2 px-4 text-center">
-                        <button class="btn btn-info mr-2" wire:click="edit({{ $permiso->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $permiso->id }}', '','PERMISOS','{{ $permiso->name }}')"
-                            title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="flex flex-col sm:flex-row items-center justify-center">
+                            <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
+                            wire:click="edit({{ $permiso->id }})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline btn-danger"
+                            onclick="Confirm('{{ $permiso->id }}','{{ $componentName }}','{{ $permiso->name }}')"
+                                title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

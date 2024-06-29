@@ -4,8 +4,8 @@
         <h4 class="font-bold text-2xl mr-2">
             {{ $componentName }}
         </h4>
-        <div class="mb-4">
-            <label for="role_select" class="text-center block text-sm font-medium text-gray-700">Rol</label>
+        <div class="ml-4">
+            {{--<label for="role_select" class="text-center block text-sm font-medium text-gray-700">Rol</label>--}}
             <select wire:model.live="role" id="role_select" name="role_select" class="select select-info w-full">
                 <option value="Elegir" selected>== Seleccione el Rol ==</option>
                 @foreach ($roles as $role)

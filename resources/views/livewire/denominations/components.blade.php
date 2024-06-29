@@ -33,17 +33,20 @@
                     <td class="py-2 px-4 text-left">Q {{ number_format($coin->value, 2) }}</td>
                     <td class="py-2 px-4 text-center">
                         <img src="{{ $coin->imagen }}" alt="Imagen de {{ $coin->name }}"
-                            class="rounded h-20 w-20 object-cover mx-auto">
+                            class="rounded-lg h-12 w-12 object-cover mx-auto">
                     </td>
                     <td class="py-2 px-4 text-center">
-                        <button class="btn btn-info mr-2" wire:click="edit({{ $coin->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-outline btn-danger"
-                            onclick="Confirm('{{ $coin->id }}', '','DENOMINACIÓN','{{ $coin->type }}')"
-                            title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="flex flex-col sm:flex-row items-center justify-center">
+                            <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
+                            wire:click="edit({{ $coin->id }})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline btn-danger"
+                            onclick="Confirm('{{ $coin->id }}','{{ $componentName }}','{{ $coin->type }}')"
+                                title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

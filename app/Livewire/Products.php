@@ -17,7 +17,7 @@ class Products extends Component
 
     public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $imageUrl, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
-    private $pagination = 5;
+    private $pagination = 10;
 
     protected $rules = [
         'name' => 'required|unique:products|min:3',
