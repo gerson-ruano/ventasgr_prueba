@@ -9,30 +9,30 @@
         <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div class="mb-4">
-                    <label for="category_name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                    <input id="category_name" type="text" placeholder="Ej. Juan"
+                    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                    <input id="nombre" type="text" placeholder="Ej. Juan"
                         class="input input-bordered input-info mt-1 w-full" wire:model.blur="name" />
                     @error('name') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="category_codigo" class="block text-sm font-medium text-gray-700">Telefono</label>
-                    <input id="category_codigo" type="text" placeholder="Ej. 1234 2345"
+                    <label for="telefono" class="block text-sm font-medium text-gray-700">Telefono</label>
+                    <input id="telefono" type="text" placeholder="Ej. 1234 2345"
                         class="input input-bordered input-info mt-1 w-full" wire:model.blur="phone" />
                     @error('phone') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="category_cost" class="block text-sm font-medium text-gray-700">Correo
+                    <label for="correo" class="block text-sm font-medium text-gray-700">Correo
                         Electronico</label>
-                    <input id="category_cost" type="email" placeholder="Ej. admin@gmail.com"
+                    <input id="correo" type="email" placeholder="Ej. admin@gmail.com"
                         class="input input-bordered input-info mt-1 w-full" wire:model.blur="email" />
                     @error('email') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
                 <div class="mb-4">
-                    <label for="category_password" class="block text-sm font-medium text-gray-700">Contraseña</label>
-                    <input id="category_password" type="password" placeholder="Ej. ********"
+                    <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                    <input id="password" type="password" placeholder="Ej. ********"
                         class="input input-bordered input-info mt-1 w-full" wire:model.blur="password" />
                     @error('password') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
@@ -40,8 +40,8 @@
 
 
                 <div class="mb-4">
-                    <label for="category_select" class="block text-sm font-medium text-gray-700">Estado</label>
-                    <select wire:model.blur="status" class="select select-info w-full">
+                    <label for="select_status" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <select wire:model.blur="status" id="select_status"class="select select-info w-full">
                         <option value="Elegir" selected>Elegir</option>
                         <option value="Active" selected>Activado</option>
                         <option value="Locked" selected>Boqueado</option>
@@ -50,8 +50,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="category_select" class="block text-sm font-medium text-gray-700">Asignar Role</label>
-                    <select wire:model.blur="profile" class="select select-info w-full">
+                    <label for="select_role" class="block text-sm font-medium text-gray-700">Asignar Role</label>
+                    <select wire:model.blur="profile" id="select_role" class="select select-info w-full">
                         <option value="Elegir" selected>Elegir</option>
                         @foreach ($roles as $role)
                         <option value="{{ $role->name }}" selected>{{$role->name}}</option>

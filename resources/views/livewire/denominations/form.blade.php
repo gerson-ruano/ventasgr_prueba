@@ -8,9 +8,9 @@
 
         <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="mb-4">
-                <label for="type" class="block text-sm font-medium text-gray-700">Tipo</label>
-                <select wire:model.live="type" class="select select-info w-full">
-                    <option value="Elegir" disabled>Elegir</option>
+                <label for="select_type" class="block text-sm font-medium text-gray-700">Tipo</label>
+                <select wire:model.live="type" id="select_type" class="select select-info w-full">
+                    <option value="Elegir" selected>Elegir</option>
                     <option value="BILLETE">Billete</option>
                     <option value="MONEDA">Moneda</option>
                     <option value="OTRO">Otro</option>
@@ -19,8 +19,8 @@
             </div>
 
             <div class="mb-4">
-                <label for="category_value" class="block text-sm font-medium text-gray-700">Value</label>
-                <input id="category_value" type="number" placeholder="Ej. 10"
+                <label for="value" class="block text-sm font-medium text-gray-700">Valor</label>
+                <input id="value" type="number" placeholder="Ej. 10"
                     class="input input-bordered input-info mt-1 w-full" wire:model.blur="value" />
                 @error('value') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>

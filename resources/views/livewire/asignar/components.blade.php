@@ -14,7 +14,8 @@
             </select>
         </div>
         <button class="btn btn-accent ml-4" wire:click.prevent="SyncAll">Sincronizar Todos</button>
-        <button class="btn btn-info ml-4" wire:click="Removeall">Revocar Todos</button>
+        <button class="btn btn-info ml-4" wire:click="Removeall">Revocar Todos <i
+                class="fas fa-thumbs-down"></i></button>
     </div>
 
     <!-- Table Section -->
@@ -39,7 +40,7 @@
                         <span class="label-text ml-1">{{ $permiso->name }}</span>
                     </td>
                     <td class="text-center">
-                        <div class="form-control">
+                        <div class="flex justify-center items-center">
                             <label class="cursor-pointer label">
                                 <input type="checkbox" class="checkbox checkbox-info"
                                     wire:change="syncPermiso($event.target.checked, '{{ $permiso->name }}' )"

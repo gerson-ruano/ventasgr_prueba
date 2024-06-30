@@ -47,7 +47,7 @@ class Coins extends Component
         $query = Denomination::orderBy('id', 'desc');
 
         if ($this->search) {
-            $query->where('type', 'like', '%' . $this->search . '%');
+            $query->where('value', 'like', '%' . $this->search . '%');
         }
     
         $data = $query->paginate($this->pagination);
@@ -174,7 +174,7 @@ class Coins extends Component
         $this->value = '';
         $this->image = null;
         $this->imageUrl = null;
-        $this->search = '';
+        //$this->search = '';
         $this->selected_id = 0;
     }
 

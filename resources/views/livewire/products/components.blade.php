@@ -21,7 +21,7 @@
                     <th class="py-2 px-4 text-left">Categoria</th>
                     <th class="py-2 px-4 text-left">Precio</th>
                     <th class="py-2 px-4 text-left">Stock</th>
-                    <th class="py-2 px-4 text-left">Inv Minimo</th>
+                    <th class="py-2 px-4 text-center">Inv Minimo</th>
                     <th class="py-2 px-4 text-center">Imagen</th>
                     <th class="py-2 px-4 text-center">Acción</th>
             </thead>
@@ -37,7 +37,7 @@
                     <td class="py-2 px-4 text-left">{{ $product->category->name }}</td>
                     <td class="py-2 px-4 text-left">{{ $product->price }}</td>
                     <td class="py-2 px-4 text-left">{{ $product->stock }}</td>
-                    <td class="py-2 px-4 text-left">{{ $product->alerts }}</td>
+                    <td class="py-2 px-4 text-center">{{ $product->alerts }}</td>
                     <td class="py-2 px-4 text-center">
                         <img src="{{ $product->imagen }}" alt="Imagen de {{ $product->name }}"
                             class="rounded-lg h-12 w-12 object-cover mx-auto">
@@ -66,7 +66,7 @@
                     <th class="py-2 px-4 text-left">Categoria</th>
                     <th class="py-2 px-4 text-left">Precio</th>
                     <th class="py-2 px-4 text-left">Stock</th>
-                    <th class="py-2 px-4 text-left">Inv Minimo</th>
+                    <th class="py-2 px-4 text-center">Inv Minimo</th>
                     <th class="py-2 px-4 text-center">Imagen</th>
                     <th class="py-2 px-4 text-center">Acción</th>
                 </tr>

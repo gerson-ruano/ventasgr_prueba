@@ -1,4 +1,3 @@
-
 <livewire:components.notification />
 @livewireScripts
 <script>
@@ -50,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             console.error(
-                'Los datos recibidos del evento Livewire "categoría agregada" no tienen el formato esperado.',
+                'Los datos recibidos del evento Livewire "noty-added" no tienen el formato esperado.',
                 data);
         }
     });
@@ -67,7 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             console.error(
-                'Los datos recibidos del evento Livewire "categoría actualizada" no tienen el formato esperado.',
+                'Los datos recibidos del evento Livewire "noty-updated" no tienen el formato esperado.',
                 data);
         }
     });
@@ -83,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             console.error(
-                'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
+                'Los datos recibidos del evento Livewire "noty-deleted" no tienen el formato esperado.',
                 data);
         }
     });
@@ -99,11 +98,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             console.error(
-                'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
+                'Los datos recibidos del evento Livewire "noty-not-found" no tienen el formato esperado.',
                 data);
         }
     });
 
+    // Escuchar el evento `not-error`
     Livewire.on('noty-error', (data) => {
         if (data && data.type && data.name) {
             Swal.fire({
@@ -114,9 +114,43 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else {
             console.error(
-                'Los datos recibidos del evento Livewire "categoría desconocida" no tienen el formato esperado.',
+                'Los datos recibidos del evento Livewire "noty-error" no tienen el formato esperado.',
                 data);
         }
+    });
+
+    //Confirmar la sincronizacion de todos los permisos
+    Livewire.on('confirmSyncAll', (data) => {
+        //console.log('Event Data:', data);
+        if (data && data.type && data.name) {
+            Swal.fire({
+                title: `¿Estás seguro de '${data.type}' todos los '${data.name}'?`,
+                text: "¡Podras revertir mas adelante!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#a10c10',
+                cancelButtonColor: '#727885',
+                confirmButtonText: 'Sí, sincronizar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('syncAllConfirmed');
+                }
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "sincronizar todos permisos" no tienen el formato esperado.',
+                data);
+        }
+    });
+
+    //Notifiaciones SWIFTALERT al instante
+    Livewire.on('showNotification1', (message, type) => {
+        Swal.fire({
+            title: type === 'success' ? '¡Éxito!' : '¡Error!',
+            text: message,
+            icon: type,
+            confirmButtonText: 'Aceptar'
+        });
     });
 
     //Eventos para el Menu de Modulos de Plantilla

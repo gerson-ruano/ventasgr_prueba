@@ -26,13 +26,6 @@ class Asignar extends Component
         $this->componentName = 'Asignar Permisos';
     }
 
-    /*public function updatedRole($value)
-    {
-        $this->role = $value;
-        $this->render();
-    }*/
-
-
     public function render()
     {
         $permisos = Permission::select('name', 'id', DB::raw("0 as checked"))
@@ -75,13 +68,11 @@ class Asignar extends Component
         ->section('content');
     }
 
-    //public $listeners = ['revokeall' => 'Removeall'];
-
     public function Removeall()
     {
         if($this->role == 'Elegir')
         {
-            $this->dispatch('showNotification', 'Selecciona un rol válido', 'error');
+            $this->dispatch('showNotification', 'Selecciona un Rol válido', 'warning');
             return;
         }
 
@@ -89,10 +80,22 @@ class Asignar extends Component
         $role->syncPermissions([]);
 
         //$this->dispatch('removeall',"Se revocaron todos los permisos al role $role->name ");
-        $this->dispatch('showNotification', 'Se revocaron todos los permisos al role', 'success');
+        $this->dispatch('showNotification', 'Se revocaron todos los permisos al role', 'error');
     }
 
     public function SyncAll()
+    {
+        if($this->role == 'Elegir')
+        {
+            $this->dispatch('showNotification', 'Elegir un Role valido', 'warning');
+            return;
+        }
+
+        $this->dispatch('confirmSyncAll', type: 'Sincronizar', name: 'PERMISOS');
+        
+    }
+
+    public function performSync()
     {
         if($this->role == 'Elegir')
         {
@@ -111,7 +114,7 @@ class Asignar extends Component
     public function syncPermiso($state, $permisoName)
     {
         if ($this->role == 'Elegir') {
-            $this->dispatch('showNotification', 'Elige un rol válido', 'error');
+            $this->dispatch('showNotification', 'Elige un rol válido', 'warning');
             return;
         }
 
@@ -121,7 +124,10 @@ class Asignar extends Component
             $this->dispatch('showNotification', 'Permiso asignado correctamente', 'success');
         } else {
             $role->revokePermissionTo($permisoName);
-            $this->dispatch('showNotification', 'Permiso eliminado correctamente', 'warning');
+            $this->dispatch('showNotification', 'Permiso eliminado correctamente', 'error');
         }
     }
+    protected $listeners = [
+        'syncAllConfirmed' => 'performSync',
+    ];
 }
