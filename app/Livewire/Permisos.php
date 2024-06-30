@@ -123,7 +123,7 @@ class Permisos extends Component
     public function resetUI()
     {
         $this->permissionName = '';
-        $this->search = '';
+        //$this->search = '';
         $this->selected_id = 0;
         $this->resetValidation();
     }
