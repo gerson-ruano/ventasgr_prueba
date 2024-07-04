@@ -1,3 +1,55 @@
+
+# VENTASGR 
+
+Sistema de gestion de productos, ventas, usuarios.
+
+<!--img src="https://user-images.githubusercontent.com/104822099/208479821-d38db6ea-2844-4b13-8af0-58ace8636889.png" width="500" heigh="288px" alt="Mi portfolio personal"-->
+
+## Descripción
+
+Aplicación que permite gestionar stock de productos y ventas de los mismos, administracion de roles y permisos de usuarios para ingreso al sistema asi como comparas de productos existentes, manejo de stock, generacion de dashboard.
+
+### Instalación
+
+```
+# Clona y accede al repositorio
+$ git clone https://github.com/gerson-ruano/ventasgr.git
+$ cd my-portfolio
+
+# Instala las dependencias
+$ composer install
+$ npm install
+
+# Genera la base de datos (Configura las credencias en el archivo .env)
+$ php artisan migrate
+
+# Genera una llave para la aplicación
+$ php artisan key:generate
+
+# Inicia el servidor
+$ npm run dev
+```
+
+### Tecnologías empleadas
+
+**Laravel** he utilizado Laravel 9 ya que me ha permitido crear fácilmente la estructura básica del proyecto haciendo uso de sus librerías, paquetes y herramientas. 
+**Tailwind** para el diseño de los estilos del proyecto
+**livewire** para crear componentes personalizados: para la reactividad de la pagina
+**Breeze** para la atentificación de los usuarios
+**Fontawesome** para iconos del sistema.
+
+## Documentación
+
+* [Laravel-Docs](https://laravel.com/docs/11.x)
+
+
+
+
+
+
+
+
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
