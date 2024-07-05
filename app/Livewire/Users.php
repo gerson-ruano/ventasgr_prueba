@@ -29,7 +29,7 @@ class Users extends Component
         'phone' => 'max:8',
         'status' => 'required|not_in:Elegir',
         'profile' => 'required|not_in:Elegir',
-        'password' => 'required|min:3'
+        //'password' => 'required|min:4'
     ];
 
     protected $messages = [
@@ -44,8 +44,8 @@ class Users extends Component
         'status.not_in' => 'Selecciona el Estado',
         'profile.required' => 'Selecciona el Perfil/Rol del usuario',
         'profile.not_in' => 'Selecciona el Perfil/Rol distinto a Elegir',
-        'password.required' => 'Ingresa el Password',
-        'password.min' => 'El password debe tener al menos 3 caracteres'
+        //'password.required' => 'Ingresa el Password',
+        'password.min' => 'El password debe tener al menos 4 caracteres'
     ];
 
     public function paginationView()
@@ -106,6 +106,7 @@ class Users extends Component
     public function store()
     {
         // Validación de reglas
+        $this->rules['password'] = 'required|min:4';
         $this->validate();
 
         $user = User::create([
@@ -165,18 +166,40 @@ class Users extends Component
         // Actualización de reglas de validación para la edición
         $this->rules['email'] = "required|email|unique:users,email,{$this->selected_id}";
 
+        if (!empty($this->password)) {
+            $this->rules['password'] = 'required|min:4';
+        } else {
+            unset($this->rules['password']);
+        }
+        
         // Validación
         $this->validate();
 
         $user = User::find($this->selected_id);
-        $user->update([
+        
+        /*$user->update([
             'name' => $this->name,
             'email' => $this->email,
             'phone' => $this->phone,
             'status' => $this->status,
             'profile' => $this->profile,
-            'password' => bcrypt($this->password)
-        ]);
+            //'password' => bcrypt($this->password)
+        ]);*/
+
+        $data = [
+            'name' => $this->name,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'status' => $this->status,
+            'profile' => $this->profile,
+        ];
+
+
+        if (!empty($this->password)) {
+            $data['password'] = bcrypt($this->password);
+        }
+
+        $user->update($data);
 
         $user->syncRoles($this->profile);
 

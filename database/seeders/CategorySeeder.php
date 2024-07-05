@@ -15,19 +15,19 @@ class CategorySeeder extends Seeder
     {
         Category::create([
             'name'=> 'CURSOS',
-            'image'=> 'https://dummyimage.com/200x150/5c5756/fff'
+            'image'=> 'null'
         ]);
         Category::create([
             'name'=> 'ZAPATOS',
-            'image'=> 'https://dummyimage.com/200x150/5c5756/fff'
+            'image'=> 'null'
         ]);
         Category::create([
             'name'=> 'CELULARES',
-            'image'=> 'https://dummyimage.com/200x150/5c5756/fff'
+            'image'=> 'null'
         ]);
         Category::create([
             'name'=> 'COMPUTADORAS',
-            'image'=> 'https://dummyimage.com/200x150/5c5756/fff'
+            'image'=> 'null'
         ]);
     }
 }
