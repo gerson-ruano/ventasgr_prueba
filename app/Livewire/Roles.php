@@ -138,7 +138,7 @@ class Roles extends Component
     public function resetUI()
     {
         $this->roleName = '';
-        //$this->search = '';
+        $this->search = '';
         $this->selected_id = 0;
         $this->resetValidation();
     }

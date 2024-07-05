@@ -138,7 +138,7 @@ class Users extends Component
         $this->phone = '';
         $this->image = '';
         $this->imageUrl = null;
-        //$this->search = '';
+        $this->search = '';
         $this->status = 'Elegir';
         $this->selected_id = 0;
         $this->resetValidation();

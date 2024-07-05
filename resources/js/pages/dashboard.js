@@ -1,5 +1,5 @@
 
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     var cardBody = document.getElementById('cardBody');
 
     // Verifica si cardBody existe antes de intentar cambiar su estilo
@@ -12,6 +12,6 @@ document.addEventListener('DOMContentLoaded', function() {
             cardBody.style.display = 'none';
         }, 3000);
     }
-});
+});*/
 
 

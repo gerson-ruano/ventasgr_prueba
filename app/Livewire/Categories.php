@@ -172,7 +172,7 @@ class Categories extends Component
         $this->name = '';
         $this->image = null;
         $this->imageUrl = null;
-        //$this->search = '';
+        $this->search = '';
         $this->selected_id = 0;
     }
 

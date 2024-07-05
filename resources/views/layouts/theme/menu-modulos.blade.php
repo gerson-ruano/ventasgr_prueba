@@ -1,55 +1,60 @@
 <style>
 details {
     position: relative;
-    z-index: 1;
+    z-index: 4;
+}
+
+details summary {
+    list-style: none;
 }
 </style>
+
 <ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0">
-    <li><a class="" href="{{url('dashboard')}}">
+    <li><a class="border dark:border-gray-200" href="{{url('dashboard')}}">
             <i class="fas fa-shopping-cart">
             </i>Venta</a></li>
-    <li>
-        <details>
-            <summary class="flex item-center">
+    <li class="">
+        <details class="">
+            <summary class="border dark:border-gray-200 flex item-center">
                 <i class="fas fa-project-diagram mr-1"></i>Gestion Stocks
             </summary>
-            <ul>
+            <ul class="mt-4">
                 <li class="">
-                    <a href="{{url('categories')}}" class="flex items-center">
+                    <a href="{{url('categories')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-tags mr-1"></i>Categorias
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('products')}}" class="flex items-center">
+                    <a href="{{url('products')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-shopping-basket mr-1"></i>Productos
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('coins')}}" class="flex items-center">
+                    <a href="{{url('coins')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-money-bill-alt mr-1"></i>Monedas
                     </a>
                 </li>
             </ul>
         </details>
     </li>
-    <li>
+    <li class="">
         <details>
-            <summary class="flex item-center">
+            <summary class="border dark:border-gray-200 flex item-center">
                 <i class="fas fa-print mr-1"></i>Reporteria
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('/')}}" class="flex items-center">
+                    <a href="{{url('/')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-cash-register mr-1"></i>Cierre de caja
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}" class="flex items-center">
+                    <a href="{{url('/')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-file-contract mr-1"></i>Ventas
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}" class="flex items-center">
+                    <a href="{{url('/')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-chart-bar mr-1"></i>Estadistica
                     </a>
                 </li>
@@ -58,27 +63,27 @@ details {
     </li>
     <li class="ml-1">
         <details>
-            <summary class="flex item-center">
+            <summary class="border dark:border-gray-200 flex item-center">
                 <i class="fas fa-users mr-1"></i>Gestion Usuarios
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('roles')}}">
+                    <a href="{{url('roles')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-street-view mr-1"></i>Roles
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('permisos')}}">
+                    <a href="{{url('permisos')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-unlock-alt mr-1"></i>Permisos
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('asignar')}}">
+                    <a href="{{url('asignar')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-check-square mr-1"></i>Asignar
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('users')}}">
+                    <a href="{{url('users')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-user mr-1"></i>Usuarios
                     </a>
                 </li>
@@ -87,7 +92,7 @@ details {
     </li>
     <li class="">
         <div>
-        <livewire:components.searchbox />
+            <livewire:components.searchbox />
         </div>
     </li>
     <li class="ml-auto">

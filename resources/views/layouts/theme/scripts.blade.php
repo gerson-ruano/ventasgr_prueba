@@ -184,5 +184,6 @@ document.addEventListener('DOMContentLoaded', function() {
             Livewire.dispatch('closeNotification');
         }, 4000); // Aquí puedes ajustar el tiempo de espera en milisegundos
     });
+  
 });
 </script>
