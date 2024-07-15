@@ -105,7 +105,7 @@ class Roles extends Component
         $permissionCount = Role::find($id)->permissions()->count();
         if($permissionCount > 0)
         {
-            $this->dispatch('showNotification', 'No se puede eliminar el rol porque tiene permisos asociados', 'warning');
+            $this->dispatch();
             return;
         }
         

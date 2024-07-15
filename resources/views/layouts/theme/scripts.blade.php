@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    //Notifiaciones SWIFTALERT al instante
+    //Notifiaciones SWIFTALERT al instante ninguna en funcion
     Livewire.on('showNotification1', (message, type) => {
         Swal.fire({
             title: type === 'success' ? '¡Éxito!' : '¡Error!',
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    //Notificaciones Push
+    //Notificaciones Push no funcionando
     Livewire.on('notification-auto-hide', event => {
         //console.log('Evento recibido:', event);
         setTimeout(() => {

@@ -1,5 +1,6 @@
 <?php
 use App\Livewire\Asignar;
+use App\Livewire\Pos;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Categories;
 use App\Livewire\Products;
@@ -27,6 +28,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('roles', Roles::class)->name('roles');
     Route::get('permisos', Permisos::class)->name('permisos');
     Route::get('asignar', Asignar::class)->name('asignar');
+    Route::get('pos', Pos::class)->name('pos');
 });
 
 

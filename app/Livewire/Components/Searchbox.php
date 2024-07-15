@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Livewire\Components;
+use Illuminate\Http\Request;
 
 use Livewire\Component;
 
@@ -8,6 +9,7 @@ class Searchbox extends Component
 {
     public $search;
     public $placeholder;
+    public $model;
 
     public function updatedSearch()
     {

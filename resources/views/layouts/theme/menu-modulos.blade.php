@@ -10,7 +10,7 @@ details summary {
 </style>
 
 <ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0">
-    <li><a class="border dark:border-gray-200" href="{{url('dashboard')}}">
+    <li><a class="border dark:border-gray-200" href="{{url('pos')}}">
             <i class="fas fa-shopping-cart">
             </i>Venta</a></li>
     <li class="">
@@ -92,7 +92,8 @@ details summary {
     </li>
     <li class="">
         <div>
-            <livewire:components.searchbox />
+            {{--@include('partials.search')
+            <livewire:components.searchbox :model="'search'" />--}}
         </div>
     </li>
     <li class="ml-auto">
