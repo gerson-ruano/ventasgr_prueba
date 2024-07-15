@@ -14,18 +14,23 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Pos extends Component
 {
-    public $total, $itemsQuantity, $efectivo, $change, $tipoPago, $vendedorSeleccionado;
+    public $totalPrice, $itemsQuantity, $efectivo, $change, $tipoPago, $vendedorSeleccionado;
     public $vendedores = [];
     public $revisionVenta = false;
+    public $quantityInputs = [];
 
 
     public function mount()
     {
         $this->efectivo = number_format($this->efectivo, 2);
         $this->change = 0;
-        $this->total = Cart::total();
-        $this->itemsQuantity = Cart::count();
+        $this->updateTotalPrice();
+        
+        //dd($this->tot);
+        //dd($this->totalPrice);
+        $this->itemsQuantity = Cart::count(); //cantidad de articulos en el carrito
         $this->vendedores = User::where('profile', 'Seller')->pluck('name');
+        $this->updateQuantityInputs();
     }
 
     public function render()
@@ -36,7 +41,7 @@ class Pos extends Component
 
         return view('livewire.pos.revision_venta', [
             'denominations' => Denomination::orderBy('value','desc')->get(),
-            'cart' => Cart::content()->sortBy('name'),
+            'cart' => Cart::content(),
             //'cart' => Cart::content(),
             'valores' => $valores,
             ])
@@ -45,7 +50,7 @@ class Pos extends Component
         } else {
         return view('livewire.pos.components', [
             'denominations' => Denomination::orderBy('value','desc')->get(),
-            'cart' => Cart::content()->sortBy('name'),
+            'cart' => Cart::content(),
             'valores' => $valores,
         ])
         ->extends('layouts.app')
@@ -80,7 +85,7 @@ class Pos extends Component
 
     protected $listeners =[
         'scan-code' => 'scanCode',
-        'removeitem' => 'removeItem',
+        'deleteRow' => 'removeItem',
         'clearcart' => 'clearCart',
         'savesale' => 'saveSale',
         'clearChange' => 'clearChange',
@@ -89,129 +94,182 @@ class Pos extends Component
 
     
     public function scanCode($barcode, $cant = 1)
-    //public function scanCode($barcode)
     {
         //dd($barcode);
         $product = Product::where('barcode', $barcode)->first();
-
         if ($product == null || empty($product)) {
-            $this->dispatch('showNotification', 'El producto no esta Registrado', 'warning');
+            $this->dispatch('showNotification', 'El producto con codigo ' . $barcode . ' no existe o aun no esta Registrado', 'warning');
         } else {
             if ($this->InCart($product->id)) {
-                $this->increaseQty($product->id);
+                $this->increaseQty($product->id, $cant);
                 return;
             }
-            if ($product->stock < 1) {
+            if ($product->stock < $cant) {
                 $this->dispatch('showNotification', 'Stock insuficiente para realizar la operación', 'warning');
                 return;
             }
 
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-            $this->total = Cart::total();
-            $this->itemsQuantity = Cart::count();
-            $this->change = ($this->efectivo - $this->total);
-
-            $this->dispatch('showNotification', 'Producto Agregado exitosamente', 'success');
+            Cart::add($product->id, $product->name, $cant, $product->price, ['image' => $product->image]);
+            $this->updateCartSummary();
+            $this->dispatch('showNotification', 'Producto ' . $product->name . ' agregado exitosamente', 'success');
         }
 
     }
 
+    public function updateCartSummary()
+    {
+        $this->updateTotalPrice();
+        $this->itemsQuantity = Cart::count();
+        $this->updateQuantityInputs();
+        
+        $efectivo = is_numeric($this->efectivo) ? (float)$this->efectivo : 0;
+        $totalPrice = is_numeric($this->totalPrice) ? (float)$this->totalPrice : 0;
+
+        // Realizar la operación
+        $this->change = $efectivo - $totalPrice;
+
+    }
+
+    public function updateQuantityInputs()
+    {
+        foreach (Cart::content() as $item) {
+            $this->quantityInputs[$item->id] = $item->qty;
+        }
+        return $this->totalPrice;
+    }
+
+    public function updateTotalPrice()
+{
+    //$this->totalPrice = 0; // Reset the total price before calculation
+    
+    foreach (Cart::content() as $item) {
+        $this->totalPrice += $item->price * $item->qty;
+    }
+    //dd($this->totalPrice);
+}
+
     public function InCart($productId)
     {
-        $exist = Cart::get($productId);
-        if($exist)
-            return true;
-        else
-            return false;
+        return Cart::search(function ($cartItem, $rowId) use ($productId) {
+            return $cartItem->id === $productId;
+        })->isNotEmpty();
     }
 
     public function increaseQty($productId, $cant = 1)
     {
-        $title='';
+        //dd($productId);
         $product = Product::find($productId);
-        $exist = Cart::get($productId);
-        if($exist)
-            $title = 'Cantidad Actualizada';
-        else
-            $title = 'Producto agregado';
-        if($exist)
-        {
-            if($product->stock < ($cant + $exist->quantity))
-            {
+        $cartItem = Cart::search(function ($cartItem, $rowId) use ($productId) {
+            return $cartItem->id === $productId;
+        })->first();
+    
+        if ($cartItem) {
+            $newQty = $cartItem->qty + $cant;
+            if ($product->stock < $newQty) {
                 $this->dispatch('showNotification', 'Stock insuficiente para realizar la operación', 'warning');
                 return;
             }
-        }
-
-        Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-
-        $this->total = Cart::total();
-        $this->itemsQuantity = Cart::count();
-        $this->change = ($this->efectivo - $this->total);
-        $this->dispatch('scan-ok','Cantidad Actualizada');
-    }
-
-    public function updateQty($productId, $cant = 1)
-    {
-        $title='';
-        $product = Product::find($productId);
-        $exist = Cart::get($productId);
-        if($exist)
-            $title = 'Cantidad Actualizada';
-        else
-            $title = 'Producto agregado';
-        if($exist)
-        {
-            if($product->stock < $cant)
-            {
-                $this->dispatch('showNotification', 'Stock insuficiente para realizar la operación', 'warning');
-                return;
-            }
-        }
-
-        $this->removeItem($productId);
-
-        if($cant > 0)
-        {
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-
-            $this->total = Cart::total();
-            $this->itemsQuantity = Cart::count();
-
-            $this->dispatch('scan-ok', $title);
-        }
-
-        //definir else para notificar al usuario que debe ser mayor a 0
-    }
-
-    public function removeItem($productId)
-    {
-        //dd("Evento recibido con exito");
-        Cart::remove($productId);
-        $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity();
-        $this->dispatch('scan-ok', 'Producto Eliminado');
-    }
-
-    public function decreaseQty($productId)
-    {
-        $item = Cart::get($productId);
-        Cart::remove($productId);
-
-        $newQty = ($item->quantity) - 1;
-        if($newQty > 0)
-
-        if (isset($item->attributes[0])) {
-            Cart::add($item->id, $item->name, $item->price, $newQty, $item->attributes[0]);
+            Cart::update($cartItem->rowId, $newQty);
+            $this->dispatch('showNotification', 'Cantidad de productos ' . $cartItem->name . ' actualizada', 'success');
         } else {
-            Cart::add($item->id, $item->name, $item->price, $newQty);
+            Cart::add($product->id, $product->name, $cant, $product->price, ['image' => $product->image]);
+            $this->dispatch('showNotification', 'Producto ' . $cartItem->name . ' agregado Exitosamente', 'success');
+        }
+        $this->updateCartSummary();
+        $this->updateTotalPrice(); 
+    }
+
+    public function decreaseQty($productId, $cant = 1)
+    {
+        $cartItem = Cart::search(function ($cartItem, $rowId) use ($productId) {
+            return $cartItem->id === $productId;
+        })->first();
+        //dd($cartItem);
+    if (!$cartItem) {
+        $this->dispatch('showNotification', 'Producto no encontrado en el carrito', 'error');
+        return;
+    }
+
+    // Eliminar el producto del carrito si la cantidad es 0 o menos
+    if ($cartItem->qty <= $cant) {
+        Cart::remove($cartItem->rowId);
+        $this->dispatch('showNotification', 'Producto ' . $cartItem->name . ' fue eliminado del carrito', 'error');
+    } else {
+        $newQty = $cartItem->qty - 1;
+        // Actualizar la cantidad del producto en el carrito
+        if (isset($cartItem->attributes[0])) {
+            Cart::update($cartItem->rowId, $newQty, $cartItem->attributes[0]);
+        } else {
+            Cart::update($cartItem->rowId, $newQty);
+        }
+        $this->dispatch('showNotification', 'Cantidad de productos ' . $cartItem->name . ' actualizada', 'success');
+    }
+
+    $this->updateCartSummary(); // Actualizar resumen del carrito
+    $this->updateTotalPrice();
+
+    }
+
+    public function updateQty($id, $newQty)
+    {
+        $productId = (int) $id;
+        //dd($productId);
+
+
+        $cartItem = Cart::search(function ($cartItem, $rowId) use ($productId) {
+            return $cartItem->id === $productId;
+        })->first();
+
+        //$cartItem = Cart::get($productId);
+        
+        if (!$cartItem) {
+            $this->dispatch('showNotification', 'Producto no encontrado en el carrito', 'error');
+            return;
         }
 
-        $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity();
-        $this->change = ($this->efectivo - $this->total); //actualiza la cantidad de CAMBIO O CHANGE
-        $this->dispatch('scan-ok', 'Cantidad Actualizada');
+        if ($newQty <= 0) {
+            Cart::remove($cartItem->rowId);
+            $this->dispatch('showNotification', 'Producto eliminado del carrito', 'error');
+        } else {
+            Cart::update($cartItem->rowId, $newQty);
+            $this->dispatch('showNotification', 'Cantidad actualizada Exitosamente', 'success');
+        }
 
+        $this->updateCartSummary();
+        $this->updateTotalPrice();
+
+    }
+
+    public function removeItem($id)
+    {
+    // Buscar el producto en el carrito por su ID
+    $productId = (int) $id; // Asumiendo que $id es el ID del producto que quieres eliminar
+
+    // Buscar el producto en el carrito por su ID
+    $cartItem = Cart::search(function ($cartItem, $rowId) use ($productId) {
+        return $cartItem->id === $productId;
+    })->first();
+
+    if ($cartItem) {
+        try {
+            // Eliminar el producto del carrito utilizando su rowId
+            Cart::remove($cartItem->rowId);
+            
+            // Actualizar resúmenes u otros datos necesarios
+            $this->updateCartSummary();
+            $this->updateTotalPrice();
+            
+            // Mostrar notificación de éxito
+            $this->dispatch('showNotification', 'Producto eliminado del carrito', 'error');
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción que pueda ocurrir
+            logger()->error("Error al eliminar producto del carrito: " . $e->getMessage());
+            $this->dispatch('showNotification', 'Error al eliminar producto del carrito', 'error');
+        }
+    } else {
+        // Manejar el caso donde el producto no se encuentra en el carrito
+        $this->dispatch('showNotification', 'El producto no está en el carrito', 'warning');
+    }
     }
 
     public function clearCart()
@@ -220,17 +278,17 @@ class Pos extends Component
         Cart::clear();
         $this->efectivo = 0;
         $this->change = 0;
-        $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity();
+        $this->total = Cart::total();
+        $this->itemsQuantity = Cart::count();
         $this->tipoPago = 0;
         $this->vendedorSeleccionado = 0;
-        $this->dispatch('scan-ok', 'Carrito vacio');
+        $this->dispatch('showNotification', 'Productos eliminados del carrito', 'error');
     }
 
     public function saveSale()
     {
 
-        if($this->total <=0)
+        if($this->totalPrice <=0)
         {
             $this->dispatch('sale-error','AGREGA PRODUCTOS A LA VENTA');
             return;
@@ -240,7 +298,7 @@ class Pos extends Component
             $this->dispatch('sale-error','INGRESA EL EFECTIVO');
             return;
         }
-        if($this->total > $this->efectivo)
+        if($this->totalPrice > $this->efectivo)
         {
             $this->dispatch('sale-error','EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL');
             return;
@@ -270,7 +328,7 @@ class Pos extends Component
 
         try {
             $sale = Sale::create([
-                'total' => $this->total,
+                'total' => $this->totalPrice,
                 'items' => $this->itemsQuantity,
                 'cash' => $this->efectivo,
                 'status' => $tipoPagoSeleccionado,

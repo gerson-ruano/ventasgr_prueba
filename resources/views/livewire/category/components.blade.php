@@ -3,9 +3,6 @@
     <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
         <div class="mr-2">
             <livewire:components.searchbox :model="'search'" />
-            <button wire:click="$dispatchTo('pos', 'livewire.pos.components', { id: {{ $post->id }} })">
-                search
-            </button>
         </div>
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
@@ -39,14 +36,17 @@
                             class="rounded-lg h-12 w-12 object-cover mx-auto">
                     </td>
                     <td class="py-2 px-4 text-center">
-                        <button class="btn btn-sm btn-info mr-2" wire:click="edit({{ $category->id }})" title="Editar">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-outline btn-danger"
-                            onclick="Confirm('{{ $category->id }}','{{ $componentName }}','{{ $category->name }}','{{ $category->products->count() }}','PRODUCTOS', )"
-                            title="Eliminar">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <div class="flex flex-col sm:flex-row items-center justify-center">
+                            <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
+                                wire:click="edit({{ $category->id }})" title="Editar">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline btn-danger"
+                                onclick="Confirm('{{ $category->id }}','{{ $componentName }}','{{ $category->name }}','{{ $category->products->count() }}','PRODUCTOS')"
+                                title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
                     </td>
                 </tr>
                 @endforeach

@@ -3,11 +3,11 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // Escuchar el evento `Eliminar`
-    window.Confirm = function(id, entityName, name, exist = 0, products = 0, ) {
+    window.Confirm = function(id, entityName, name, products = 0, exist = 0, ) {
         if (products > 0) {
             Swal.fire({
-                title: `Nose puede eliminar '${name}' de ${entityName}?`,
-                text: `Tiene '${exist}' existentes`,
+                title: `No se puede eliminar '${name}' de ${entityName}?`,
+                text: `Tiene '${exist}' existentes `,
                 icon: 'warning'
             });
             return;
