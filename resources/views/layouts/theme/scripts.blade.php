@@ -2,7 +2,7 @@
 @livewireScripts
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Escuchar el evento `Eliminar`
+    // Escuchar el evento `Eliminar` con confirmación
     window.Confirm = function(id, entityName, name, products = 0, exist = 0, ) {
         if (products > 0) {
             Swal.fire({
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    //Confirmar la sincronizacion de todos los permisos
+    //Confirmar la sincronizacion de todos los permisos ASIGNAR
     Livewire.on('confirmSyncAll', (data) => {
         //console.log('Event Data:', data);
         if (data && data.type && data.name) {
@@ -143,17 +143,41 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    //Notifiaciones SWIFTALERT al instante ninguna en funcion
-    Livewire.on('showNotification1', (message, type) => {
+    //Notifiaciones SWIFTALERT SUCCESS
+    Livewire.on('noty-done', (event) => {
+        const {
+            type,
+            message
+        } = event;
         Swal.fire({
             title: type === 'success' ? '¡Éxito!' : '¡Error!',
             text: message,
             icon: type,
-            confirmButtonText: 'Aceptar'
+            timer: 2000,
+            showConfirmButton: false,
+            timerProgressBar: true,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+            willClose: () => {
+                // Optional callback when the alert closes
+            }
         });
     });
 
-    //Eventos para el Menu de Modulos de Plantilla
+    //Notificaciones informativas SUPERIOR DERECHO
+    let hideNotificationTimeout;
+    Livewire.on('notification-auto-hide', event => {
+        if (hideNotificationTimeout) {
+            clearTimeout(hideNotificationTimeout);
+        }
+        hideNotificationTimeout = setTimeout(() => {
+            Livewire.dispatch('closeNotification');
+        }, 3000); // Ajusta el tiempo de espera en milisegundos
+    });
+
+
+    //Eventos para el Menu de Modulos
     const detailsList = document.querySelectorAll('details');
     // Cerrar detalles cuando se hace clic fuera de ellos
     document.addEventListener('click', function(event) {
@@ -176,14 +200,5 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    //Notificaciones Push no funcionando
-    Livewire.on('notification-auto-hide', event => {
-        //console.log('Evento recibido:', event);
-        setTimeout(() => {
-            //console.log('Cerrando notificación...');
-            Livewire.dispatch('closeNotification');
-        }, 4000); // Aquí puedes ajustar el tiempo de espera en milisegundos
-    });
-  
 });
 </script>

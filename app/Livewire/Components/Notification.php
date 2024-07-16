@@ -18,7 +18,7 @@ class Notification extends Component
         $this->type = $type;
         $this->visible = true;
 
-        $this->dispatch('notification-auto-hide');
+        $this->dispatch('notification-auto-hide', ['timestamp' => now()->timestamp]);
         
     }
 

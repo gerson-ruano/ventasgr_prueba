@@ -7,11 +7,13 @@
             @if ($type === 'success')
             <i class="fas fa-check-circle fa-2x text-green-500"></i>
             @elseif ($type === 'error')
-            <i class="fas fa-times-circle fa-2x text-red-500"></i>
+            <i class="fas fa-eraser fa-2x text-red-500"></i>
             @elseif ($type === 'warning')
             <i class="fas fa-exclamation-triangle fa-2x text-yellow-500"></i>
             @elseif ($type === 'info')
-            <i class="fas fa-info-circle fa-2x text-blue-500"></i>
+            <i class="fas fa-info fa-2x text-blue-500"></i>
+            @elseif ($type === 'dark')
+            <i class="fas fa-exclamation-circle fa-2x text-blue-500"></i>
             @endif
             <span>{{ $message }}</span>
         </div>
@@ -45,6 +47,11 @@
         .alert-info {
             background-color: #d1ecf1;
             color: #0c5460;
+        }
+
+        .alert-dark {
+            background-color: #343a40;
+            color: #ffffff;
         }
 
         .close-btn {

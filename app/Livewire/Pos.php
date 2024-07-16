@@ -14,20 +14,20 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Pos extends Component
 {
-    public $totalPrice, $itemsQuantity, $efectivo, $change, $tipoPago, $vendedorSeleccionado;
+    public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado;
     public $vendedores = [];
+
+    public $efectivo = 0.00;
     public $revisionVenta = false;
     public $quantityInputs = [];
 
 
     public function mount()
     {
-        $this->efectivo = number_format($this->efectivo, 2);
+        //$this->efectivo = number_format($this->efectivo, 2);
+        $this->efectivo = 0000.00;
         $this->change = 0;
         $this->updateTotalPrice();
-        
-        //dd($this->tot);
-        //dd($this->totalPrice);
         $this->itemsQuantity = Cart::count(); //cantidad de articulos en el carrito
         $this->vendedores = User::where('profile', 'Seller')->pluck('name');
         $this->updateQuantityInputs();
@@ -77,10 +77,19 @@ class Pos extends Component
         $this->change = 0;
     }
 
+    /*public function ACash($value)
+    {
+        $this->efectivo += ($value == 0 ? $this->totalPrice : (float)$value);
+        $this->change = ($this->efectivo - $this->totalPrice);
+    }*/
+
     public function ACash($value)
     {
-        $this->efectivo += ($value == 0 ? $this->total : (float)$value);
-        $this->change = ($this->efectivo - $this->total);
+        if ($value == 0) {
+            $value = $this->totalPrice - $this->efectivo;
+        }
+        $this->efectivo += (float)$value;
+        $this->change = ($this->efectivo - $this->totalPrice);
     }
 
     protected $listeners =[
@@ -98,7 +107,7 @@ class Pos extends Component
         //dd($barcode);
         $product = Product::where('barcode', $barcode)->first();
         if ($product == null || empty($product)) {
-            $this->dispatch('showNotification', 'El producto con codigo ' . $barcode . ' no existe o aun no esta Registrado', 'warning');
+            $this->dispatch('showNotification', 'El producto con codigo ' . $barcode . ' no existe o aun no esta Registrado', 'dark');
         } else {
             if ($this->InCart($product->id)) {
                 $this->increaseQty($product->id, $cant);
@@ -111,6 +120,7 @@ class Pos extends Component
 
             Cart::add($product->id, $product->name, $cant, $product->price, ['image' => $product->image]);
             $this->updateCartSummary();
+            $this->updateTotalPrice(); 
             $this->dispatch('showNotification', 'Producto ' . $product->name . ' agregado exitosamente', 'success');
         }
 
@@ -118,7 +128,7 @@ class Pos extends Component
 
     public function updateCartSummary()
     {
-        $this->updateTotalPrice();
+        //$this->updateTotalPrice();
         $this->itemsQuantity = Cart::count();
         $this->updateQuantityInputs();
         
@@ -140,7 +150,7 @@ class Pos extends Component
 
     public function updateTotalPrice()
 {
-    //$this->totalPrice = 0; // Reset the total price before calculation
+    $this->totalPrice = 0; // Reset the total price before calculation
     
     foreach (Cart::content() as $item) {
         $this->totalPrice += $item->price * $item->qty;
@@ -170,7 +180,7 @@ class Pos extends Component
                 return;
             }
             Cart::update($cartItem->rowId, $newQty);
-            $this->dispatch('showNotification', 'Cantidad de productos ' . $cartItem->name . ' actualizada', 'success');
+            $this->dispatch('showNotification', 'Cantidad de productos ' . $cartItem->name . ' actualizada', 'info');
         } else {
             Cart::add($product->id, $product->name, $cant, $product->price, ['image' => $product->image]);
             $this->dispatch('showNotification', 'Producto ' . $cartItem->name . ' agregado Exitosamente', 'success');
@@ -186,7 +196,7 @@ class Pos extends Component
         })->first();
         //dd($cartItem);
     if (!$cartItem) {
-        $this->dispatch('showNotification', 'Producto no encontrado en el carrito', 'error');
+        $this->dispatch('showNotification', 'Producto no encontrado en el carrito', 'warning');
         return;
     }
 
@@ -202,7 +212,7 @@ class Pos extends Component
         } else {
             Cart::update($cartItem->rowId, $newQty);
         }
-        $this->dispatch('showNotification', 'Cantidad de productos ' . $cartItem->name . ' actualizada', 'success');
+        $this->dispatch('showNotification', 'Cantidad de productos ' . $cartItem->name . ' actualizada', 'info');
     }
 
     $this->updateCartSummary(); // Actualizar resumen del carrito
@@ -223,7 +233,7 @@ class Pos extends Component
         //$cartItem = Cart::get($productId);
         
         if (!$cartItem) {
-            $this->dispatch('showNotification', 'Producto no encontrado en el carrito', 'error');
+            $this->dispatch('showNotification', 'Producto no encontrado en el carrito', 'warning');
             return;
         }
 
@@ -232,7 +242,7 @@ class Pos extends Component
             $this->dispatch('showNotification', 'Producto eliminado del carrito', 'error');
         } else {
             Cart::update($cartItem->rowId, $newQty);
-            $this->dispatch('showNotification', 'Cantidad actualizada Exitosamente', 'success');
+            $this->dispatch('showNotification', 'Cantidad actualizada Exitosamente', 'info');
         }
 
         $this->updateCartSummary();
@@ -264,21 +274,22 @@ class Pos extends Component
         } catch (\Exception $e) {
             // Manejar cualquier excepción que pueda ocurrir
             logger()->error("Error al eliminar producto del carrito: " . $e->getMessage());
-            $this->dispatch('showNotification', 'Error al eliminar producto del carrito', 'error');
+            $this->dispatch('showNotification', 'Error al eliminar producto del carrito', 'warning');
         }
     } else {
         // Manejar el caso donde el producto no se encuentra en el carrito
-        $this->dispatch('showNotification', 'El producto no está en el carrito', 'warning');
+        $this->dispatch('showNotification', 'El producto no está en el carrito', 'dark');
     }
     }
 
     public function clearCart()
     {
         //dd("recibiendo evento");
-        Cart::clear();
+        Cart::destroy();
         $this->efectivo = 0;
         $this->change = 0;
-        $this->total = Cart::total();
+        $this->updateTotalPrice();
+        //$this->total = Cart::total();
         $this->itemsQuantity = Cart::count();
         $this->tipoPago = 0;
         $this->vendedorSeleccionado = 0;
@@ -290,17 +301,17 @@ class Pos extends Component
 
         if($this->totalPrice <=0)
         {
-            $this->dispatch('sale-error','AGREGA PRODUCTOS A LA VENTA');
+            $this->dispatch('showNotification', 'Agregar Productos a la venta', 'dark');
             return;
         }
         if($this->efectivo <=0)
         {
-            $this->dispatch('sale-error','INGRESA EL EFECTIVO');
+            $this->dispatch('showNotification', 'Debes ingresar el EFECTIVO ', 'warning');
             return;
         }
         if($this->totalPrice > $this->efectivo)
         {
-            $this->dispatch('sale-error','EL EFECTIVO DEBE SER MAYOR O IGUAL AL TOTAL');
+            $this->dispatch('showNotification', 'El efectivo debe ser MAYOR o IGUAL al total', 'warning');
             return;
         }
         if($this->tipoPago > 0)
@@ -309,7 +320,7 @@ class Pos extends Component
         }
         if($this->tipoPago == 0)
         {
-            $this->dispatch('sale-error','DEBE SELECCIONAR UN TIPO DE PAGO');
+            $this->dispatch('showNotification', 'Debe seleccionar el TIPO DE PAGO que utilizara', 'warning');
             return;
         }
         if(isset($this->vendedorSeleccionado)) {
@@ -319,7 +330,6 @@ class Pos extends Component
             }
         }else{
             $vendedorAgregado = 'Cliente Final';
-
             //$this->emit('sale-error','DEBE SELECCIONAR UN VENDEDOR O CLIENTE FINAL');
             //return;
         }
@@ -333,18 +343,18 @@ class Pos extends Component
                 'cash' => $this->efectivo,
                 'status' => $tipoPagoSeleccionado,
                 'change' => $this->change,
-                'vendedor' => $vendedorAgregado,
+                'seller' => $vendedorAgregado,
                 'user_id' => Auth()->user()->id
             ]);
 
             if($sale)
             {
-                $items = Cart::getContent();
+                $items = Cart::content();
                 //dd($items);
                 foreach ($items as $item){
                     SaleDetail::create([
                         'price' => $item->price,
-                        'quantity' => $item->quantity,
+                        'quantity' => $item->qty,
                         'product_id' => $item->id,
                         'sale_id' => $sale->id,
                     ]);
@@ -358,20 +368,22 @@ class Pos extends Component
 
             DB::commit();
 
-            Cart::clear();
+            Cart::destroy();
             $this->efectivo =0;
             $this->change =0;
-            $this->total = Cart::getTotal();
-            $this->itemsQuantity = Cart::getTotalQuantity();
+            //$this->totalPrice = Cart::getTotal();
+            $this->updateTotalPrice();
+            $this->itemsQuantity = Cart::count();
             $this->tipoPago = 0;
             $this->vendedorSeleccionado = 0;
-            $this->dispatch('sale-ok','Venta registrada con exito');
+            $this->dispatch('noty-done', type: 'success', message: 'Venta realizada con éxito');
             //return redirect()->to('pos');
             //$this->emit('print-ticket', $sale->id);
 
         }catch (Exception $e){
             DB::rollback();
-            $this->dispatch('sale-error', $e->getMessage());
+            //$this->dispatch('sale-error', $e->getMessage());
+            $this->dispatch('showNotification', $e->getMessage(), 'error');
         }
     }
 

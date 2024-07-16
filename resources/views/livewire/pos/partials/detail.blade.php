@@ -1,7 +1,8 @@
 @php
 $index = 1; // Inicializamos el contador fuera del bucle
 @endphp
-<div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-0 lg:mr-2">
+<div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
+    @if ($totalProduct = count($cart) > 0 )
     <!-- Table Section -->
     <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
 
@@ -85,4 +86,13 @@ $index = 1; // Inicializamos el contador fuera del bucle
             </tfoot>--}}
         </table>
     </div>
+    @else
+    <div role="alert" class="alert alert-warning shadow-lg text-center p-2 items-center justify-center">
+        <i class="fas fa-info-circle"></i>
+        <div class="items-center justify-center">
+            <h3 class="font-bold text-sm">No hay productos en la venta!</h3>
+            <div class="text-xs">Agrega productos, ingresando el CODIGO respectivo ejem. #205</div>
+        </div>
+    </div>
+    @endif
 </div>
