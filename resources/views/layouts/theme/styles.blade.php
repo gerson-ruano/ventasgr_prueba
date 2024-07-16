@@ -13,8 +13,8 @@
 <link rel="stylesheet" href="{{'fontawesome-free-5.15.4/css/all.min.css'}}">
 
 <!-- Scripts -->
-{{--@vite(['resources/js/pages/dashboard.js','resources/css/app.css'])--}}
-@vite(['resources/js/pages/dashboard.js', 'resources/js/app.js','resources/css/app.css'])
+@vite(['resources/js/app.js','resources/css/app.css'])
+{{--@vite(['resources/js/pages/dashboard.js', 'resources/js/app.js','resources/css/app.css'])--}}
 @livewireStyles
 
 {{--<script src="//unpkg.com/alpinejs" defer></script>--}}

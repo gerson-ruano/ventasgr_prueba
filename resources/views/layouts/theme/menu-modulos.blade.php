@@ -44,17 +44,17 @@ details summary {
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('/')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-cash-register mr-1"></i>Cierre de caja
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-file-contract mr-1"></i>Ventas
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('/')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-chart-bar mr-1"></i>Estadistica
                     </a>
                 </li>
