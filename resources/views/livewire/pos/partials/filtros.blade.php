@@ -4,14 +4,14 @@
         <livewire:components.searchbox :placeholder="'Ingrese Codigo'" />
     </div>
     @include('livewire.components.select_filtro', [
-        'default' => 'Elegir',
+        'default' => 0,
         'title' => 'Tipo Pago',
         'model' => 'tipoPago',
         'valores' => $valores
     ])
 
     @include('livewire.components.select_filtro', [
-        'default' => '0',
+        'default' => 0,
         'title' => 'Tipo Cliente',
         'model' => 'vendedorSeleccionado',
         'valores' => $vendedores

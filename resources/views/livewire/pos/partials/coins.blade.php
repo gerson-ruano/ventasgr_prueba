@@ -6,15 +6,18 @@
         @foreach ($denominations as $d)
         <div class="mt-2 mb-2 mr-2 ml-2">
             <button wire:click.prevent="ACash({{ $d->value }})" class="btn btn-info btn-block text-xs">
-                {{ $d->value > 0 ? 'Q ' . number_format($d->value, 2, '.', '') : 'Exacto' }}
+                {{ $d->value == 0 ? 'Q Exacto' : 'Q ' . number_format($d->value, 2, '.', '') }}
             </button>
-            {{--dd($d)--}}
         </div>
         @endforeach
-        <button wire:click.prevent="ACash(0)"
-            class="btn btn-primary btn-block text-xs ml-2 {{ $efectivo >= $totalPrice ? 'btn-disabled opacity-50' : '' }}"
-            {{ $efectivo >= $totalPrice ? 'disabled' : '' }}>
-            Q Exacto
-        </button>
+        <!-- Botón Exacto Independiente -->
+        <div class="mt-2 mb-2 mr-2 ml-2">
+            <button wire:click.prevent="ACash(0)"
+                class="btn btn-primary btn-block text-xs {{ $efectivo >= $totalPrice ? 'btn-disabled opacity-50' : '' }}"
+                {{ $efectivo >= $totalPrice ? 'disabled' : '' }}>
+                Q Exacto
+            </button>
+        </div>
     </div>
+
 </div>

@@ -12,9 +12,11 @@
                 <option value="{{ $role->id }}">{{ $role->name }}</option>
                 @endforeach
             </select>
+            @error("role") <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
         </div>
-        <button class="btn btn-accent ml-4" wire:click.prevent="SyncAll">Sincronizar Todos</button>
-        <button class="btn btn-info ml-4" wire:click="Removeall">Revocar Todos <i
+        <button class="btn btn-accent ml-4" wire:click.prevent="SyncAll">Sincronizar Todos<i
+                class="fas fa-thumbs-up"></i></button>
+        <button class="btn btn-warning ml-4" wire:click="Removeall">Revocar Todos <i
                 class="fas fa-thumbs-down"></i></button>
     </div>
 

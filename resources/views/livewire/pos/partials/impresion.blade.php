@@ -4,35 +4,36 @@ $totalProduct = count($cart);
 //dd($cart);
 @endphp
 
-@if($itemsQuantity > 0) 
+@if($itemsQuantity > 0)
 <!-- Impresion Section -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 flex-grow h-auto sm:w-30 card 
         bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
 
     <div class="card simple-title-task ui-sortable-handle mt-2">
         <div class="flex items-center justify-center space-x-2">
-
+            <!-- Sección de Vendedor -->
             <div class="d-flex align-items-center mb-1">
                 @if($vendedorSeleccionado != 0)
                 <h6>Nombre: {{$vendedorSeleccionado}}</h6>
                 @else
-            </div>
-            <div class="d-flex align-items-center mb-1">
                 <h6 class="mb-0">Nombre:</h6>
-                <h6 class="text-primary mb-0" style="margin-left: 10px;"> C/F</h6>
+                <h6 class="text-blue-500 mb-0" style="margin-left: 10px;">C/F</h6>
+                @endif
             </div>
-            @endif
-            @if($tipoPago != 0)
-            <h6>Pago: {{$tipoPago}}</h6>
-            @else
-            <div class="d-flex align-items-center">
-                <h6 class="text-center mb-0">Pago:</h6>
-                <h6 class="text-danger mb-0" style="margin-left: 10px;">INGRESAR PAGO!!</h6>
+            <!-- Sección de Pago -->
+            <div class="d-flex align-items-center mb-1">
+                @if($tipoPago != 0)
+                <h6>Pago: {{$tipoPago}}</h6>
+                @else
+                <div class="d-flex align-items-center">
+                    <h6 class="text-center mb-0">Pago:</h6>
+                    <h6 class="text-red-400 mb-0" style="margin-left: 10px;">INGRESAR PAGO!!</h6>
+                </div>
+                @endif
             </div>
-            @endif
-
         </div>
     </div>
+
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-1 mt-1">
         <div class="text-right">
