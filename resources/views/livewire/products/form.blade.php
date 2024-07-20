@@ -1,7 +1,7 @@
 @if($isModalOpen)
-<div class="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto">
+<div class="fixed inset-0 flex items-center justify-center z-50 bg-gray-600 bg-opacity-50">
     <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
-    <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3">
+    <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3 max-h-full overflow-y-auto">
         <h2 class="text-lg font-semibold mb-4 text-center">
             {{ $selected_id ? 'Editar Producto' : 'Nuevo Producto' }}
         </h2>
@@ -66,11 +66,11 @@
                     @if ($image)
                     <div class="flex justify-center mb-2">
                         <img src="{{ $image->temporaryUrl() }}" alt="Imagen de {{ $name }}"
-                            class="h-32 w-32 object-cover">
+                            class="h-20 w-20 object-cover">
                     </div>
                     @elseif ($imageUrl)
                     <div class="flex justify-center mb-2">
-                        <img src="{{ $imageUrl }}" alt="Imagen de {{ $name }}" class="h-32 w-32 object-cover">
+                        <img src="{{ $imageUrl }}" alt="Imagen de {{ $name }}" class="h-20 w-20 object-cover">
                     </div>
                     @endif
 

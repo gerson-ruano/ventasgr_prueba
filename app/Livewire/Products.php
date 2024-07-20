@@ -17,7 +17,7 @@ class Products extends Component
 
     public $name, $barcode, $cost, $price, $stock, $alerts, $categoryid, $search, $image, $imageUrl, $selected_id, $pageTitle, $componentName;
     public $isModalOpen = false;
-    private $pagination = 10;
+    private $pagination = 7;
 
     protected $rules = [
         'name' => 'required|unique:products|min:3',
@@ -41,7 +41,7 @@ class Products extends Component
             'categoryid.required' => 'Elige una categoria',
             'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
     ];
-    
+
     public function paginationView()
     {
         return 'vendor.livewire.tailwind';
@@ -67,7 +67,7 @@ class Products extends Component
 
 
         return view('livewire.products.components', [
-            'products' => $products, 
+            'products' => $products,
             'categories' => Category::orderBy('name','asc')->get()])
         ->extends('layouts.app')
         ->section('content');
@@ -195,7 +195,7 @@ class Products extends Component
     ];
 
     public function destroy($id){
-        
+
         /*$imageTemp = $product->image;
         $product->delete();
 

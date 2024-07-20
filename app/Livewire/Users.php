@@ -176,15 +176,6 @@ class Users extends Component
         $this->validate();
 
         $user = User::find($this->selected_id);
-        
-        /*$user->update([
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'status' => $this->status,
-            'profile' => $this->profile,
-            //'password' => bcrypt($this->password)
-        ]);*/
 
         $data = [
             'name' => $this->name,
@@ -193,7 +184,6 @@ class Users extends Component
             'status' => $this->status,
             'profile' => $this->profile,
         ];
-
 
         if (!empty($this->password)) {
             $data['password'] = bcrypt($this->password);
@@ -224,12 +214,6 @@ class Users extends Component
         $this->dispatch('noty-updated', type: 'USUARIO', name: $user->name);
 
     }
-
-    protected $listeners = [
-        'deleteRow' => 'destroy',
-        'searchUpdated' => 'updateSearch',
-        
-    ];
 
     public function destroy($id)
     {
@@ -264,6 +248,11 @@ class Users extends Component
         // Emitir evento de notificación de eliminación exitosa
         $this->dispatch('noty-deleted', type: 'USUARIO', name: $userDelete);
     }
+
+    protected $listeners = [
+        'deleteRow' => 'destroy',
+        'searchUpdated' => 'updateSearch',     
+    ];
     
     public function updateSearch($search)
     {

@@ -17,7 +17,7 @@ class Coins extends Component
     public $type, $value, $componentName, $pageTitle, $selected_id, $image, $imageUrl, $search;
 
     public $isModalOpen = false;
-    private $pagination = 10;
+    private $pagination = 7;
 
     protected $rules = [
         'type' => 'required|not_in:Elegir',
@@ -49,12 +49,12 @@ class Coins extends Component
         if ($this->search) {
             $query->where('value', 'like', '%' . $this->search . '%');
         }
-    
+
         $data = $query->paginate($this->pagination);
 
         return view('livewire.denominations.components', ['coins' => $data])
         ->extends('layouts.app')
-        ->section('content'); 
+        ->section('content');
     }
 
     public function openModal()
@@ -136,7 +136,7 @@ class Coins extends Component
                 }
             }
         }
-        
+
         $this->dispatch('noty-updated', type:'DENOMINACIÓN', name: $denomination->type);
     }
 
@@ -165,7 +165,7 @@ class Coins extends Component
 
     protected $listeners = [
         'deleteRow' => 'destroy',
-        'searchUpdated' => 'updateSearch', 
+        'searchUpdated' => 'updateSearch',
     ];
 
     public function resetUI()

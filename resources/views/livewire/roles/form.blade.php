@@ -9,7 +9,7 @@
         <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
             <div class="mb-4">
                 <label for="category_name" class="block text-sm font-medium text-gray-700">Nombre</label>
-                <input id="category_name" type="text" placeholder="Ej. Vendedor"
+                <input id="role_name" type="text" placeholder="Ej. Vendedor"
                     class="input input-bordered input-info mt-1 w-full" wire:model.blur="roleName" />
                 @error('roleName') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
             </div>

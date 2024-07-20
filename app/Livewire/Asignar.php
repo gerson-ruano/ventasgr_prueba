@@ -72,7 +72,7 @@ class Asignar extends Component
     {
         if($this->role == 'Elegir')
         {
-            $this->dispatch('showNotification', 'Selecciona un Rol válido', 'warning');
+            $this->dispatch('showNotification', 'Elegir un Rol válido', 'warning');
             return;
         }
 
@@ -87,7 +87,7 @@ class Asignar extends Component
     {
         if($this->role == 'Elegir')
         {
-            $this->dispatch('showNotification', 'Elegir un Role valido', 'warning');
+            $this->dispatch('showNotification', 'Elegir un Rol válido', 'warning');
             return;
         }
 
@@ -99,29 +99,28 @@ class Asignar extends Component
     {
         if($this->role == 'Elegir')
         {
-            $this->dispatch('showNotification', 'No se realizo la sincronización', 'error');
+            $this->dispatch('showNotification', 'No se realizo la sincronización', 'dark');
             return;
         }
 
         $role = Role::find($this->role);
         $permisos = Permission::pluck('id')->toArray();
         $role->syncPermissions($permisos);
-        //$this->dispatch('syncall', "Se sincronizaron todos los permisos al role", $role->name);
-        $this->dispatch('showNotification', 'Se sincronizaron todos los permisos al role', 'success');
+        $this->dispatch('showNotification', 'Se sincronizaron todos los permisos al Role', 'success');
         
     }
 
     public function syncPermiso($state, $permisoName)
     {
         if ($this->role == 'Elegir') {
-            $this->dispatch('showNotification', 'Elige un rol válido', 'warning');
+            $this->dispatch('showNotification', 'Elige un Rol válido', 'warning');
             return;
         }
 
         $role = Role::find($this->role);
         if ($state) {
             $role->givePermissionTo($permisoName);
-            $this->dispatch('showNotification', 'Permiso asignado correctamente', 'success');
+            $this->dispatch('showNotification', 'Permiso asignado correctamente', 'info');
         } else {
             $role->revokePermissionTo($permisoName);
             $this->dispatch('showNotification', 'Permiso eliminado correctamente', 'error');

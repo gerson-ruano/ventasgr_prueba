@@ -7,10 +7,11 @@
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
         </h4>
-        <button class="btn btn-accent ml-4" wire:click="openModal">Nuevo Producto</button>
+        @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'openModal', 'title' => $componentName])
     </div>
 
     <!-- Table Section -->
+    @if (count($products) > 0)
     <div class="overflow-x-auto bg-base-300 p-4 rounded-lg shadow-lg max-w-7xl mx-auto">
         <table class="table-auto w-full">
             <thead class="bg-base-300 dark:bg-gray-800">
@@ -26,8 +27,6 @@
                     <th class="py-2 px-4 text-center">Acción</th>
             </thead>
             <tbody>
-                <!-- Mostrar notificación cuando no hay resultados -->
-                @include('livewire.components.no-results', ['result' => $products ,'name' => $componentName])
                 @foreach($products as $index => $product)
                 <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                     <td class="py-2 px-4 text-center">
@@ -76,5 +75,9 @@
             {{ $products->links() }}
         </div>
     </div>
+    @else
+        <!-- Mostrar notificación cuando no hay resultados -->
+        @include('livewire.components.no-results', ['result' => $products ,'name' => $componentName])
+    @endif
     @include('livewire.products.form')
 </div>
