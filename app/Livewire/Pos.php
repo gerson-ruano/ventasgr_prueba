@@ -31,20 +31,16 @@ class Pos extends Component
         $this->itemsQuantity = Cart::count(); //cantidad de articulos en el carrito
         $this->vendedores = $this->ListaVendedores();
         $this->valores = $this->ListaPagos();
-        $this->updateQuantityInputs();
+        $this->updateQuantityProducts();
     }
 
     public function render()
     {
-
-        //$valores = $this->EstadoDePago();
         if ($this->revisionVenta) {
 
             return view('livewire.pos.revision_venta', [
                 'denominations' => Denomination::orderBy('value', 'desc')->get(),
                 'cart' => Cart::content(),
-                //'cart' => Cart::content(),
-                //'valores' => $valores,
             ])
                 ->extends('layouts.app')
                 ->section('content');
@@ -52,7 +48,6 @@ class Pos extends Component
             return view('livewire.pos.components', [
                 'denominations' => Denomination::orderBy('value', 'desc')->get(),
                 'cart' => Cart::content(),
-                //'valores' => $valores,
             ])
                 ->extends('layouts.app')
                 ->section('content');
@@ -66,12 +61,12 @@ class Pos extends Component
 
     public function translateTipoPago($tipoPago)
     {
-        $paymentStatusMapping = [
+        $traslation = [
             'PAGADO' => 'PAID',
             'PENDIENTE' => 'PENDING',
             'CANCELADO' => 'CANCELLED',
         ];
-        return $paymentStatusMapping[$tipoPago] ?? $tipoPago;
+        return $traslation[$tipoPago] ?? $tipoPago;
     }
 
     public function ListaVendedores()
@@ -144,19 +139,21 @@ class Pos extends Component
 
     public function updateCartSummary()
     {
-        //$this->updateTotalPrice();
+        // Actualiza el precio total antes de cualquier cálculo
+        $this->updateTotalPrice();
+
+        // Actualiza la cantidad total de artículos en el carrito
         $this->itemsQuantity = Cart::count();
-        $this->updateQuantityInputs();
 
-        $efectivo = is_numeric($this->efectivo) ? (float)$this->efectivo : 0;
-        $totalPrice = is_numeric($this->totalPrice) ? (float)$this->totalPrice : 0;
+        // Actualiza la cantidad de cada producto en el carrito
+        $this->updateQuantityProducts();
 
-        // Realizar la operación
-        $this->change = $efectivo - $totalPrice;
+        // Calcula el cambio
+        $this->change = (float)$this->efectivo - (float)$this->totalPrice;
 
     }
 
-    public function updateQuantityInputs()
+    public function updateQuantityProducts()
     {
         foreach (Cart::content() as $item) {
             $this->quantityInputs[$item->id] = $item->qty;
@@ -171,7 +168,6 @@ class Pos extends Component
         foreach (Cart::content() as $item) {
             $this->totalPrice += $item->price * $item->qty;
         }
-        //dd($this->totalPrice);
     }
 
     protected function getCartItem($productId)
@@ -366,7 +362,6 @@ class Pos extends Component
             Cart::destroy();
             $this->efectivo = 0;
             $this->change = 0;
-            //$this->totalPrice = Cart::getTotal();
             $this->updateTotalPrice();
             $this->itemsQuantity = Cart::count();
             $this->tipoPago = 0;

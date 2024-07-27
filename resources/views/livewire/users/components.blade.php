@@ -7,7 +7,7 @@
         <h4 class="font-bold text-2xl">
             {{ $componentName }} | {{ $pageTitle }}
         </h4>
-        <button class="btn btn-accent ml-4" wire:click="openModal">Nuevo Usuario</button>
+        @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'openModal','icon' => 'plus', 'title' => $componentName])
     </div>
 
     <!-- Table Section -->
