@@ -92,7 +92,7 @@ class Asignar extends Component
         }
 
         $this->dispatch('confirmSyncAll', type: 'Sincronizar', name: 'PERMISOS');
-        
+
     }
 
     public function performSync()
@@ -107,7 +107,7 @@ class Asignar extends Component
         $permisos = Permission::pluck('id')->toArray();
         $role->syncPermissions($permisos);
         $this->dispatch('showNotification', 'Se sincronizaron todos los permisos al Role', 'success');
-        
+
     }
 
     public function syncPermiso($state, $permisoName)

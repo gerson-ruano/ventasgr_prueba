@@ -50,15 +50,18 @@
                         </div>
                     </td>
                     <td class="text-center">
-                        @foreach ($roles as $role)
-                            @if ($rolePermissionsCount[$role->id] > 0)
-                                <span
-                                    class="label-text ml-1">{{ $role->name }} ({{ $rolePermissionsCount[$role->id] }})</span>
-                            @endif
-                        @endforeach
+                    @foreach ($roles as $role)
+                        @if ($rolePermissionsCount[$role->id] > 0)
+                            <span
+                                class="label-text ml-1">{{ $role->name }} ({{ $rolePermissionsCount[$role->id] }})</span>
+                        @endif
+                    @endforeach
+
                     </td>
                     <td class="text-center">
-                        {{ $rolePermissionsCount[$role->id] ?? 0 }}
+                        @foreach ($roles as $role)
+                        {{ $rolePermissionsCount[$role->id] ?? 0 }} |
+                        @endforeach
                     </td>
                 </tr>
             @endforeach

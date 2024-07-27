@@ -143,6 +143,30 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    //Confirmar la Eliminacion de todos los productos del carrito
+    Livewire.on('confirmClearCart', (data) => {
+        //console.log('Event Data:', data);
+        if (data && data.type && data.name) {
+            Swal.fire({
+                title: `¿Estás seguro de '${data.type}' todos los '${data.name}'?`,
+                text: "¡Podras revertir mas adelante!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#a10c10',
+                cancelButtonColor: '#727885',
+                confirmButtonText: 'Sí, Eliminar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Livewire.dispatch('deleteAllConfirmed');
+                }
+            });
+        } else {
+            console.error(
+                'Los datos recibidos del evento Livewire "sincronizar todos permisos" no tienen el formato esperado.',
+                data);
+        }
+    });
+
     //Notifiaciones SWIFTALERT SUCCESS
     Livewire.on('noty-done', (event) => {
         const {

@@ -73,8 +73,8 @@ $links = [
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium 
-                            rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 
+                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium
+                            rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300
                             focus:outline-none transition ease-in-out duration-150">
                             {{--<div x-data="{{ json_encode(['name' => auth()->user()->name, 'profile' => auth()->user()->profile]) }}"
                             x-text="name" x-text="profile"
@@ -135,7 +135,7 @@ $links = [
 
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
+        <div class="pt-4 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('pos')" :active="request()->routeIs('pos')" wire:navigate>
                 {{ __('Ventas') }}
             </x-responsive-nav-link>

@@ -96,6 +96,9 @@ details summary {
             <livewire:components.searchbox :model="'search'" />--}}
         </div>
     </li>
+    <li>
+        <livewire:layout.navigation />
+    </li>
     <li class="ml-auto">
         <label class="flex cursor-pointer gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
