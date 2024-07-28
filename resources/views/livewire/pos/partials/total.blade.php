@@ -21,7 +21,7 @@
         <button wire:click="clearCart" class="btn btn-sm btn-primary text-xs mb-1 mr-1 lg:mt-1">
             <i class="fas fa-trash"></i>Artículos (F4)
         </button>
-        <button id="clearCash" class="btn btn-sm  btn-primary text-xs mb-1 mr-1">
+        <button id=" " class="btn btn-sm  btn-primary text-xs mb-1 mr-1">
             <i class="fas fa-dollar-sign"></i>Efectivo (F8)
         </button>
 

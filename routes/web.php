@@ -8,6 +8,8 @@ use App\Livewire\Coins;
 use App\Livewire\Users;
 use App\Livewire\Roles;
 use App\Livewire\Permisos;
+use App\Livewire\Reports;
+
 
 
 Route::view('/', 'welcome');
@@ -29,6 +31,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('permisos', Permisos::class)->name('permisos');
     Route::get('asignar', Asignar::class)->name('asignar');
     Route::get('pos', Pos::class)->name('pos');
+    Route::get('reports', Reports::class)->name('reports');
 });
 
 
