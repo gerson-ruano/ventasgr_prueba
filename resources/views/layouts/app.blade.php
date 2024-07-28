@@ -23,7 +23,7 @@
     @endif
 
     <!-- Page Content -->
-    <main style="min-height: 78vh;">
+    <main style="min-height: 81.5vh;">
         {{--$slot--}}
         @yield('content')
     </main>

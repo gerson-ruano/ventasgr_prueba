@@ -5,7 +5,7 @@
     <div class="card simple-title-task ui-sortable-handle mt-2">
         <div class="flex items-center justify-center space-x-2">
             <h1 class="ml-4 font-bold"> Q.</h1>
-            <input type="number" id="cash" wire:model="efectivo" wire:keydown.enter.prevent="savesSale"
+            <input type="number" id="cash" wire:model="efectivo" wire:keydown.enter.prevent="saveSale"
                 class="input input-bordered input-info w-full max-w-xs" step="1.00">
         </div>
     </div>

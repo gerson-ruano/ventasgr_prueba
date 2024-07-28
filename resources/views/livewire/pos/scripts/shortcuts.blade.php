@@ -30,6 +30,7 @@
         Livewire.dispatch('clearChange');
     }
 
+
     function clearCart() {
         var totalPrice = parseFloat(document.getElementById('hiddenTotal').value);
         if (totalPrice > 0) {
@@ -40,6 +41,7 @@
             //noty('AGREGA PRODUCTOS A LA VENTA');
         }
     }
+
 
     document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById("clearCash")) {

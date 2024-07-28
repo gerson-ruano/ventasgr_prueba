@@ -20,6 +20,7 @@ class Pos extends Component
     public $quantityInputs = [];
     public $efectivo = 0.00;
     public $revisionVenta = false;
+    public $nextSaleNumber;
 
     public function mount()
     {
@@ -32,6 +33,7 @@ class Pos extends Component
         $this->vendedores = $this->ListaVendedores();
         $this->valores = $this->ListaPagos();
         $this->updateQuantityProducts();
+        $this->getNextSaleNumber();
     }
 
     public function render()
@@ -85,12 +87,6 @@ class Pos extends Component
         $this->change = 0;
     }
 
-    /*public function ACash($value)
-    {
-        $this->efectivo += ($value == 0 ? $this->totalPrice : (float)$value);
-        $this->change = ($this->efectivo - $this->totalPrice);
-    }*/
-
     public function ACash($value)
     {
         if ($value == 0) {
@@ -100,13 +96,23 @@ class Pos extends Component
         $this->change = ($this->efectivo - $this->totalPrice);
     }
 
+    public function getNextSaleNumber()
+    {
+        // Obtener el último número de venta
+        $lastSale = Sale::latest('id')->first();
+        $lastSaleNumber = $lastSale ? $lastSale->id : 0;
+
+        // Incrementar el número para la próxima venta
+        $this->nextSaleNumber = $lastSaleNumber + 1;
+    }
+
     protected $listeners = [
         'scan-code' => 'scanCode',
         'deleteRow' => 'removeItem',
-        'savesale' => 'saveSale',
+        //'savesale' => 'saveSale',
         'deleteAllConfirmed' => 'deleteAllConfirmedCart',
         'clearChange' => 'clearChange',
-        'redirectPos' => 'redirectToPos'
+        //'redirectPos' => 'redirectToPos'
     ];
 
     public function scanCode($barcode, $cant = 1)
@@ -378,6 +384,7 @@ public function saveSale()
         $this->itemsQuantity = Cart::count();
         $this->tipoPago = 0;
         $this->vendedorSeleccionado = 0;
+        $this->getNextSaleNumber();
         $this->dispatch('noty-done', type: 'success', message: 'Venta realizada con éxito');
         //return redirect()->to('pos');
         //$this->emit('print-ticket', $sale->id);
