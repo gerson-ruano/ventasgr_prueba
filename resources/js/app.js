@@ -8,4 +8,5 @@ import Swal from 'sweetalert2';
 window.Swal = Swal;
 
 import flatpickr from "flatpickr";
-import "flatpickr/dist/flatpickr.css";
+import "flatpickr/dist/themes/material_blue.css";
+//import "flatpickr/dist/themes/dark.css";

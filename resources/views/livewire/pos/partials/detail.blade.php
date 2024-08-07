@@ -97,7 +97,7 @@
     @endif
 </div>
 @if (count($cart) === 0)
-    <div class="flex items-center justify-center w-full mt-4">
+    <div class="flex items-center justify-center w-full mt-1 mb-1 mr-1 ml-2">
         <div role="alert"
              class="alert alert-warning text-center w-full max-w-lg p-6 bg-gradient-to-r from-yellow-200 via-yellow-300 to-yellow-400 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out scale-100 hover:scale-105">
             <i class="fas fa-info-circle text-2xl text-yellow-700"></i>

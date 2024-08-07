@@ -6,7 +6,7 @@
         <option value="{{$default}}" selected>Elegir</option>
         @if($valores)
             @foreach ($valores as $valor)
-                <option value="{{ $valor }}">{{ $valor}}</option>
+                <option value="{{ $valor}}">{{ $valor}}</option>
             @endforeach
         @endif
     </select>
