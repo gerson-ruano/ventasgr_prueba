@@ -5,7 +5,8 @@
 
     <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
         @include('livewire.components.select_filtro', [
-            'default' => 0,
+            'default' => 'Elegir',
+            'val_default' => 0,
             'title' => 'Tipo Pago',
             'model' => 'tipoPago',
             'valores' => $valores
@@ -14,7 +15,8 @@
 
     <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 mt-1 w-full">
         @include('livewire.components.select_filtro', [
-            'default' => 0,
+            'default' => 'Elegir',
+            'val_default' => 0,
             'title' => 'Tipo Cliente',
             'model' => 'vendedorSeleccionado',
             'valores' => $vendedores

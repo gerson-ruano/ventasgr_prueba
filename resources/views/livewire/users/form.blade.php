@@ -50,14 +50,15 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="select_role" class="block text-sm font-medium text-gray-700">Asignar Role</label>
-                    <select wire:model="profile" id="select_role" class="select select-info w-full">
-                        <option value="Elegir" selected>Elegir</option>
-                        @foreach ($roles as $role)
-                        <option value="{{ $role->name }}" selected>{{$role->name}}</option>
-                        @endforeach
-                    </select>
-                    @error('profile') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 w-full">
+                        @include('livewire.components.select_filtro', [
+                                            'default' => 'Elegir',
+                                            'val_default' => 'Elegir',
+                                            'title' => 'Rol',
+                                            'model' => 'profile',
+                                            'valores' => $roles
+                                        ])
+                    </div>
                 </div>
 
                 <div class="mb-4">

@@ -50,15 +50,17 @@
                     @error('alerts') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
+
                 <div class="mb-4">
-                    <label for="category_select" class="block text-sm font-medium text-gray-700">Categoría</label>
-                    <select wire:model.live="categoryid" id="category_select" class="select select-info w-full">
-                        <option value="Elegir" disabled>Elegir</option>
-                        @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('categoryid') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 w-full">
+                        @include('livewire.components.select_filtro', [
+                                            'default' => 'Elegir',
+                                            'val_default' => 'Elegir',
+                                            'title' => 'Categoria',
+                                            'model' => 'categoryid',
+                                            'valores' => $categories
+                                        ])
+                    </div>
                 </div>
 
                 <div class="mb-4">

@@ -58,7 +58,13 @@ class Pos extends Component
 
     public function ListaPagos()
     {
-        return ['PAGADO', 'PENDIENTE', 'CANCELADO',];
+    $reportTypes = [
+    (object) ['id' => '0', 'name' => 'PAGADO'],
+    (object) ['id' => '1', 'name' => 'PENDIENTE'],
+    (object) ['id' => '2', 'name' => 'CANCELADO'],
+    ];
+
+    return $reportTypes;
     }
 
     public function translateTipoPago($tipoPago)
@@ -72,8 +78,17 @@ class Pos extends Component
     }
 
     public function ListaVendedores()
+
     {
-        return User::where('profile', 'Seller')->pluck('name')->toArray();
+        $sellerProfiles = User::where('profile', 'seller') // Cambia 'profile_type' y 'seller' según tu esquema
+        ->pluck('name', 'id')
+            ->map(function ($name, $id) {
+                return (object) ['id' => $id, 'name' => $name];
+            })
+            ->values()
+            ->toArray();
+
+        return $sellerProfiles;
     }
 
     public function revisarVenta() //Indica que vista utiliza para el index

@@ -21,8 +21,8 @@ class Reports extends Component
     private $data = [];
     public $page = 1;
     public $selectedId;
-    public $valoresVentas = [];
-    public $vsloresPago = [];
+    public $valoresReporte = [];
+    public $valoresPago = [];
 
     public function paginationView()
     {
@@ -41,7 +41,7 @@ class Reports extends Component
         $this->reportType = 0;
         $this->userId = 0;
         $this->saleId = 0;
-        $this->valoresVentas = $this->tipoReporte();
+        $this->valoresReporte = $this->tipoReporte();
         $this->valoresPago = $this->tipoPago();
 
     }
@@ -49,13 +49,10 @@ class Reports extends Component
     public function render()
     {
         $this->SalesByDate();
-        $valores = $this->tipoPago();
-
 
         return view('livewire.reports.components', [
             'users' => User::orderBy('name', 'asc')->get(),
             'data' => $this->data,
-            'valores' => $valores,
         ])
             ->extends('layouts.app')
             ->section('content');
@@ -91,6 +88,7 @@ class Reports extends Component
                 ->select('sales.*', 'u.name as user')
                 ->whereBetween('sales.created_at', [$from, $to])
                 ->get();
+
         } else {
             $this->data = Sale::join('users as u', 'u.id', 'sales.user_id')
                 ->select('sales.*', 'u.name as user')
@@ -133,7 +131,23 @@ class Reports extends Component
 
     public function tipoPago()
     {
-        return Sale::pluck('status')->unique()->toArray();
+        $statuses = Sale::pluck('status')->unique()->map(function ($status) {
+            return (object) [
+                'id' => $status,
+                'name' => $status,
+            ];
+        });
+
+        return $statuses->toArray();
+    }
+
+    public function tipoReporte(){
+        $reportTypes = [
+            (object) ['id' => '0', 'name' => 'VENTAS DE DIA'],
+            (object) ['id' => '1', 'name' => 'VENTAS POR FECHAS'],
+        ];
+
+        return $reportTypes;
     }
 
     public function Edit($id)
@@ -185,7 +199,4 @@ class Reports extends Component
         $this->resetErrorBag();
     }
 
-    public function tipoReporte(){
-        return ['VENTAS DE DIA', 'VENTAS POR FECHAS'];
-    }
 }
