@@ -58,13 +58,13 @@ class Pos extends Component
 
     public function ListaPagos()
     {
-    $reportTypes = [
-    (object) ['id' => '1', 'name' => 'PAGADO'],
-    (object) ['id' => '2', 'name' => 'PENDIENTE'],
-    (object) ['id' => '3', 'name' => 'CANCELADO'],
-    ];
+        $reportTypes = [
+            (object)['id' => '1', 'name' => 'PAGADO'],
+            (object)['id' => '2', 'name' => 'PENDIENTE'],
+            (object)['id' => '3', 'name' => 'CANCELADO'],
+        ];
 
-    return $reportTypes;
+        return $reportTypes;
     }
 
     public function obtenerTipoPago($tipoPagoId)
@@ -94,9 +94,9 @@ class Pos extends Component
 
     {
         $sellerProfiles = User::where('profile', 'seller')
-        ->pluck('name', 'id')
+            ->pluck('name', 'id')
             ->map(function ($name, $id) {
-                return (object) ['id' => $id, 'name' => $name];
+                return (object)['id' => $id, 'name' => $name];
             })
             ->values()
             ->toArray();
@@ -136,7 +136,6 @@ class Pos extends Component
         // Obtener el último número de venta
         $lastSale = Sale::latest('id')->first();
         $lastSaleNumber = $lastSale ? $lastSale->id : 0;
-
         // Incrementar el número para la próxima venta
         $this->nextSaleNumber = $lastSaleNumber + 1;
     }
@@ -334,84 +333,8 @@ class Pos extends Component
 
     }
 
-    public function deleteAllConfirmedCart ()
-        {
-            Cart::destroy();
-            $this->efectivo = 0;
-            $this->change = 0;
-            $this->updateTotalPrice();
-            $this->itemsQuantity = Cart::count();
-            $this->tipoPago = 0;
-            $this->vendedorSeleccionado = 0;
-            $this->dispatch('showNotification', 'Se eliminaron Todos los Productos del carrito', 'error');
-    }
-
-
-public function saveSale()
-{
-
-    if ($this->totalPrice <= 0) {
-        $this->dispatch('showNotification', 'Agregar Productos a la venta', 'dark');
-        return;
-    }
-    if ($this->efectivo <= 0) {
-        $this->dispatch('showNotification', 'Debes ingresar el EFECTIVO ', 'warning');
-        return;
-    }
-    if ($this->totalPrice > $this->efectivo) {
-        $this->dispatch('showNotification', 'El efectivo debe ser MAYOR o IGUAL al total', 'warning');
-        return;
-    }
-    if (isset($this->tipoPago) && !empty($this->tipoPago)) {
-        $tipoPagoSeleccionado = $this->translateTipoPago($this->tipoPago);
-    } else {
-        $this->dispatch('showNotification', 'Debe seleccionar el TIPO DE PAGO que utilizará', 'warning');
-        return;
-    }
-    if (isset($this->vendedorSeleccionado)) {
-        $vendedorAgregado = $this->vendedorSeleccionado;
-        if ($vendedorAgregado == 0) {
-            $vendedorAgregado = 'Cliente Final';
-        }
-    } else {
-        $vendedorAgregado = 'Cliente Final';
-        //$this->emit('sale-error','DEBE SELECCIONAR UN VENDEDOR O CLIENTE FINAL');
-        //return;
-    }
-
-    DB::beginTransaction();
-
-    try {
-        $sale = Sale::create([
-            'total' => $this->totalPrice,
-            'items' => $this->itemsQuantity,
-            'cash' => $this->efectivo,
-            'status' => $tipoPagoSeleccionado,
-            'change' => $this->change,
-            'seller' => $vendedorAgregado,
-            'user_id' => Auth()->user()->id
-        ]);
-
-        if ($sale) {
-            $items = Cart::content();
-            //dd($items);
-            foreach ($items as $item) {
-                SaleDetail::create([
-                    'price' => $item->price,
-                    'quantity' => $item->qty,
-                    'product_id' => $item->id,
-                    'sale_id' => $sale->id,
-                ]);
-
-                $product = Product::find($item->id);
-                $product->stock = $product->stock - $item->quantity;
-                $product->save();
-            }
-
-        }
-
-        DB::commit();
-
+    public function deleteAllConfirmedCart()
+    {
         Cart::destroy();
         $this->efectivo = 0;
         $this->change = 0;
@@ -419,16 +342,92 @@ public function saveSale()
         $this->itemsQuantity = Cart::count();
         $this->tipoPago = 0;
         $this->vendedorSeleccionado = 0;
-        $this->getNextSaleNumber();
-        $this->dispatch('noty-done', type: 'success', message: 'Venta realizada con éxito');
-        //return redirect()->to('pos');
-        //$this->emit('print-ticket', $sale->id);
-
-    } catch (Exception $e) {
-        DB::rollback();
-        //$this->dispatch('sale-error', $e->getMessage());
-        $this->dispatch('showNotification', $e->getMessage(), 'error');
+        $this->dispatch('showNotification', 'Se eliminaron Todos los Productos del carrito', 'error');
     }
-}
+
+
+    public function saveSale()
+    {
+
+        if ($this->totalPrice <= 0) {
+            $this->dispatch('showNotification', 'Agregar Productos a la venta', 'dark');
+            return;
+        }
+        if ($this->efectivo <= 0) {
+            $this->dispatch('showNotification', 'Debes ingresar el EFECTIVO ', 'warning');
+            return;
+        }
+        if ($this->totalPrice > $this->efectivo) {
+            $this->dispatch('showNotification', 'El efectivo debe ser MAYOR o IGUAL al total', 'warning');
+            return;
+        }
+        if (isset($this->tipoPago) && !empty($this->tipoPago)) {
+            $tipoPagoSeleccionado = $this->translateTipoPago($this->tipoPago);
+        } else {
+            $this->dispatch('showNotification', 'Debe seleccionar el TIPO DE PAGO que utilizará', 'warning');
+            return;
+        }
+        if (isset($this->vendedorSeleccionado)) {
+            $vendedorAgregado = $this->vendedorSeleccionado;
+            if ($vendedorAgregado == 0) {
+                $vendedorAgregado = 'Cliente Final';
+            }
+        } else {
+            $vendedorAgregado = 'Cliente Final';
+            //$this->emit('sale-error','DEBE SELECCIONAR UN VENDEDOR O CLIENTE FINAL');
+            //return;
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $sale = Sale::create([
+                'total' => $this->totalPrice,
+                'items' => $this->itemsQuantity,
+                'cash' => $this->efectivo,
+                'status' => $tipoPagoSeleccionado,
+                'change' => $this->change,
+                'seller' => $vendedorAgregado,
+                'user_id' => Auth()->user()->id
+            ]);
+
+            if ($sale) {
+                $items = Cart::content();
+                //dd($items);
+                foreach ($items as $item) {
+                    SaleDetail::create([
+                        'price' => $item->price,
+                        'quantity' => $item->qty,
+                        'product_id' => $item->id,
+                        'sale_id' => $sale->id,
+                    ]);
+
+                    $product = Product::find($item->id);
+                    $product->stock = $product->stock - $item->quantity;
+                    $product->save();
+                }
+
+            }
+
+            DB::commit();
+
+            Cart::destroy();
+            $this->efectivo = 0;
+            $this->change = 0;
+            $this->updateTotalPrice();
+            $this->itemsQuantity = Cart::count();
+            $this->tipoPago = 0;
+            $this->vendedorSeleccionado = 0;
+            $this->getNextSaleNumber();
+            $this->dispatch('noty-done', type: 'success', message: 'Venta realizada con éxito');
+            //return redirect()->to('pos');
+            //$this->emit('print-ticket', $sale->id);
+
+        } catch (Exception $e) {
+            DB::rollback();
+            //$this->dispatch('sale-error', $e->getMessage());
+            $this->dispatch('showNotification', $e->getMessage(), 'error');
+        }
+    }
 
 }

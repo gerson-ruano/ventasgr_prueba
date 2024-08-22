@@ -60,14 +60,11 @@
                         </td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex flex-row items-center justify-center space-x-2">
-                                <button wire:click.prevent="Edit({{$item->id}})"
+                                <button wire:click.prevent="Edit({{$item->id}})" title="Editar"
                                         class="btn btn-sm btn-outline btn-success btn-i">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                {{--}}<button wire:click.prevent="decreaseQty({{$item->id}})"
-                                        class="btn btn-sm btn-outline btn-default">
-                                    <i class="fas fa-minus-square"></i>
-                                </button>
+                                {{--
                                 <button class="btn btn-sm btn-outline btn-error"
                                         onclick="Confirm('{{ $item->id }}','este CARRITO','{{ $item->name }}')"
                                         title="Eliminar">

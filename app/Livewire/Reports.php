@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\User;
 use App\Models\Sale;
@@ -17,13 +18,15 @@ class Reports extends Component
     public $componentName, $details, $sumDetails, $countDetails, $selected_id = 2,
         $reportType, $userId, $dateFrom, $dateTo, $saleId, $selectTipoEstado;
 
-    private $pagination = 4;
+    private $pagination = 10;
     private $data = [];
-    public $page = 1;
+    //public $page = 1;
     public $selectedId;
     public $valoresReporte = [];
     public $valoresPago = [];
     public $isModalOpen = false;
+    public $currentModal = '';
+    public $selectedStatus;
 
     public function paginationView()
     {
@@ -59,14 +62,17 @@ class Reports extends Component
             ->section('content');
     }
 
-    public function openModal()
+    public function openModal($modal)
     {
         $this->isModalOpen = true;
+        $this->currentModal = $modal;
     }
 
+    #[On('noty-done')]
     public function closeModal()
     {
         $this->isModalOpen = false;
+        $this->currentModal = '';
     }
 
     public function SalesByDate()
@@ -112,12 +118,12 @@ class Reports extends Component
             $query->where('sales.status', $this->selectTipoEstado);
         }
 
-        $this->data = $query->paginate($this->pagination, ['*'], 'page', $this->page);
+        $this->data = $query->paginate($this->pagination);
 
 
     }
 
-    public function getDetails($saleId)
+    public function getDetails($saleId, $modal = 'detail')
     {
         $this->details = SaleDetail::join('products as p', 'p.id', 'sale_details.product_id')
             ->select('sale_details.id', 'sale_details.price', 'sale_details.quantity', 'p.name as product')
@@ -138,7 +144,7 @@ class Reports extends Component
         $this->saleId = $saleId;
 
         //$this->dispatch('show-modal', 'Detalles Cargados');
-        $this->openModal();
+        $this->openModal($modal);
     }
 
     public function tipoPago()
@@ -162,42 +168,43 @@ class Reports extends Component
         return $reportTypes;
     }
 
-    public function Edit($id)
+    public function Edit($id, $modal = 'edit')
     {
         // Almacena el ID en la propiedad
         $this->selectedId = $id;
 
         // Emite un evento para mostrar el modal u otra lógica que tengas
         $this->resetUI();
-        $this->dispatch('show', 'show modal!');
 
         $sale = Sale::find($id);
         $this->selectedStatus = $sale->status;
+        $this->openModal($modal);
     }
 
-    public function Update()
+    public function update()
     {
         $this->validate([
             'selectedStatus' => 'required|not_in:Elegir', // Asegúrate de que 'Elegir' sea el valor por defecto
         ]);
         // Obtén la venta correspondiente por su ID
         $sale = Sale::find($this->selectedId);
+        //dd($sale);
 
         // Verifica si se encontró la venta
         if ($sale) {
             // Asigna el nuevo estado al modelo de venta
             $sale->status = $this->selectedStatus; // Asumiendo que 'type' contiene el nuevo estado
             $sale->updated_at = now();   //Fecha de actualizacion
-            $sale->mod_id = auth()->user()->name; //Nombre del usuario quien lo actualizo
+            $sale->mod_id = auth()->user()->id; //Nombre del usuario o id de quien lo actualizo
 
             // Guarda el cambio en la base de datos
             $sale->save();
 
             // Puedes emitir un evento o realizar alguna acción adicional si es necesario
             $this->resetUI();
-            $this->dispatch('venta-updated', 'La venta ha sido actualizada correctamente');
+            $this->dispatch('noty-done', type: 'success', message: 'Venta actualizada con éxito');
         } else {
-            $this->dispatch('sale-error', 'DEBE SELECCIONAR UN TIPO DE ESTADO');
+            $this->dispatch('showNotification', 'Debe seleccionar un Tipo de ESTADO', 'dark');
             return;
             // Manejo si la venta no existe
             // Puedes emitir un mensaje de error o realizar alguna acción apropiada

@@ -23,4 +23,3 @@
 </div>
 
 @include('livewire.reports.scripts.general')
-{{--@include('livewire.pos.scripts.scan')--}}
