@@ -52,7 +52,7 @@
                         </td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex flex-row items-center justify-center space-x-2">
-                                <button wire:click.prevent="getDetails({{$item->id}})"
+                                <button wire:click.prevent="getDetails({{$item->id}})" title="Detalles"
                                         class="btn btn-sm btn-outline btn-accent btn-i">
                                     <i class="fas fa-indent"></i>
                                 </button>
@@ -75,8 +75,6 @@
                                 </button>--}}
                             </div>
                         </td>
-
-
                     </tr>
 
                 @endforeach
@@ -94,6 +92,7 @@
             <div class="mt-4">
                 {{ $data->links() }}
             </div>
+            @include('livewire.reports.partials.form')
         </div>
     @else
         <div class="hidden">
@@ -113,5 +112,4 @@
             </div>
         </div>
     </div>
-
 @endif

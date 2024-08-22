@@ -59,12 +59,25 @@ class Pos extends Component
     public function ListaPagos()
     {
     $reportTypes = [
-    (object) ['id' => '0', 'name' => 'PAGADO'],
-    (object) ['id' => '1', 'name' => 'PENDIENTE'],
-    (object) ['id' => '2', 'name' => 'CANCELADO'],
+    (object) ['id' => '1', 'name' => 'PAGADO'],
+    (object) ['id' => '2', 'name' => 'PENDIENTE'],
+    (object) ['id' => '3', 'name' => 'CANCELADO'],
     ];
 
     return $reportTypes;
+    }
+
+    public function obtenerTipoPago($tipoPagoId)
+    {
+        $reportTypes = $this->ListaPagos();
+
+        foreach ($reportTypes as $reportType) {
+            if ($reportType->id == $tipoPagoId) {
+                return $reportType->name;
+            }
+        }
+
+        return 'Tipo de pago no encontrado';
     }
 
     public function translateTipoPago($tipoPago)
@@ -80,7 +93,7 @@ class Pos extends Component
     public function ListaVendedores()
 
     {
-        $sellerProfiles = User::where('profile', 'seller') // Cambia 'profile_type' y 'seller' según tu esquema
+        $sellerProfiles = User::where('profile', 'seller')
         ->pluck('name', 'id')
             ->map(function ($name, $id) {
                 return (object) ['id' => $id, 'name' => $name];
@@ -90,6 +103,13 @@ class Pos extends Component
 
         return $sellerProfiles;
     }
+
+    public function obtenerNombreVendedor($id)
+    {
+        $vendedor = User::find($id);
+        return $vendedor ? $vendedor->name : 'No disponible';
+    }
+
 
     public function revisarVenta() //Indica que vista utiliza para el index
     {

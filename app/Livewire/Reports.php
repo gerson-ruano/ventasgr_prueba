@@ -23,6 +23,7 @@ class Reports extends Component
     public $selectedId;
     public $valoresReporte = [];
     public $valoresPago = [];
+    public $isModalOpen = false;
 
     public function paginationView()
     {
@@ -56,6 +57,16 @@ class Reports extends Component
         ])
             ->extends('layouts.app')
             ->section('content');
+    }
+
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
     }
 
     public function SalesByDate()
@@ -108,7 +119,7 @@ class Reports extends Component
 
     public function getDetails($saleId)
     {
-        $this->details = SaleDetails::join('products as p', 'p.id', 'sale_details.product_id')
+        $this->details = SaleDetail::join('products as p', 'p.id', 'sale_details.product_id')
             ->select('sale_details.id', 'sale_details.price', 'sale_details.quantity', 'p.name as product')
             ->where('sale_details.sale_id', $saleId)
             ->get();
@@ -126,7 +137,8 @@ class Reports extends Component
 
         $this->saleId = $saleId;
 
-        $this->dispatch('show-modal', 'Detalles Cargados');
+        //$this->dispatch('show-modal', 'Detalles Cargados');
+        $this->openModal();
     }
 
     public function tipoPago()

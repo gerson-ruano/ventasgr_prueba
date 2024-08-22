@@ -15,9 +15,9 @@
     <div class="lg:w-3/4">
         <div class="">
             @include('livewire.reports.partials.detail')
-        </div>
+        </div class="lg:w-3/4">
         {{--}}<div class="">
-            @include('livewire.pos.partials.impresion')
+            @include('livewire.reports.partials.sales-detail')
         </div>--}}
     </div>
 </div>

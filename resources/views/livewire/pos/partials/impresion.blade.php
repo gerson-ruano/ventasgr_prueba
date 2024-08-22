@@ -19,7 +19,7 @@
                 <!-- Sección de Vendedor -->
                 <div class="d-flex align-items-center mb-1 mr-2">
                     @if($vendedorSeleccionado != 0)
-                        <h6>Nombre: {{$vendedorSeleccionado}}</h6>
+                        <h6>Nombre: {{$this->obtenerNombreVendedor($vendedorSeleccionado)}}</h6>
                     @else
                         <div class="flex items-center space-x-2">
                             <h6>Nombre:</h6>
@@ -30,7 +30,7 @@
                 <!-- Sección de Pago -->
                 <div class="d-flex align-items-center mb-1">
                     @if($tipoPago != 0)
-                        <h6>Pago: {{$tipoPago}}</h6>
+                        <h6>Pago: {{$this->obtenerTipoPago($tipoPago)}}</h6>
                     @else
                         <div class="flex items-center space-x-2">
                             <h6>Pago:</h6>
