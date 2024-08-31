@@ -27,9 +27,9 @@
                             {{ $d->id }}</td>
                         </td>
                         <td class="py-2 px-4 text-center">
-                            Q. {{ $d->product }}</td>
+                            {{ $d->product }}</td>
                         <td class="py-2 px-4 text-center">
-                            <h6>{{number_format($d->price,2)}}</h6>
+                            <h6>Q. {{number_format($d->price,2)}}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{number_format($d->quantity,2)}}</h6>
@@ -56,9 +56,9 @@
                         <th class="py-2 px-4 text-center">Acción</th>
                     </tr>
                 </tfoot>--}}
-                <tr>
+                <tr class="font-semibold">
                     <td colspan="3">
-                        <h5 class="text-center font-weight-bold">TOTALES</h5>
+                        <h5 class="text-center">TOTALES</h5>
                     </td>
                     <td>
                         <h5 class="text-center">{{$countDetails}}</h5>

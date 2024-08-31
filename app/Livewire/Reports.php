@@ -20,7 +20,6 @@ class Reports extends Component
 
     private $pagination = 10;
     private $data = [];
-    //public $page = 1;
     public $selectedId;
     public $valoresReporte = [];
     public $valoresPago = [];
@@ -111,7 +110,7 @@ class Reports extends Component
                 ->select('sales.*', 'u.name as user')
                 ->whereBetween('sales.created_at', [$from, $to])
                 ->where('user_id', $this->userId)
-                ->get();//->paginate($this->pagination);
+                ->get();
         }
 
         if ($this->selectTipoEstado) {
@@ -130,8 +129,6 @@ class Reports extends Component
             ->where('sale_details.sale_id', $saleId)
             ->get();
 
-        //dd($this->details);
-
         $suma = $this->details->sum(function ($item) {
             return $item->price * $item->quantity;
         });
@@ -143,7 +140,6 @@ class Reports extends Component
 
         $this->saleId = $saleId;
 
-        //$this->dispatch('show-modal', 'Detalles Cargados');
         $this->openModal($modal);
     }
 
@@ -216,6 +212,12 @@ class Reports extends Component
         $this->type = '';
         $this->value = '';
         $this->resetErrorBag();
+    }
+
+    public function obtenerNombreVendedor($seller)
+    {
+        $vendedor = User::find($seller);
+        return $vendedor ? $vendedor->name : 'C/F';
     }
 
 }

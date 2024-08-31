@@ -18,15 +18,14 @@
                 </tr>
                 </thead>
                 <tbody>
-                {{--dd($cart)--}}
                 <!-- Mostrar notificación cuando no hay resultados -->
                 {{--@include('livewire.components.no-results', ['result' => $sales ,'name' => $componentName])--}}
 
                 @foreach($data as $index => $item)
+                    {{--dd($item)--}}
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                         <td class="py-2 px-4 text-center">
                             {{ ($data->currentPage() - 1) * $data->perPage() + $index + 1 }}</td>
-                        </td>
                         <td class="py-2 px-4 text-center">Q. {{number_format($item->total,2)}}</td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{ $item->items }}</h6>
@@ -45,7 +44,7 @@
                             <h6>{{ $item->user }}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
-                            <h6>{{ $item->seller }}</h6>
+                            <h6>{{$this->obtenerNombreVendedor($item->seller)}}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y H:i:s') }}</h6>

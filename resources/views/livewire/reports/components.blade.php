@@ -13,9 +13,9 @@
 
     </div>
     <div class="lg:w-3/4">
-        <div class="">
+        <div>
             @include('livewire.reports.partials.detail')
-        </div class="lg:w-3/4">
+        </div>
         {{--}}<div class="">
             @include('livewire.reports.partials.sales-detail')
         </div>--}}

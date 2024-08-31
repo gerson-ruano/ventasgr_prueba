@@ -1,7 +1,7 @@
 {{--<div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">--}}
+
 @php
-    $totalProduct = count($cart);
-    //dd($cart);
+$totalProduct = count($cart);
 @endphp
 
 @if($itemsQuantity > 0)

@@ -143,7 +143,6 @@ class Pos extends Component
     protected $listeners = [
         'scan-code' => 'scanCode',
         'deleteRow' => 'removeItem',
-        //'savesale' => 'saveSale',
         'deleteAllConfirmed' => 'deleteAllConfirmedCart',
         'clearChange' => 'clearChange',
         //'redirectPos' => 'redirectToPos'

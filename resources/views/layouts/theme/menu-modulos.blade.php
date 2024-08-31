@@ -44,7 +44,7 @@ details summary {
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('cashout')}}" class="border dark:border-gray-200 flex items-center">
                         <i class="fas fa-cash-register mr-1"></i>Cierre de caja
                     </a>
                 </li>
