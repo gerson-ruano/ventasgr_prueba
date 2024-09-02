@@ -22,6 +22,17 @@
                             'valores' => $valoresReporte
                         ])
     </div>
+
+    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
+        @include('livewire.components.select_filtro', [
+                    'default' => 'Todos',
+                    'val_default' => 0,
+                    'title' => 'Tipo Pago',
+                    'model' => 'selectTipoEstado',
+                    'valores' => $valoresPago
+                ])
+    </div>
+    
     <!-- Fecha Desde Selector -->
     <div class="flex flex-col items-stretch w-full md:w-1/3">
         <div class="w-full">
@@ -42,16 +53,6 @@
                        placeholder="Click para elegir" @if ($reportType == 0) disabled @endif>
             </div>
         </div>
-    </div>
-
-    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
-        @include('livewire.components.select_filtro', [
-                    'default' => 'Todos',
-                    'val_default' => 0,
-                    'title' => 'Tipo Pago',
-                    'model' => 'selectTipoEstado',
-                    'valores' => $valoresPago
-                ])
     </div>
 
     <!-- Buttons -->
