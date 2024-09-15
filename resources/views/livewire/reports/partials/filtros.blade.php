@@ -15,7 +15,7 @@
 
     <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 mt-1 w-full">
         @include('livewire.components.select_filtro', [
-                            'default' => 'Elegir',
+                            'default' => null,
                             'val_default' => 0,
                             'title' => 'Tipo de Reporte',
                             'model' => 'reportType',
@@ -32,7 +32,7 @@
                     'valores' => $valoresPago
                 ])
     </div>
-    
+
     <!-- Fecha Desde Selector -->
     <div class="flex flex-col items-stretch w-full md:w-1/3">
         <div class="w-full">
@@ -50,7 +50,10 @@
             <h6 class="text-lg font-medium text-gray-700 text-center">Fecha hasta</h6>
             <div class="form-control">
                 <input type="text" wire:model="dateTo" class="input input-bordered flatpickr"
-                       placeholder="Click para elegir" @if ($reportType == 0) disabled @endif>
+                       placeholder="Click para elegir"
+                       @if ($reportType == 0 )
+                           disabled
+                    @endif>
             </div>
         </div>
     </div>
@@ -68,7 +71,8 @@
         </a>
 
         <a class="btn btn-primary {{ count($data) < 1 ? 'disabled' : '' }} mb-3"
-           href="{{ url('report/excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
+           href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
+           {{--}}href="{{ url('report-excel') }}"--}}
            target="_blank"><i class="fas fa-file-excel"></i>
             Exportar a EXCEL
         </a>

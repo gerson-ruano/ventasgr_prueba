@@ -34,9 +34,9 @@ class Reports extends Component
 
     public function mount()
     {
-        $this->componentName = 'Reporte de Ventas';
-        $this->pageTitle = 'EDITAR';
-        $this->type = 'Elegir';
+        //$this->componentName = 'Reporte de Ventas';
+        //$this->pageTitle = 'EDITAR';
+        //$this->type = 'Elegir';
         $this->data = [];
         $this->details = [];
         $this->sumDetails = 0;
@@ -77,17 +77,26 @@ class Reports extends Component
     public function SalesByDate()
     {
 
-        if ($this->reportType == 0)  //VENTAS DEL DIA
-        {
-            $from = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 00:00:00';
-            $to = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 23:59:59';
-        } else {
-            $from = Carbon::parse($this->dateFrom)->format('Y-m-d') . ' 00:00:00';
-            $to = Carbon::parse($this->dateTo)->format('Y-m-d') . ' 23:59:59';
-        }
-
         if ($this->reportType == 1 && ($this->dateFrom == '' || $this->dateTo == '')) {
             return;
+        }
+
+        if ($this->reportType == 0)  //VENTAS DEL DIA
+        {
+            //$from = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 00:00:00';
+            //$to = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 23:59:59';
+            // Asignar las fechas actuales a las propiedades dateFrom y dateTo
+            $this->dateFrom = Carbon::now()->format('Y-m-d');
+            $this->dateTo = Carbon::now()->format('Y-m-d');
+
+            // Formatear las fechas para la consulta
+            $from = $this->dateFrom . ' 00:00:00';
+            $to = $this->dateTo . ' 23:59:59';
+
+        } else {
+            //$this->resetUI();
+            $from = Carbon::parse($this->dateFrom)->format('Y-m-d') . ' 00:00:00';
+            $to = Carbon::parse($this->dateTo)->format('Y-m-d') . ' 23:59:59';
         }
 
         $query = Sale::join('users as u', 'u.id', 'sales.user_id')
@@ -96,6 +105,10 @@ class Reports extends Component
 
         if ($this->userId != 0) {
             $query->where('user_id', $this->userId);
+        }
+
+        if ($this->selectTipoEstado) {
+            $query->where('sales.status', $this->selectTipoEstado);
         }
 
         if ($this->userId == 0) {
@@ -113,12 +126,7 @@ class Reports extends Component
                 ->get();
         }
 
-        if ($this->selectTipoEstado) {
-            $query->where('sales.status', $this->selectTipoEstado);
-        }
-
         $this->data = $query->paginate($this->pagination);
-
 
     }
 
@@ -145,10 +153,19 @@ class Reports extends Component
 
     public function tipoPago()
     {
-        $statuses = Sale::pluck('status')->unique()->map(function ($status) {
+        // Definir un mapeo de los estados en inglés a su traducción en español
+        $statusTranslations = [
+            'PAID' => 'PAGADO',
+            'PENDING' => 'PENDIENTE',
+            'CANCELLED' => 'CANCELADO',
+            // Añade aquí más estados según sea necesario
+        ];
+
+        $statuses = Sale::pluck('status')->unique()->map(function ($status) use ($statusTranslations) {
             return (object) [
                 'id' => $status,
-                'name' => $status,
+                // Si el estado existe en las traducciones, usa la traducción, si no, usa el valor original
+                'name' => $statusTranslations[$status] ?? $status,
             ];
         });
 
@@ -210,6 +227,8 @@ class Reports extends Component
     public function resetUI()
     {
         $this->type = '';
+        $this->dateFrom = '';
+        $this->dateTo = '';
         $this->value = '';
         $this->resetErrorBag();
     }

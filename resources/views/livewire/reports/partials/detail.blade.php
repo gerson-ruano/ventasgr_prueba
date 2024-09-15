@@ -1,10 +1,18 @@
-
 <div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
+    @php
+        $statusTranslations = [
+            'PAID' => 'PAGADO',
+            'CANCELLED' => 'CANCELADO',
+            'PENDING' => 'PENDIENTE',
+            // Añade más traducciones si es necesario
+        ];
+    @endphp
     @if ($totalProduct = count($data) > 0 )
         <!-- Table Section -->
         <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
             <table class="table table-xs">
                 <thead class="bg-base-200 dark:bg-gray-800">
+                <h1 class="font-bold text-lg text-center">REPORTES</h1>
                 <tr>
                     <th class="text-lg font-medium py-3 px-4 text-center">No. Venta</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
@@ -32,12 +40,12 @@
                         </td>
                         <td class="py-2 px-4 text-center">
                              <span class="badge
-                                     {{ $item->status === 'PAID' ? 'badge-success' : '' }}
-                                     {{ $item->status === 'CANCELLED' ? 'badge-warning' : '' }}
-                                     {{ $item->status === 'PENDING' ? 'badge-primary' : '' }}
-                                     {{ !in_array($item->status, ['PAID', 'CANCELLED', 'PENDING']) ? 'badge-secondary' : '' }}
-                                     text-uppercase">
-                                    {{ $item->status }}
+                                 {{ $item->status === 'PAID' ? 'badge-success' : '' }}
+                                 {{ $item->status === 'CANCELLED' ? 'badge-warning' : '' }}
+                                 {{ $item->status === 'PENDING' ? 'badge-primary' : '' }}
+                                 {{ !in_array($item->status, ['PAID', 'CANCELLED', 'PENDING']) ? 'badge-secondary' : '' }}
+                                 text-uppercase">
+                                {{ $statusTranslations[$item->status] ?? $item->status }}
                             </span>
                         </td>
                         <td class="py-2 px-4 text-center">

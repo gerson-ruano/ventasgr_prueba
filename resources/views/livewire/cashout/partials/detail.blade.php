@@ -4,6 +4,8 @@
         <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
             <table class="table table-xs">
                 <thead class="bg-base-200 dark:bg-gray-800">
+                <h1 class="font-bold text-lg text-center">CIERRE DE CAJA</h1>
+
                 <tr>
                     <th class="text-lg font-medium py-3 px-4 text-center">No. Venta</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>

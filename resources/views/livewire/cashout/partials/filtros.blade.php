@@ -19,7 +19,7 @@
         <div class="w-full">
             <h6 class="text-lg font-medium text-gray-700 text-center">Fecha desde</h6>
             <div class="form-control">
-                <input type="text" wire:model="dateFrom" class="input input-bordered flatpickr"
+                <input type="text" wire:model="fromDate" class="input input-bordered flatpickr"
                        placeholder="Click para elegir" @if ($userid == 0) disabled @endif>
             </div>
         </div>
@@ -30,8 +30,8 @@
         <div class="w-full">
             <h6 class="text-lg font-medium text-gray-700 text-center">Fecha hasta</h6>
             <div class="form-control">
-                <input type="text" wire:model="dateTo" class="input input-bordered flatpickr"
-                       placeholder="Click para elegir" @if ($userid == 0) disabled @endif>
+                <input type="text" wire:model="toDate" class="input input-bordered flatpickr"
+                       placeholder="Click para elegir" @if (empty($fromDate))disabled @endif>
             </div>
         </div>
     </div>

@@ -10,6 +10,7 @@ use App\Livewire\Roles;
 use App\Livewire\Permisos;
 use App\Livewire\Reports;
 use App\Livewire\Cashout;
+use App\Http\Controllers\ExportController;
 
 
 
@@ -34,6 +35,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('pos', Pos::class)->name('pos');
     Route::get('reports', Reports::class)->name('reports');
     Route::get('cashout', Cashout::class)->name('cashout');
+
+    //REPORTES PDF
+    Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class,'reportPDF']);
+
+
+    //REPORTES EXCEL
+    Route::get('report-excel/{user}/{type}/{f1}/{f2}', [ExportController::class,'reportExcel']);
+    //Route::get('report-excel', [ExportController::class,'reportExcel']);
 });
 
 

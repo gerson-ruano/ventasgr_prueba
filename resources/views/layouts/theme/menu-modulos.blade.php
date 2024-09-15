@@ -50,7 +50,7 @@ details summary {
                 </li>
                 <li class="">
                     <a href="{{url('reports')}}" class="border dark:border-gray-200 flex items-center">
-                        <i class="fas fa-file-contract mr-1"></i>Ventas
+                        <i class="fas fa-file-contract mr-1"></i>Reportes
                     </a>
                 </li>
                 <li class="">

@@ -29,6 +29,8 @@ $links = [
 'permisos' => __('Permisos'),
 'asignar' => __('Asignar'),
 'pos' => __('Ventas'),
+'reports' => __('Reportes'),
+'cashout' => __('Cierre de Caja'),
 // Añade más rutas aquí según sea necesario
 ];
 @endphp

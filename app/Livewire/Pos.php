@@ -61,23 +61,11 @@ class Pos extends Component
         $reportTypes = [
             (object)['id' => '1', 'name' => 'PAGADO'],
             (object)['id' => '2', 'name' => 'PENDIENTE'],
-            (object)['id' => '3', 'name' => 'CANCELADO'],
+            //(object)['id' => '3', 'name' => 'CANCELADO'],
         ];
 
         return $reportTypes;
-    }
 
-    public function obtenerTipoPago($tipoPagoId)
-    {
-        $reportTypes = $this->ListaPagos();
-
-        foreach ($reportTypes as $reportType) {
-            if ($reportType->id == $tipoPagoId) {
-                return $reportType->name;
-            }
-        }
-
-        return 'Tipo de pago no encontrado';
     }
 
     public function translateTipoPago($tipoPago)
@@ -88,6 +76,19 @@ class Pos extends Component
             'CANCELADO' => 'CANCELLED',
         ];
         return $traslation[$tipoPago] ?? $tipoPago;
+    }
+
+    public function obtenerTipoPago($tipoPagoId) //Obtiene el 'TIPO DE PAGO' y lo muestra en la vista de IMPRESION
+    {
+        $reportTypes = $this->ListaPagos();
+
+        foreach ($reportTypes as $reportType) {
+            if ($reportType->id == $tipoPagoId) {
+                return $reportType->name;
+            }
+        }
+
+        return 'Tipo de pago no encontrado';
     }
 
     public function ListaVendedores()
@@ -104,7 +105,7 @@ class Pos extends Component
         return $sellerProfiles;
     }
 
-    public function obtenerNombreVendedor($id)
+    public function obtenerNombreVendedor($id) //Obtiene el 'NOMBRE DE VENDEDOR' y lo muestra en la vista de IMPRESION
     {
         $vendedor = User::find($id);
         return $vendedor ? $vendedor->name : 'No disponible';
