@@ -169,14 +169,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     //Notifiaciones SWIFTALERT SUCCESS
     Livewire.on('noty-done', (event) => {
-        const {
-            type,
-            message
-        } = event;
+        const { type, message } = event;
+
+        // Determinar el título y el ícono en función del tipo
+        let title;
+        let icon;
+
+        switch(type) {
+            case 'success':
+                title = '¡Éxito!';
+                icon = 'success';
+                break;
+            case 'error':
+                title = '¡Error!';
+                icon = 'error';
+                break;
+            case 'info':
+                title = 'Info';
+                icon = 'info';
+                break;
+            case 'warning':
+                title = 'Advertencia';
+                icon = 'warning';
+                break;
+            default:
+                title = 'Notificación';
+                icon = 'question';
+                break;
+        }
+
+        // Mostrar la alerta
         Swal.fire({
-            title: type === 'success' ? '¡Éxito!' : '¡Error!',
+            title: title,
             text: message,
-            icon: type,
+            icon: icon,
             timer: 2000,
             showConfirmButton: false,
             timerProgressBar: true,
@@ -184,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 Swal.showLoading();
             },
             willClose: () => {
-                // Optional callback when the alert closes
+                // Callback opcional al cerrar la alerta
             }
         });
     });

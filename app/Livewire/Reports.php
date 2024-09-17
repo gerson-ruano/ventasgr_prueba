@@ -15,7 +15,7 @@ class Reports extends Component
 
     use WithPagination;
 
-    public $componentName, $details, $sumDetails, $countDetails, $selected_id = 2,
+    public $details, $sumDetails, $countDetails, $selected_id = 2,
         $reportType, $userId, $dateFrom, $dateTo, $saleId, $selectTipoEstado;
 
     private $pagination = 10;
@@ -34,9 +34,6 @@ class Reports extends Component
 
     public function mount()
     {
-        //$this->componentName = 'Reporte de Ventas';
-        //$this->pageTitle = 'EDITAR';
-        //$this->type = 'Elegir';
         $this->data = [];
         $this->details = [];
         $this->sumDetails = 0;
@@ -147,7 +144,6 @@ class Reports extends Component
         //dd($this->countDetails);
 
         $this->saleId = $saleId;
-
         $this->openModal($modal);
     }
 
@@ -162,7 +158,7 @@ class Reports extends Component
         ];
 
         $statuses = Sale::pluck('status')->unique()->map(function ($status) use ($statusTranslations) {
-            return (object) [
+            return (object)[
                 'id' => $status,
                 // Si el estado existe en las traducciones, usa la traducción, si no, usa el valor original
                 'name' => $statusTranslations[$status] ?? $status,
@@ -172,10 +168,11 @@ class Reports extends Component
         return $statuses->toArray();
     }
 
-    public function tipoReporte(){
+    public function tipoReporte()
+    {
         $reportTypes = [
-            (object) ['id' => '0', 'name' => 'VENTAS DE DIA'],
-            (object) ['id' => '1', 'name' => 'VENTAS POR FECHAS'],
+            (object)['id' => '0', 'name' => 'VENTAS DE DIA'],
+            (object)['id' => '1', 'name' => 'VENTAS POR FECHAS'],
         ];
 
         return $reportTypes;
@@ -187,11 +184,13 @@ class Reports extends Component
         $this->selectedId = $id;
 
         // Emite un evento para mostrar el modal u otra lógica que tengas
-        $this->resetUI();
-
         $sale = Sale::find($id);
-        $this->selectedStatus = $sale->status;
-        $this->openModal($modal);
+        if ($sale) {
+            $this->selectedStatus = $sale->status; // Guarda el estado actual
+            $this->openModal($modal);
+        } else {
+            $this->dispatch('showNotification', 'No se encontró la venta', 'dark');
+        }
     }
 
     public function update()
@@ -205,6 +204,13 @@ class Reports extends Component
 
         // Verifica si se encontró la venta
         if ($sale) {
+
+            // Verifica si el estado es el mismo que el actual
+            if ($sale->status == $this->selectedStatus) {
+                // Envía mensaje si el estado no ha cambiado
+                $this->dispatch('noty-done', type: 'info', message: 'Venta sin Modificar');
+                return;
+            }
             // Asigna el nuevo estado al modelo de venta
             $sale->status = $this->selectedStatus; // Asumiendo que 'type' contiene el nuevo estado
             $sale->updated_at = now();   //Fecha de actualizacion
@@ -229,7 +235,7 @@ class Reports extends Component
         $this->type = '';
         $this->dateFrom = '';
         $this->dateTo = '';
-        $this->value = '';
+        //$this->value = '';
         $this->resetErrorBag();
     }
 

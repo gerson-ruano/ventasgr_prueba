@@ -44,6 +44,7 @@ class ExportController extends Controller
         }
 
         $user = $userId == 0 ? 'Todos' : User::find($userId)->name;
+        //$seller = $this->obtenerNombreVendedor($seller_selected);
         $pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
 
         return $pdf->stream('salesReport.pdf'); //visualizar
@@ -59,12 +60,19 @@ class ExportController extends Controller
         // Crear una respuesta para descargar el archivo
         return response()->download($filePath)->deleteFileAfterSend(true);*/
 
-        $export = new SaleExport($userId, $reportType, $dateFrom, $dateTo);
+        $export = new SaleExport($userId, $reportType, $dateFrom, $dateTo );
         $filePath = $export->reportExcel();
 
         // Descargar el archivo y eliminarlo después de la descarga
         return response()->download($filePath)->deleteFileAfterSend(true);
 
+    }
+
+
+    public function obtenerNombreVendedor($seller)
+    {
+        $vendedor = User::find($seller);
+        return $vendedor ? $vendedor->name : 'C/F';
     }
 
 

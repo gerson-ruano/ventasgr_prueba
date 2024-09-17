@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\User;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use App\Models\Sale;
@@ -15,43 +16,6 @@ use Illuminate\Support\Carbon;
 
 class SaleExport
 {
-    /*public function reportExcel()
-    {
-
-
-        // Crear una nueva instancia de Spreadsheet
-        $spreadsheet = new Spreadsheet();
-
-        // Obtener la hoja activa
-        $sheet = $spreadsheet->getActiveSheet();
-
-        // Definir el encabezado de la hoja
-        $sheet->setCellValue('A1', 'ID');
-        $sheet->setCellValue('B1', 'User id');
-        $sheet->setCellValue('C1', 'status');
-        $sheet->setCellValue('D1', 'Created At');
-
-        // Obtener datos de ventas
-        $sales = Sale::all();
-        $row = 2; // Empezar en la segunda fila
-
-        foreach ($sales as $sale) {
-            $sheet->setCellValue('A' . $row, $sale->id);
-            $sheet->setCellValue('B' . $row, $sale->user_id);
-            $sheet->setCellValue('C' . $row, $sale->status);
-            $sheet->setCellValue('D' . $row, $sale->created_at);
-            $row++;
-        }
-
-        // Crear el writer y guardar el archivo
-        $writer = new Xlsx($spreadsheet);
-
-        // Guardar el archivo en la carpeta de almacenamiento
-        $filePath = storage_path('app/public/sales_report.xlsx');
-        $writer->save($filePath);
-
-        return $filePath;*/
-
     protected $userId;
     protected $dateFrom;
     protected $dateTo;
@@ -76,11 +40,11 @@ class SaleExport
         // Definir los encabezados
         $sheet->setCellValue('A1', 'VENTA')
             ->setCellValue('B1', 'IMPORTE')
-            ->setCellValue('C1', 'ITEMS')
+            ->setCellValue('C1', 'CANTIDAD')
             ->setCellValue('D1', 'ESTADO')
             ->setCellValue('E1', 'CLIENTE')
             ->setCellValue('F1', 'USUARIO')
-            ->setCellValue('G1', 'FECHA');
+            ->setCellValue('G1', 'FECHA/HORA');
 
         // Aplicar estilos
         $sheet->getStyle('A1:G1')->applyFromArray([
@@ -104,14 +68,14 @@ class SaleExport
                 ->setCellValue('B' . $row, $sale->total)
                 ->setCellValue('C' . $row, $sale->items)
                 ->setCellValue('D' . $row, $sale->status)
-                ->setCellValue('E' . $row, $sale->vendedor)
+                ->setCellValue('E' . $row, $this->obtenerNombreVendedor($sale->seller))
                 ->setCellValue('F' . $row, $sale->user)
                 ->setCellValue('G' . $row, Date::dateTimeToExcel($sale->created_at));
             $row++;
         }
 
         // Aplicar formato a las columnas
-        $sheet->getStyle('A2:G' . ($row - 1))->applyFromArray([
+        $sheet->getStyle('A1:G' . ($row - 1))->applyFromArray([
             'alignment' => ['horizontal' => Alignment::HORIZONTAL_CENTER],
             'borders' => [
                 'allBorders' => [
@@ -140,7 +104,7 @@ class SaleExport
 
         // Crear el writer y guardar el archivo
         $writer = new Xlsx($spreadsheet);
-        $filePath = storage_path('app/public/sales_report.xlsx');
+        $filePath = storage_path('app/public/' . $this->fileName);
         $writer->save($filePath);
 
         return $filePath;
@@ -166,5 +130,11 @@ class SaleExport
         }
 
         return $query->get();
+    }
+
+    public function obtenerNombreVendedor($seller)
+    {
+        $vendedor = User::find($seller);
+        return $vendedor ? $vendedor->name : 'C/F';
     }
 }
