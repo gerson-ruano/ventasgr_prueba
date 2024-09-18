@@ -7,7 +7,7 @@
                 <h1 class="font-bold text-lg text-center">CIERRE DE CAJA</h1>
 
                 <tr>
-                    <th class="text-lg font-medium py-3 px-4 text-center">No. Venta</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Colaborador</th>

@@ -69,11 +69,11 @@ class ExportController extends Controller
     }
 
 
-    public function obtenerNombreVendedor($seller)
+    /*public function obtenerNombreVendedor($seller)
     {
         $vendedor = User::find($seller);
         return $vendedor ? $vendedor->name : 'C/F';
-    }
+    }*/
 
 
 }

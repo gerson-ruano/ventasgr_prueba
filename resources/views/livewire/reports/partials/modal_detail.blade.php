@@ -12,7 +12,7 @@
             <table class="table table-xs">
                 <thead class="bg-base-200 dark:bg-gray-800">
                 <tr>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Item</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">No. Item</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Producto</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Precio</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>

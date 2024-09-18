@@ -24,7 +24,7 @@ class Users extends Component
     public $isModalOpen = false;
 
     protected $rules = [
-        'name' => 'required|min:3',
+        'name' => 'required|min:3|unique:users,name',
         'email' => 'required|unique:users|email',
         'phone' => 'max:8',
         'status' => 'required|not_in:Elegir',
@@ -35,6 +35,7 @@ class Users extends Component
     protected $messages = [
         'name.required' => 'Ingresa el nombre',
         'name.min' => 'El nombre del usuario debe tener al menos 3 caracteres',
+        'name.unique' => 'El nombre de usuario ya existe en el sistema',
         'email.required' => 'Ingresa un correo',
         'email.email' => 'Ingresa un correo valido',
         'phone.min' => 'Ingrese un numero valido',
@@ -66,15 +67,15 @@ class Users extends Component
         if (!empty($this->perfilSeleccionado)) {
             $query->where('profile', $this->perfilSeleccionado);
         }
-    
+
         if (strlen($this->search) > 0) {
             $query->where('name', 'like', '%' . $this->search . '%');
         }
-    
+
         $data = $query->select('*')->orderBy('name', 'asc')->paginate($this->pagination);
-    
+
         $valores = $this->filtroTipoPerfil();
-    
+
         return view('livewire.users.components', [
             'roles' => Role::orderBy('name', 'asc')->get(),
             'users' => $data,
@@ -118,7 +119,17 @@ class Users extends Component
             'password' => bcrypt($this->password)
         ]);
 
-        $user->syncRoles($this->profile);
+        //$user->syncRoles($this->profile);
+
+        // Asignar rol: buscar el rol por ID y asignar el nombre
+        $role = Role::find($this->profile);
+        if ($role) {
+            $user->syncRoles($role->name); // Asigna el nombre del rol
+        } else {
+            // Manejo de error si el rol no existe
+            $this->dispatch('noty-error', type: 'error', message: 'El rol seleccionado no existe.');
+            return;
+        }
 
         if($this->image)
         {
@@ -171,7 +182,7 @@ class Users extends Component
         } else {
             unset($this->rules['password']);
         }
-        
+
         // Validación
         $this->validate();
 
@@ -227,7 +238,7 @@ class Users extends Component
 
         // Contar las ventas asociadas al usuario
         $salesCount = Sale::where('user_id', $user->id)->count();
-        
+
         if ($salesCount > 0) {
             // Manejo de caso donde el usuario tiene ventas asociadas
             $this->dispatch('showNotification', 'No se puede eliminar el Usuario porque tiene ventas asociadas', 'warning');
@@ -237,7 +248,7 @@ class Users extends Component
         // Guardar el nombre de la imagen antes de eliminar el usuario
         $imageName = $user->image;
         $userDelete = $user->name;
-        
+
         $user->delete();
 
         // Eliminar la imagen del almacenamiento si existe
@@ -251,12 +262,12 @@ class Users extends Component
 
     protected $listeners = [
         'deleteRow' => 'destroy',
-        'searchUpdated' => 'updateSearch',     
+        'searchUpdated' => 'updateSearch',
     ];
-    
+
     public function updateSearch($search)
     {
         $this->search = $search;
     }
-    
+
 }

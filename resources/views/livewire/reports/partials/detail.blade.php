@@ -14,7 +14,7 @@
                 <thead class="bg-base-200 dark:bg-gray-800">
                 <h1 class="font-bold text-lg text-center">REPORTES</h1>
                 <tr>
-                    <th class="text-lg font-medium py-3 px-4 text-center">No. Venta</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
@@ -22,7 +22,7 @@
                     <th class="text-lg font-medium py-3 px-4 text-center">Colaborador</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Fecha y Hora</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Detalles</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Modificar</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Editar</th>
                 </tr>
                 </thead>
                 <tbody>

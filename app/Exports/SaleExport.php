@@ -38,7 +38,7 @@ class SaleExport
         $sheet = $spreadsheet->getActiveSheet();
 
         // Definir los encabezados
-        $sheet->setCellValue('A1', 'VENTA')
+        $sheet->setCellValue('A1', 'N0. VENTA')
             ->setCellValue('B1', 'IMPORTE')
             ->setCellValue('C1', 'CANTIDAD')
             ->setCellValue('D1', 'ESTADO')

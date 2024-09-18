@@ -36,6 +36,9 @@ class Cashout extends Component
 
     public function render()
     {
+
+        $this->Consultar();
+
         return view('livewire.cashout.components', [
             'users' => User::orderBy('name', 'asc')->get(),
             'sales' => $this->sales,
@@ -56,8 +59,6 @@ class Cashout extends Component
 
     public function Consultar()
     {
-        $this->currentPage = 1;
-
         $fi= Carbon::parse($this->fromDate)->format('Y-m-d') . ' 00:00:00';
         $ff= Carbon::parse($this->toDate)->format('Y-m-d') . ' 23:59:59';
 
@@ -69,7 +70,7 @@ class Cashout extends Component
 
         $this->total = $this->sales ? $this->sales->sum('total') : 0;
         $this->items = $this->sales ? $this->sales->sum('items') : 0;
-        $this->closeModal();
+
     }
     public function viewDetails(Sale $sale)
     {
