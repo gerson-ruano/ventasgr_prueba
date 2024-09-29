@@ -4,7 +4,7 @@
         //const theme = isDarkMode ? 'dark' : 'material_blue';
         flatpickr(document.getElementsByClassName('flatpickr'), {
             enableTime: false,
-            dateFormat: 'Y-m-d',
+            dateFormat: 'd-m-Y',
             //theme: theme,
             locale: {
                 firstDayofWeek: 1,

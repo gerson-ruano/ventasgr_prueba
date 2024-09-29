@@ -95,4 +95,26 @@ class Cashout extends Component
         return $vendedor ? $vendedor->name : 'C/F';
     }
 
+    public function updatedToDate()
+    {
+        if (Carbon::parse($this->fromDate)->gt(Carbon::parse($this->toDate))) {
+            $this->addError('toDateError', 'La fecha "Desde" no puede ser mayor que la fecha "Hasta".');
+            $this->dispatch('showNotification', 'La fecha "Desde" no puede ser mayor que la fecha "Hasta"', 'error');
+        } else {
+            $this->resetErrorBag('toDateError');
+        }
+    }
+
+    public function updatedFromDate()
+    {
+        // Verificar que 'fromDate' no sea mayor que la fecha actual
+        if (Carbon::parse($this->fromDate)->gt(Carbon::parse($this->toDate))) {
+            $this->dispatch('showNotification', 'La fecha "Desde" no puede ser mayor que la fecha actual.', 'error');
+            $this->addError('fromDateError', 'La fecha "Desde" no puede ser mayor que la fecha actual.');
+        } else {
+            $this->resetErrorBag('fromDateError');
+        }
+    }
+
+
 }

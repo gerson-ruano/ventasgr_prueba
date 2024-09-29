@@ -64,18 +64,20 @@
             <i class="fas fa-paper-plane"></i> Consultar
         </button>
 
-        <a class="btn btn-primary {{ count($data) < 1 ? 'disabled' : '' }}"
-           href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
-           target="_blank"><i class="fas fa-file-pdf"></i>
-            Generar PDF
-        </a>
+        @if(count($data) > 0)
+            <a class="btn btn-primary"
+               href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
+               target="_blank"><i class="fas fa-file-pdf"></i>
+                Generar PDF
+            </a>
 
-        <a class="btn btn-primary {{ count($data) < 1 ? 'disabled' : '' }} mb-3"
-           href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
-           {{--}}href="{{ url('report-excel') }}"--}}
-           target="_blank"><i class="fas fa-file-excel"></i>
-            Exportar a EXCEL
-        </a>
+            <a class="btn btn-primary mb-3"
+               href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
+               target="_blank"><i class="fas fa-file-excel"></i>
+                Exportar a EXCEL
+            </a>
+        @endif
+
     </div>
 </div>
 

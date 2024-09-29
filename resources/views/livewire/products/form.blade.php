@@ -64,7 +64,7 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
+                    <label for="image" class="block text-sm font-medium text-gray-700 text-center">Imagen</label>
                     @if ($image)
                     <div class="flex justify-center mb-2">
                         <img src="{{ $image->temporaryUrl() }}" alt="Imagen de {{ $name }}"

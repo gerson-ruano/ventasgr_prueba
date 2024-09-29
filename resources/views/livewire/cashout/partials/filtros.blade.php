@@ -15,31 +15,54 @@
 
 
     <!-- Fecha Desde Selector -->
-    <div class="flex flex-col items-stretch w-full md:w-1/3">
+    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3 mb-2">
         <div class="w-full">
             <h6 class="text-lg font-medium text-gray-700 text-center">Fecha desde</h6>
             <div class="form-control">
-                <input type="text" wire:model="fromDate" class="input input-bordered flatpickr"
-                       placeholder="Click para elegir" @if ($userid == 0) disabled @endif>
+                <input type="text" wire:model="fromDate" class="input input-bordered text-center flatpickr"
+                       @if(empty($userid))
+                           placeholder="Cierre de HOY"
+                       disabled
+                       @else
+                           placeholder="Hoy o seleccionar"
+                    @endif>
             </div>
+            <!-- Mensaje de error si 'fromDate' es mayor que la fecha actual -->
+            @if($errors->has('fromDateError'))
+                <p class="text-red-600 text-center">{{ $errors->first('fromDateError') }}</p>
+            @endif
         </div>
     </div>
 
     <!-- Fecha Hasta Selector -->
-    <div class="flex flex-col items-stretch w-full md:w-1/3">
+    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3 mb-2">
         <div class="w-full">
             <h6 class="text-lg font-medium text-gray-700 text-center">Fecha hasta</h6>
             <div class="form-control">
-                <input type="text" wire:model="toDate" class="input input-bordered flatpickr"
-                       placeholder="Click para elegir" @if($userid == 0)disabled @endif>
+                <input type="text" wire:model="toDate" class="input input-bordered text-center flatpickr"
+                       @if(empty($fromDate))
+                           placeholder="Cierre de HOY"
+                       disabled
+                       @else
+                           placeholder="Hoy o seleccionar"
+                    @endif>
             </div>
+            <!-- Mensaje de error si la fecha 'Desde' es mayor que 'Hasta' -->
+            @if($errors->has('toDateError'))
+                <p class="text-red-600 text-center">{{ $errors->first('toDateError') }}</p>
+            @endif
         </div>
     </div>
 
+
     <!-- Buttons -->
     <div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2">
-        <button wire:click.prevent="Consultar()" class="btn btn-accent text-xs mb-1">
+        <button wire:click.prevent="Consultar()" class="btn btn-accent text-xs mb-1"
+                @if (empty($sales)) disabled @endif>
             <i class="fas fa-paper-plane"></i> Consultar
         </button>
     </div>
+
+
+
 </div>

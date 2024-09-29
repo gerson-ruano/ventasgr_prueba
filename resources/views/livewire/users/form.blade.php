@@ -40,7 +40,7 @@
 
 
                 <div class="mb-4">
-                    <label for="select_status" class="block text-sm font-medium text-gray-700">Estado</label>
+                    <label for="select_status" class="block text-sm font-medium text-gray-700 text-center mt-1">Estado</label>
                     <select wire:model="status" id="select_status"class="select select-info w-full">
                         <option value="Elegir" selected>Elegir</option>
                         <option value="Active" selected>Activado</option>
