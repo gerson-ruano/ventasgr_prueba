@@ -1,20 +1,24 @@
 
 # VENTASGR 
 
-Sistema de gestion de productos, ventas, usuarios.
+Sistema de gestion de productos, ventas, usuarios, reportes.
 
 <!--img src="https://user-images.githubusercontent.com/104822099/208479821-d38db6ea-2844-4b13-8af0-58ace8636889.png" width="500" heigh="288px" alt="Mi portfolio personal"-->
+## Modulo de Ventas
+![ventas](public/img/ventass.png)
+## Modulo de Reportes
+![ventas](public/img/reportes.png)
 
 ## Descripción
 
-Aplicación que permite gestionar stock de productos y ventas de los mismos, administracion de roles y permisos de usuarios para ingreso al sistema asi como comparas de productos existentes, manejo de stock, generacion de dashboard.
+Aplicación que permite gestionar productos y ventas de los mismos, administracion de roles y permisos de usuarios para ingreso al sistema asi como compras de productos existentes, manejo de stock, generacion de dashboard.
 
 ### Instalación
 
 ```
 # Clona y accede al repositorio
 $ git clone https://github.com/gerson-ruano/ventasgr.git
-$ cd my-portfolio
+$ cd ventasgr
 
 # Instala las dependencias
 $ composer install
@@ -28,24 +32,22 @@ $ php artisan key:generate
 
 # Inicia el servidor
 $ npm run dev
+$ npm run build
 ```
 
 ### Tecnologías empleadas
 
-**Laravel** he utilizado Laravel 9 ya que me ha permitido crear fácilmente la estructura básica del proyecto haciendo uso de sus librerías, paquetes y herramientas. 
+**Laravel** he utilizado Laravel 9-11 ya que me ha permitido crear fácilmente la estructura básica del proyecto haciendo uso de sus librerías, paquetes y herramientas. 
 **Tailwind** para el diseño de los estilos del proyecto
+**Daisy Ui** para utilizar componentes prediseñados de tailwind
 **livewire** para crear componentes personalizados: para la reactividad de la pagina
 **Breeze** para la atentificación de los usuarios
 **Fontawesome** para iconos del sistema.
+**SweetAlert2** para notificaciones.
 
 ## Documentación
 
 * [Laravel-Docs](https://laravel.com/docs/11.x)
-
-
-
-
-
 
 
 

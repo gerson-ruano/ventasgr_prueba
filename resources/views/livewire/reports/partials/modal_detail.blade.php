@@ -12,7 +12,7 @@
             <table class="table table-xs">
                 <thead class="bg-base-200 dark:bg-gray-800">
                 <tr>
-                    <th class="text-lg font-medium py-3 px-4 text-center">No. Item</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Producto</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Precio</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
@@ -24,7 +24,7 @@
                 @foreach($details as $d)
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                         <td class="py-2 px-4 text-center">
-                            {{ $d->id }}</td>
+                            {{ $loop->iteration }}</td>
                         </td>
                         <td class="py-2 px-4 text-center">
                             {{ $d->product }}</td>

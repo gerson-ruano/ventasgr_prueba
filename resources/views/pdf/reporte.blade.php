@@ -78,7 +78,7 @@
                 @endif
                 <br>
                 @if($reportType != 0)
-                    <span style="font-size: 16px"><strong>Fecha de consulta: {{$dateFrom}} al
+                    <span style="font-size: 16px">Fecha de consulta:<strong> {{$dateFrom}} al
                             {{($dateTo)}}</strong></span>
                 @else
                     <span style="font-size: 16px"><strong>Fecha de consulta:
@@ -96,9 +96,9 @@
         <thead>
         <tr>
             <th width="5%">No.</th>
-            <th width="10%">VENTA</th>
+            <th width="10%">#VENTA</th>
             <th width="14%">IMPORTE</th>
-            <th width="10%">CANT</th>
+            <th width="10%">CANT.</th>
             <th width="12%">ESTADO</th>
             <th width="12%">CLIENTE</th>
             <th>USUARIO</th>
@@ -116,7 +116,7 @@
                 <td align="center">{{($item->status)}}</td>
                 <td align="center">{{($item->seller)}}</td>
                 <td align="center">{{($item->user)}}</td>
-                <td align="center">{{($item->created_at)->format('d-m-Y H:i:s')}}</td>
+                <td align="center">{{($item->created_at)->format('d-m-Y H:i')}}</td>
             </tr>
         @endforeach
         </tbody>
@@ -125,7 +125,7 @@
             <td align="center" colspan="2"><span><b>TOTALES:</b></span></td>
             <td style="text-align: right;" colspan="1" class="text-center"><span><strong> Q.
                                 {{ number_format($data->sum('total'),2) }}</strong></span></td>
-            <td align="center" class="text-center" style=""> {{ $data->sum('items')}}</td>
+            <td align="center" class="text-center" style=""><b> {{ $data->sum('items')}}</b></td>
             <td colspan="4"></td>
         </tr>
         </tfoot>
