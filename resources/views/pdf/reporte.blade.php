@@ -114,7 +114,7 @@
                 <td style="text-align: right;">{{ number_format($item->total, 2) }}</td>
                 <td align="center">{{($item->items)}}</td>
                 <td align="center">{{($item->status)}}</td>
-                <td align="center">{{($item->seller)}}</td>
+                <td align="center">{{($item->seller_name)}}</td>
                 <td align="center">{{($item->user)}}</td>
                 <td align="center">{{($item->created_at)->format('d-m-Y H:i')}}</td>
             </tr>
@@ -162,10 +162,6 @@
         }
     }
 </script>
-
-
-
 </body>
-
 
 </html>

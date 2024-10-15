@@ -62,7 +62,4 @@
             <i class="fas fa-paper-plane"></i> Consultar
         </button>
     </div>
-
-
-
 </div>

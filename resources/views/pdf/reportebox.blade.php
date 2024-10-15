@@ -33,7 +33,7 @@
 
                 <br>
 
-                <span style="font-size: 16px">Fecha de venta:<strong>
+                <span style="font-size: 16px">Fecha de Consulta:<strong>
                 {{\Carbon\Carbon::now()->format('H:i:s d-m-Y')}}</strong></span>
 
                 <br>

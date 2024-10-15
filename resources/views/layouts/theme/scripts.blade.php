@@ -249,6 +249,19 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
 });
+
+//Define la forma de vista de impresion PDF de navegador
+function openPdfWindow(url) {
+    var width = 800;
+    var height = 700;
+    var left = (screen.width - width) / 2;
+    var top = (screen.height - height) / 2;
+
+    window.open(url, 'PDF', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left + ', resizable=yes, scrollbars=yes');
+
+    setTimeout(function() {
+        Livewire.dispatch('closeModal');  // Emite el evento de cierre del modal
+    }, 100);  // Espera 500 ms para asegurarse de que el PDF se ha abierto primero
+}
 </script>

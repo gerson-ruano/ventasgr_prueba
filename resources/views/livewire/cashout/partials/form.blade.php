@@ -4,7 +4,7 @@
         <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-5xl mx-4">
             <h2 class="text-lg font-semibold mb-4 text-center">
                 {{-- $saleId ? '#Detalle de la Venta' : 'Nueva Categoría' --}}
-                <b>Detalle de la Venta #{{$userid}}</b>
+                <b>Detalle de la Venta #{{$saleId}}</b>
             </h2>
 
             <div
@@ -75,9 +75,11 @@
                 </div>
             </div>
 
-
             <form wire:submit="{{ $userid ? 'update' : 'store' }}">
                 <div class="flex justify-end mt-4">
+                    <a href="#" class="btn btn-primary mr-1" onclick="openPdfWindow('{{ route('report.box', ['seller' => $this->obtenerNombreVendedor($item->seller), 'nextSaleNumber' => $saleId]) }}')"
+                       >Imprimir
+                    </a>
                     <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
                     {{--}}<button type="submit" class="btn {{ $selected_id ? 'btn-info' : 'btn-success' }}">
                         {{ $selected_id ? 'Actualizar' : 'Guardar' }}

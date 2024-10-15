@@ -38,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
 
     //REPORTES PDF
     Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class,'reportPDF']);
+    Route::get('report/venta/{seller}/{nextSaleNumber}', [ExportController::class,'reportVenta'])->name('report.venta');
+    Route::get('report/details/{seller}/{nextSaleNumber}', [ExportController::class, 'reportDetails'])->name('report.details');
+    Route::get('report/box/{seller}/{nextSaleNumber}', [ExportController::class, 'reportBox'])->name('report.box');
 
 
     //REPORTES EXCEL

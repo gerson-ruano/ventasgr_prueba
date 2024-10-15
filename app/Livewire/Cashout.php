@@ -18,6 +18,7 @@ class Cashout extends Component
     private $pagination = 10;
     private $sales = [];
     public $isModalOpen = false;
+    public $saleId;
 
     public function paginationView()
     {
@@ -86,6 +87,8 @@ class Cashout extends Component
             ->where('sales.id', $sale->id)
             ->get();
 
+        $this->saleId = $sale->id; // Almacena el ID de la venta
+
         $this->openModal();
     }
 
@@ -116,5 +119,8 @@ class Cashout extends Component
         }
     }
 
+    protected $listeners = [
+        'closeModal' => 'closeModal'
+    ];
 
 }

@@ -69,6 +69,7 @@
             <div class="mt-4">
                 {{ $sales->links() }}
             </div>
+            @include('livewire.cashout.partials.form')
 
         </div>
     @else

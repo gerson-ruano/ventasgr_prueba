@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
-use Barryvdh\DomPDF\Facade as PDF;
+//use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Models\Sale;
 use Dompdf\Options;
@@ -12,9 +13,24 @@ use App\Exports\SaleExport;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
+//use Hardevine\Cart\Facades\Cart;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class ExportController extends Controller
 {
+    public $currentDate;
+
+    public function __construct()
+    {
+        // Inicializa la fecha actual al crear la clase
+        $this->currentDate = Carbon::now()->format('d-m-Y');
+    }
+
+    public function obtenerNombreVendedor($id)
+    {
+        $vendedor = User::find($id);
+        return $vendedor ? $vendedor->name : 'No ingresado';
+    }
 
     public function reportPDF($userId, $reportType, $dateFrom = null, $dateTo = null){
 
@@ -45,11 +61,73 @@ class ExportController extends Controller
 
         $user = $userId == 0 ? 'Todos' : User::find($userId)->name;
         //$seller = $this->obtenerNombreVendedor($seller_selected);
-        $pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
 
-        return $pdf->stream('salesReport.pdf'); //visualizar
+        foreach ($data as $item) {
+            $item->seller_name = $this->obtenerNombreVendedor($item->seller);  // Usar la función para obtener el nombre del vendedor
+        }
+
+        $pdf = Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
+        //$pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
+
+        return $pdf->stream("Reporte_{$this->currentDate}.pdf"); //visualizar
         //return $pdf->download('salesReport.pdf'); //descargar
     }
+
+    public function reportVenta($seller, $getNextSaleNumber){
+
+        $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
+
+        // Generar el PDF con la vista y los datos
+        $pdf = $this->generatePdf('pdf.reporteventa', [
+            'cart' => $cart,
+            'getNextSaleNumber' => $getNextSaleNumber,
+            'seller' => $seller,
+        ]);
+
+        // Devolver el PDF como una respuesta de streaming
+        return $pdf->stream("Venta_{$getNextSaleNumber}_{$this->currentDate}.pdf");
+    }
+
+    public function reportDetails($seller, $getNextSaleNumber){
+
+        $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
+
+        // Generar el PDF con la vista y los datos
+        $pdf = $this->generatePdf('pdf.reportedetails', [
+            'cart' => $cart,
+            'getNextSaleNumber' => $getNextSaleNumber,
+            'seller' => $seller,
+        ]);
+
+        // Devolver el PDF como una respuesta de streaming
+        return $pdf->stream("VentaDetails{$getNextSaleNumber}_{$this->currentDate}.pdf");
+    }
+
+    public function reportBox($seller, $getNextSaleNumber){
+
+        $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
+
+        // Generar el PDF con la vista y los datos
+        $pdf = $this->generatePdf('pdf.reportebox', [
+            'cart' => $cart,
+            'getNextSaleNumber' => $getNextSaleNumber,
+            'seller' => $seller,
+        ]);
+
+        // Devolver el PDF como una respuesta de streaming
+        return $pdf->stream("CloseBox{$getNextSaleNumber}_{$this->currentDate}.pdf");
+    }
+
+    private function generatePdf($view, $data)
+    {
+        $options = [
+            'isHtml5ParserEnabled' => true,  // Habilita el análisis de HTML5
+            'isRemoteEnabled' => true,       // Permite cargar recursos externos como imágenes
+        ];
+
+        return Pdf::loadView($view, $data)->setOptions($options);
+    }
+
 
 
     public function reportExcel($userId, $reportType, $dateFrom = null, $dateTo = null)
@@ -67,13 +145,6 @@ class ExportController extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);
 
     }
-
-
-    /*public function obtenerNombreVendedor($seller)
-    {
-        $vendedor = User::find($seller);
-        return $vendedor ? $vendedor->name : 'C/F';
-    }*/
 
 
 }

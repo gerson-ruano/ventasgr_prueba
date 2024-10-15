@@ -245,4 +245,8 @@ class Reports extends Component
         return $vendedor ? $vendedor->name : 'C/F';
     }
 
+    protected $listeners = [
+        'closeModal' => 'closeModal'
+    ];
+
 }

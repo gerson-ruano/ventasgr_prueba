@@ -11,7 +11,7 @@
     <div class="lg:w-3/4">
         <div>
             @include('livewire.cashout.partials.detail')
-            @include('livewire.cashout.partials.form')
+            {{--}}@include('livewire.cashout.partials.form')--}}
         </div>
         {{--}}<div class="">
             @include('livewire.reports.partials.sales-detail')

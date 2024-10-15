@@ -108,7 +108,7 @@ class Pos extends Component
     public function obtenerNombreVendedor($id) //Obtiene el 'NOMBRE DE VENDEDOR' y lo muestra en la vista de IMPRESION
     {
         $vendedor = User::find($id);
-        return $vendedor ? $vendedor->name : 'No disponible';
+        return $vendedor ? $vendedor->name : 'No ingresado';
     }
 
 
@@ -146,7 +146,7 @@ class Pos extends Component
         'deleteRow' => 'removeItem',
         'deleteAllConfirmed' => 'deleteAllConfirmedCart',
         'clearChange' => 'clearChange',
-        //'redirectPos' => 'redirectToPos'
+        //'closeModal' => 'closeModal'
     ];
 
     public function scanCode($barcode, $cant = 1)

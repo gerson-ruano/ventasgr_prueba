@@ -72,8 +72,9 @@ $totalProduct = count($cart);
             <button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1"
                     @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>Detalles Venta
             </button>
+            <a href="#" class="btn btn-primary" onclick="openPdfWindow('{{ route('report.venta', ['seller' => $this->obtenerNombreVendedor($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber]) }}')"
+                @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>Imprimir
+            </a>
         </div>
-
-
     </div>
 @endif

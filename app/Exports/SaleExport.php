@@ -28,7 +28,7 @@ class SaleExport
         $this->reportType = $reportType;
         $this->dateFrom = $f1;
         $this->dateTo = $f2;
-        $this->fileName = 'Reporte_' . now()->format('Y-m-d_H-i-s') . '.xlsx';
+        $this->fileName = 'Reporte_' . now()->format('h_i__d_m_Y') . '.xlsx';
     }
 
     public function reportExcel()
