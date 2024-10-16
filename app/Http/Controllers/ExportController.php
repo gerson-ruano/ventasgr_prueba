@@ -106,12 +106,16 @@ class ExportController extends Controller
     public function reportBox($seller, $getNextSaleNumber){
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
+        $sale = Sale::with('details')->find($getNextSaleNumber);
+        //dd(Sale::with('details')->find($getNextSaleNumber));
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.reportebox', [
             'cart' => $cart,
             'getNextSaleNumber' => $getNextSaleNumber,
+            'details' => $sale->details,
             'seller' => $seller,
+            'sale' => $sale,
         ]);
 
         // Devolver el PDF como una respuesta de streaming

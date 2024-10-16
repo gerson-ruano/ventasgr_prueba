@@ -41,6 +41,36 @@
             </td>
         </tr>
     </table>
+
+    <table>
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th>Precio Unitario</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($details as $d)
+            {{--($details)--}}
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $d->product->name }}</td>
+                <td>Q. {{ number_format($d->price, 2) }}</td>
+                <td>{{ number_format($d->quantity, 2) }}</td>
+                <td>Q. {{ number_format($d->price * $d->quantity, 2) }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+
+    <!-- Si necesitas mostrar un total final -->
+    <div class="total">
+        <h6>Total: Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</h6>
+    </div>
+
 </section>
 
 
@@ -155,8 +185,44 @@
 
     }
 
-    /*.table-items tfoot td {
+
+     table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-bottom: 20px;
+     }
+
+    th, td {
+        border: 1px solid #000;
+        padding: 8px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+    }
+
+    thead th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+
+    h6 {
+        margin: 0;
+        font-weight: normal;
+        font-size: 12px;
+    }
+
+    .total {
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+
+    .table-items tfoot td {
             background-color: #f2f2f2;
             font-weight: bold;
-        }*/
+        }
 </style>
