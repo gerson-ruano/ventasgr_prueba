@@ -78,7 +78,7 @@ class ExportController extends Controller
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
 
         // Generar el PDF con la vista y los datos
-        $pdf = $this->generatePdf('pdf.reporteventa', [
+        $pdf = $this->generatePdf('pdf.impresionventa', [
             'cart' => $cart,
             'getNextSaleNumber' => $getNextSaleNumber,
             'seller' => $seller,
@@ -115,7 +115,7 @@ class ExportController extends Controller
             'getNextSaleNumber' => $getNextSaleNumber,
             'details' => $sale->details,
             'seller' => $seller,
-            'sale' => $sale,
+            'sale' => $sale
         ]);
 
         // Devolver el PDF como una respuesta de streaming

@@ -242,7 +242,7 @@ class Reports extends Component
     public function obtenerNombreVendedor($seller)
     {
         $vendedor = User::find($seller);
-        return $vendedor ? $vendedor->name : 'C/F';
+        return $vendedor ? $vendedor->name : 'Consumidor Final';
     }
 
     protected $listeners = [
