@@ -1,9 +1,8 @@
 <div
     class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 flex-grow h-auto sm:h-30 card bg-base-300 rounded-box place-items-center mb-1 ml-1 lg:mb-1 lg:ml-1 lg:mr-0">
 
-
+{{--Filtro de USUARIOS--}}
     <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
-
         @include('livewire.components.select_filtro', [
                     'default' => 'Todos',
                     'val_default' => 0,
@@ -12,7 +11,7 @@
                     'valores' => $users
                 ])
     </div>
-
+    {{--Filtro de TIPO DE REPORTE--}}
     <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 mt-1 w-full">
         @include('livewire.components.select_filtro', [
                             'default' => 'Elegir',
@@ -22,7 +21,7 @@
                             'valores' => $valoresReporte
                         ])
     </div>
-
+    {{--Filtro de TIPO DE PAGO--}}
     <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
         @include('livewire.components.select_filtro', [
                     'default' => 'Todos',
@@ -58,7 +57,7 @@
         </div>
     </div>
 
-    <!-- Buttons -->
+    <!-- Buttons PDF / EXCEL -->
     <div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2">
         <button wire:click="$refresh" class="btn btn-accent text-xs mb-1">
             <i class="fas fa-paper-plane"></i> Consultar
@@ -66,13 +65,13 @@
 
         @if(count($data) > 0)
             <a class="btn btn-primary"
-               href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
+               href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo . '/' . $selectTipoEstado) }}"
                target="_blank"><i class="fas fa-file-pdf"></i>
                 Generar PDF
             </a>
 
             <a class="btn btn-primary mb-3"
-               href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo) }}"
+               href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo .  '/' . $selectTipoEstado) }}"
                target="_blank"><i class="fas fa-file-excel"></i>
                 Exportar a EXCEL
             </a>

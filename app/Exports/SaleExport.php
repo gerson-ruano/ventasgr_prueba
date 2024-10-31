@@ -21,13 +21,15 @@ class SaleExport
     protected $dateTo;
     protected $reportType;
     protected $fileName;
+    protected $selectTipoEstado;
 
-    public function __construct($userId, $reportType, $f1, $f2)
+    public function __construct($userId, $reportType, $f1, $f2, $selectTipoEstado)
     {
         $this->userId = $userId;
         $this->reportType = $reportType;
         $this->dateFrom = $f1;
         $this->dateTo = $f2;
+        $this->selectTipoEstado = $selectTipoEstado;
         $this->fileName = 'Reporte_' . now()->format('h_i__d_m_Y') . '.xlsx';
     }
 
@@ -36,6 +38,12 @@ class SaleExport
     {
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+
+        $statusTranslations = [
+            'PAID' => 'Pagado',
+            'CANCELLED' => 'Cancelado',
+            'PENDING' => 'Pendiente'
+        ];
 
         // Definir los encabezados
         $sheet->setCellValue('A1', 'N0. VENTA')
@@ -64,13 +72,16 @@ class SaleExport
         // Escribir datos en la hoja
         $row = 2;
         foreach ($data as $sale) {
+            $translatedStatus = $statusTranslations[$sale->status] ?? $sale->status;
+
             $sheet->setCellValue('A' . $row, $sale->id)
                 ->setCellValue('B' . $row, $sale->total)
                 ->setCellValue('C' . $row, $sale->items)
-                ->setCellValue('D' . $row, $sale->status)
+                ->setCellValue('D' . $row, $translatedStatus)
                 ->setCellValue('E' . $row, $this->obtenerNombreVendedor($sale->seller))
                 ->setCellValue('F' . $row, $sale->user)
                 ->setCellValue('G' . $row, Date::dateTimeToExcel($sale->created_at));
+
             $row++;
         }
 
@@ -129,9 +140,12 @@ class SaleExport
             $query->where('user_id', $this->userId);
         }
 
+        if ($this->selectTipoEstado) {
+            $query->where('sales.status', $this->selectTipoEstado);
+        }
+
         return $query->get();
     }
-
     public function obtenerNombreVendedor($seller)
     {
         $vendedor = User::find($seller);

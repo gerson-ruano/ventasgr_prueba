@@ -37,14 +37,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cashout', Cashout::class)->name('cashout');
 
     //REPORTES PDF
-    Route::get('report/pdf/{user}/{type}/{f1}/{f2}', [ExportController::class,'reportPDF']);
+    Route::get('report/pdf/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class,'reportPDF']);
     Route::get('report/venta/{seller}/{nextSaleNumber}', [ExportController::class,'reportVenta'])->name('report.venta');
     Route::get('report/details/{seller}/{nextSaleNumber}', [ExportController::class, 'reportDetails'])->name('report.details');
     Route::get('report/box/{seller}/{nextSaleNumber}', [ExportController::class, 'reportBox'])->name('report.box');
 
 
     //REPORTES EXCEL
-    Route::get('report-excel/{user}/{type}/{f1}/{f2}', [ExportController::class,'reportExcel']);
+    Route::get('report-excel/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class,'reportExcel']);
     //Route::get('report-excel', [ExportController::class,'reportExcel']);
 });
 
