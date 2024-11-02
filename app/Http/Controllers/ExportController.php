@@ -68,7 +68,11 @@ class ExportController extends Controller
             $query->where('user_id', $userId);
         }
 
-        if ($selectTipoEstado !== null) {
+        /*if ($selectTipoEstado !== null) {
+            $query->where('sales.status', $selectTipoEstado);
+        }*/
+
+        if ($selectTipoEstado != 0) { // Si no es igual a 0, aplica el filtro
             $query->where('sales.status', $selectTipoEstado);
         }
 

@@ -39,6 +39,7 @@ class Reports extends Component
         $this->sumDetails = 0;
         $this->countDetails = 0;
         $this->reportType = 0;
+        $this->selectTipoEstado = 0;
         $this->userId = 0;
         $this->saleId = 0;
         $this->valoresReporte = $this->tipoReporte();
@@ -104,7 +105,7 @@ class Reports extends Component
             $query->where('user_id', $this->userId);
         }
 
-        if ($this->selectTipoEstado) {
+        if ($this->selectTipoEstado != 0) { // Si no es igual a 0, aplica el filtro
             $query->where('sales.status', $this->selectTipoEstado);
         }
 
