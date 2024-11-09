@@ -29,7 +29,7 @@ class ExportController extends Controller
     public function obtenerNombreVendedor($id)
     {
         $vendedor = User::find($id);
-        return $vendedor ? $vendedor->name : 'No ingresado';
+        return $vendedor ? $vendedor->name : 'Ninguno';
     }
 
     public function reportPDF($userId, $reportType, $dateFrom = null, $dateTo = null, $selectTipoEstado = null){
@@ -46,19 +46,6 @@ class ExportController extends Controller
             $to = Carbon::parse($dateTo)->format('Y-m-d') . ' 23:59:59';
         }
 
-        /*if($userId == 0){
-            $data = Sale::join('users as u','u.id','sales.user_id')
-                ->select('sales.*','u.name as user')
-                ->whereBetween('sales.created_at', [$from, $to])
-                ->get();
-        }else{
-            $data = Sale::join('users as u', 'u.id','sales.user_id')
-                ->select('sales.*','u.name as user')
-                ->whereBetween('sales.created_at', [$from, $to])
-                ->where('user_id', $userId)
-                ->get();
-        }*/
-
         // Construir la consulta de ventas con el filtro de tipo de pago
         $query = Sale::join('users as u', 'u.id', 'sales.user_id')
             ->select('sales.*', 'u.name as user')
@@ -68,15 +55,12 @@ class ExportController extends Controller
             $query->where('user_id', $userId);
         }
 
-        /*if ($selectTipoEstado !== null) {
-            $query->where('sales.status', $selectTipoEstado);
-        }*/
-
         if ($selectTipoEstado != 0) { // Si no es igual a 0, aplica el filtro
             $query->where('sales.status', $selectTipoEstado);
         }
 
         $data = $query->get();
+        //$data = $query->paginate($PerPage);
 
         $user = $userId == 0 ? 'Todos' : User::find($userId)->name;
 
