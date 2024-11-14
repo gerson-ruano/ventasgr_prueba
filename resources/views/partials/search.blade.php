@@ -1,3 +1,5 @@
+{{--INGRESAR CODIGO DE BARRAS EN EL MENU DE MODULOS--}}
+
 <label class="input input-sm w-full max-w-xs">
     <input id="code" type="text" placeholder="code" />
 </label>

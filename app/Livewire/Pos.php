@@ -54,6 +54,7 @@ class Pos extends Component
                 ->extends('layouts.app')
                 ->section('content');
         }
+
     }
 
     public function ListaPagos()

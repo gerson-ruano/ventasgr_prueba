@@ -175,6 +175,7 @@ class Users extends Component
     public function update()
     {
         // Actualización de reglas de validación para la edición
+        $this->rules['name'] = "required|min:3|unique:users,name,{$this->selected_id}";
         $this->rules['email'] = "required|email|unique:users,email,{$this->selected_id}";
 
         if (!empty($this->password)) {
