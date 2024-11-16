@@ -32,16 +32,22 @@ Route::middleware(['auth'])->group(function () {
 
 //Route::prefix('admin')->middleware(['permission'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
-        Route::get('categories', Categories::class)->name('categories');
-        Route::get('products', Products::class)->name('products');
-        Route::get('coins', Coins::class)->name('coins');
+
         Route::get('users', Users::class)->name('users');
         Route::get('roles', Roles::class)->name('roles');
         Route::get('permisos', Permisos::class)->name('permisos');
         Route::get('asignar', Asignar::class)->name('asignar');
+
+
+    });
+    Route::middleware(['role:Admin|Employee'])->group(function () {
+
+        Route::get('categories', Categories::class)->name('categories');
+        Route::get('products', Products::class)->name('products');
+        Route::get('coins', Coins::class)->name('coins');
+        Route::get('pos', Pos::class)->name('pos');
         Route::get('reports', Reports::class)->name('reports');
         Route::get('cashout', Cashout::class)->name('cashout');
-
 
         //REPORTES GENERALES PDF
         Route::get('report/pdf/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class, 'reportPDF']);
@@ -49,15 +55,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('report/details/{seller}/{nextSaleNumber}', [ExportController::class, 'reportDetails'])->name('report.details');
         //REPORTES CIERRE DE CAJA PDF
         Route::get('report/box/{seller}/{nextSaleNumber}', [ExportController::class, 'reportBox'])->name('report.box');
+        //IMPRESION VENTA PDF
+        Route::get('report/venta/{seller}/{nextSaleNumber}', [ExportController::class, 'reportVenta'])->name('report.venta');
 
         //REPORTES EXCEL
         Route::get('report-excel/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class, 'reportExcel']);
         //Route::get('report-excel', [ExportController::class,'reportExcel']);
     });
-    Route::middleware(['role:Admin|Seller'])->group(function () {
-        Route::get('pos', Pos::class)->name('pos');
-        //IMPRESION VENTA PDF
-        Route::get('report/venta/{seller}/{nextSaleNumber}', [ExportController::class, 'reportVenta'])->name('report.venta');
+
+    Route::middleware(['role:Admin|Employee|Seller'])->group(function () {
 
     });
 });

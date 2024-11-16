@@ -11,17 +11,21 @@
             width: 100%;
             border-collapse: collapse;
             margin-top: 10px;
+            table-layout: fixed; /* Hace que las celdas tengan un ancho fijo */
         }
 
         .table-items th,
         .table-items td {
             border: 1px solid #ddd;
             text-align: center;
-            padding: 8px;
+            padding: 4px; /* Reduce el padding para hacer las celdas más pequeñas */
+            font-size: 12px; /* Reduce el tamaño de la fuente */
+            word-wrap: break-word; /* Permite que el texto se ajuste dentro de la celda */
         }
 
         .table-items th {
             background-color: #f2f2f2;
+            font-size: 12px; /* Reduce el tamaño de la fuente de los encabezados */
         }
 
         .table-items tbody tr:last-child td {
@@ -96,19 +100,19 @@
         <thead>
         <tr>
             <th width="5%">No.</th>
-            <th width="6%">VENTA</th>
-            <th width="10%">IMPORTE</th>
-            <th width="8%">CANT.</th>
-            <th width="8%">ESTADO</th>
-            <th width="4%">CLIENTE</th>
+            <th width="8%">VENTA</th>
+            <th width="12%">IMPORTE</th>
+            <th width="10%">CANTIDAD</th>
+            <th width="10%">ESTADO</th>
+            <th width="10%">CLIENTE</th>
             <th width="14%">USUARIO</th>
-            <th width="34%">FECHA/HORA</th>
+            <th width="16%">FECHA/HORA</th>
         </tr>
         </thead>
         <tbody>
         @php
-            $firstPageCount = 22;  // Número de registros en la primera página
-            $otherPagesCount = 26; // Número de registros en las páginas siguientes
+            $firstPageCount = 35;  // Número de registros en la primera página
+            $otherPagesCount = 42; // Número de registros en las páginas siguientes
         @endphp
 
         @foreach ($data as $index => $item)

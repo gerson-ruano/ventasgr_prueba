@@ -6,112 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cierre de Caja</title>
     <link rel="stylesheet" href="{{ asset('css/custom_pdf.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom_page.css') }}">
-    <style>
-        .table-items {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .table-items th,
-        .table-items td {
-            border: 1px solid #ddd;
-            text-align: center;
-            padding: 8px;
-        }
-
-        .table-items th {
-            background-color: #f2f2f2;
-        }
-
-        .rounded-table {
-            width: 100%;
-            margin-bottom: 30px;
-            border-collapse: collapse; /* Asegura que no haya espacios entre las celdas */
-            border-radius: 10px; /* Ajusta el radio según lo necesites */
-            overflow: hidden; /* Asegura que el borde redondeado funcione correctamente */
-        }
-
-        .rounded-table th, .rounded-table td {
-            border: 1px solid #ddd; /* Bordes de las celdas */
-            padding: 8px; /* Espaciado interno */
-        }
-
-        .rounded-table th {
-            background-color: #f2f2f2; /* Color de fondo de los encabezados */
-            text-align: left; /* Alineación del texto */
-        }
-        .footer {
-            position: fixed;
-            bottom: -30px;
-            left: 0px;
-            right: 0px;
-            height: 50px;
-            text-align: center;
-            line-height: 35px;
-        }
-        body {
-            font-family: Arial, sans-serif;
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #000;
-            padding: 8px;
-            text-align: center;
-            font-family: Arial, sans-serif;
-            font-size: 12px;
-        }
-
-        thead th {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-
-        h6 {
-            margin: 0;
-            font-weight: normal;
-            font-size: 12px;
-        }
-
-        .total {
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        tfoot {
-            font-weight: bold;
-        }
-
-        .page-break {
-            page-break-after: always;
-        }
-
-        .pagination {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 12px;
-        }
-
-        .table-items tfoot td {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }
-        .pagenum:before {
-                content: counter(page);
-            }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/pdf.css') }}">
 </head>
-
 <body>
 <section class="header" style="top: -287px;">
     <table class="rounded-table" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 30px;">
@@ -124,7 +20,8 @@
             <td width="30%" style="padding-top: 10px; padding-left: 30px;">
                 <img src="{{ asset('img/ventasgr_logo.png') }}" alt="VentasGR" class="invoice-logo" style="max-width: 100px;">
             </td>
-            <td width="70%" class="text-left text-company" style="padding-top: 30px">
+            <td width="70%" class="text-left text-company" style="padding-top: 10px">
+                <span style="font-size: 16px"><strong>VENTA CERRADA</strong></span><br>
                 <span style="font-size: 16px"><strong>Venta #{{$getNextSaleNumber}}</strong></span><br>
                 <span style="font-size: 16px">Fecha de Consulta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span><br>
                 <span style="font-size: 14px">Cliente: {{$seller}}</span>
@@ -218,7 +115,7 @@
     </div>
 @endif--}}
 
-<section class="footer">
+<section class="footer table-items">
     <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td width="20%">Sistema {{ config('app.name') }}</td>

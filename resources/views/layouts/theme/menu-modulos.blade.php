@@ -10,51 +10,51 @@ details summary {
 </style>
 
 <ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0">
-    <li><a class="border dark:border-gray-200" href="{{url('pos')}}">
+    <li><a class="border dark:border-gray-200 {{ Auth::user()->hasRole('Admin|Seller|Employee') ? '' : 'opacity-50 pointer-events-none' }}" href="{{url('pos')}}">
             <i class="fas fa-shopping-cart">
             </i>Venta</a></li>
-    <li class="">
+    <li>
         <details class="">
-            <summary class="border dark:border-gray-200 flex item-center">
+            <summary class="border dark:border-gray-200 flex item-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
                 <i class="fas fa-project-diagram mr-1"></i>Gestion Stocks
             </summary>
             <ul class="mt-4">
                 <li class="">
-                    <a href="{{url('categories')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('categories')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-tags mr-1"></i>Categorias
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('products')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('products')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-shopping-basket mr-1"></i>Productos
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('coins')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('coins')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-money-bill-alt mr-1"></i>Monedas
                     </a>
                 </li>
             </ul>
         </details>
     </li>
-    <li class="">
+    <li>
         <details>
-            <summary class="border dark:border-gray-200 flex item-center">
+            <summary class="border dark:border-gray-200 flex item-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
                 <i class="fas fa-print mr-1"></i>Reporteria
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('cashout')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('cashout')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-cash-register mr-1"></i>Cierre de caja
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('reports')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('reports')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-file-contract mr-1"></i>Reportes
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-chart-bar mr-1"></i>Estadistica
                     </a>
                 </li>
@@ -63,34 +63,34 @@ details summary {
     </li>
     <li class="ml-1">
         <details>
-            <summary class="border dark:border-gray-200 flex item-center">
+            <summary class="border dark:border-gray-200 flex item-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                 <i class="fas fa-users mr-1"></i>Gestion Usuarios
             </summary>
             <ul>
                 <li class="">
-                    <a href="{{url('roles')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('roles')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-street-view mr-1"></i>Roles
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('permisos')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('permisos')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-unlock-alt mr-1"></i>Permisos
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('asignar')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('asignar')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-check-square mr-1"></i>Asignar
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('users')}}" class="border dark:border-gray-200 flex items-center">
+                    <a href="{{url('users')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-user mr-1"></i>Usuarios
                     </a>
                 </li>
             </ul>
         </details>
     </li>
-    <li class="">
+    <li>
         <div>
             {{--@include('partials.search')
             <livewire:components.searchbox :model="'search'" />--}}

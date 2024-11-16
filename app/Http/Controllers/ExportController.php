@@ -29,7 +29,7 @@ class ExportController extends Controller
     public function obtenerNombreVendedor($id)
     {
         $vendedor = User::find($id);
-        return $vendedor ? $vendedor->name : 'Ninguno';
+        return $vendedor ? $vendedor->name : 'pruebas';
     }
 
     public function reportPDF($userId, $reportType, $dateFrom = null, $dateTo = null, $selectTipoEstado = null){
@@ -93,12 +93,15 @@ class ExportController extends Controller
     public function reportDetails($seller, $getNextSaleNumber){
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
+        $sale = Sale::with('details')->find($getNextSaleNumber);
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.reportedetails', [
             'cart' => $cart,
             'getNextSaleNumber' => $getNextSaleNumber,
+            'details' => $sale->details,
             'seller' => $seller,
+            'sale' => $sale
         ]);
 
         // Devolver el PDF como una respuesta de streaming

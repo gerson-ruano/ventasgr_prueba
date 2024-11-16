@@ -6,13 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reporte de Venta</title>
     <link rel="stylesheet" href="{{ asset('css/custom_pdf.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom_page.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pdf.css') }}">
 </head>
 
 <body>
 
 <section class="header" style="top: -287px;">
-    <table cellpadding="0" cellspacing="0" width="100%">
+    <table class="rounded-table" cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td colspan="2" align="center">
                 <span style="font-size: 25px; font-weight: bold;"> Sistema {{ config('app.name') }}</span>
@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <!--td width="30%" style="vertical-align: top; padding-top: 10px; padding-left: 30px; position: relative">
-                <img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo"
+                <img src="{{-- public_path('img/ventasgr_logo.png') --}}" alt="Logo VentasGR" class="invoice-logo"
                      style="max-width: 100px;">
             </td-->
             <td width="30%" style="vertical-align: top; padding-top: 10px; padding-left: 30px; position: relative">
@@ -98,8 +98,8 @@
         </tfoot>
     </table>
 
-    <section class="footer">
-        <table cellpadding="0" cellspacing="0" class="" width="100%">
+    <section class="footer table-items">
+        <table cellpadding="0" cellspacing="0" class="rounded" width="100%">
             <tr>
                 <td width="20%">
                     <span>Sistema {{ config('app.name') }}</span>
@@ -115,48 +115,19 @@
     </section>
     <script type="text/php">
         if (isset($pdf)) {
-            $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-            $size = 10;
-            $pdf->page_text(520, 770, "Página: {PAGE_NUM} de {PAGE_COUNT}", $font, $size);
-        }
+                $pdf->page_script('
+                    if ($PAGE_COUNT > 1) {
+                        $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
+                        $size = 10;
+                        $pageText = "Página: " . $PAGE_NUM . " de " . $PAGE_COUNT;
+                        $y = 15;
+                        $x = 520;
+                        $pdf->text($x, $y, $pageText, $font, $size);
+                    }
+                ');
+            }
     </script>
 
 </body>
 
 </html>
-
-
-<style>
-    .table-items {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    .table-items th,
-    .table-items td {
-        /*padding: 2px;*/
-        border: 1px solid #ddd;
-        text-align: center;
-    }
-
-    .table-items th {
-        background-color: #f2f2f2;
-    }
-
-    .footer {
-        position: fixed;
-        bottom: 20px;
-        /* Ajusta la distancia desde la parte inferior según tus necesidades */
-        left: 0;
-        right: 0;
-        text-align: center;
-    }
-
-    }
-
-    /*.table-items tfoot td {
-            background-color: #f2f2f2;
-            font-weight: bold;
-        }*/
-</style>
