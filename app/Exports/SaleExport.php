@@ -41,7 +41,7 @@ class SaleExport
 
         $statusTranslations = [
             'PAID' => 'Pagado',
-            'CANCELLED' => 'Cancelado',
+            'CANCELLED' => 'Anulado',
             'PENDING' => 'Pendiente'
         ];
 

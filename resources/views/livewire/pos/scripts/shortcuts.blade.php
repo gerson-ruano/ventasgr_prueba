@@ -3,26 +3,26 @@
 
     //console.log(window.keypress);  // Debería mostrar el objeto Keypress
     //const keyboard = new (window.Keypress.Listener)();
-/***
-    listener.simple_combo("f6", function() {
-        livewire.dispatch('savesale')
-    })
+    /***
+     listener.simple_combo("f6", function() {
+     livewire.dispatch('savesale')
+     })
 
-    listener.simple_combo("f8", function() {
-        document.getElementById('cash').value = ''
-        document.getElementById('cash').focus()
-    })
+     listener.simple_combo("f8", function() {
+     document.getElementById('cash').value = ''
+     document.getElementById('cash').focus()
+     })
 
-    listener.simple_combo("f4", function() {
-        var total = parseFloat(document.getElementById('hiddenTotal').value)
-        if (total > 0) {
-            ConfirmVaciarCart(0, 'clearCart', 'SEGURO DE ELIMINAR EL CARRITO?')
-            //console.log(total)
-        } else {
-            noty('AGREGA PRODUCTOS A LA VENTA')
-        }
-    })
-**/
+     listener.simple_combo("f4", function() {
+     var total = parseFloat(document.getElementById('hiddenTotal').value)
+     if (total > 0) {
+     ConfirmVaciarCart(0, 'clearCart', 'SEGURO DE ELIMINAR EL CARRITO?')
+     //console.log(total)
+     } else {
+     noty('AGREGA PRODUCTOS A LA VENTA')
+     }
+     })
+     **/
     function clearCash() {
         document.getElementById('cash').value = '';
         document.getElementById('cash').focus();
@@ -43,7 +43,7 @@
     }
 
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         if (document.getElementById("clearCash")) {
             document.getElementById("clearCash").addEventListener("click", clearCash);
         }
@@ -52,4 +52,19 @@
             document.getElementById("clearCart").addEventListener("click", clearCart);
         }
     });
+
+    /*document.addEventListener('DOMContentLoaded', function () {
+        var cardBody = document.getElementById('cardBody');
+
+        // Verifica si cardBody existe antes de intentar cambiar su estilo
+        if (cardBody) {
+            // Muestra el card-body
+            cardBody.style.display = 'block';
+
+            // Oculta el card-body después de 5 segundos (5000 milisegundos)
+            setTimeout(function () {
+                cardBody.style.display = 'none';
+            }, 3000);
+        }
+    });*/
 </script>

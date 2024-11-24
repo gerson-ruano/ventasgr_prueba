@@ -59,7 +59,7 @@
 @php
     $statusTranslations = [
         'PAID' => 'Pagado',
-        'CANCELLED' => 'Cancelado',
+        'CANCELLED' => 'Anulado',
         'PENDING' => 'Pendiente'
     ];
 @endphp

@@ -25,6 +25,11 @@ new #[Layout('layouts.guest')] class extends Component
 }; ?>
 
 <div>
+    @if(session('error'))
+        <div class="alert flex items-center alert-danger justify-center bg-white border border-gray-300 rounded-lg shadow-lg p-4">
+            {{ session('error') }}
+        </div>
+    @endif
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -75,3 +80,4 @@ new #[Layout('layouts.guest')] class extends Component
             </a>
     </form>
 </div>
+

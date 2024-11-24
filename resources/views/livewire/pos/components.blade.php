@@ -24,6 +24,7 @@
     </div>
 </div>
 
+
 {{--<script> src="{{ asset('js/keypress.js') }}"</script>--}}
 @include('livewire.pos.scripts.shortcuts')
 {{--@include('livewire.pos.scripts.events')--}}

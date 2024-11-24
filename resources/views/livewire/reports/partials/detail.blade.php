@@ -2,7 +2,7 @@
     @php
         $statusTranslations = [
             'PAID' => 'PAGADO',
-            'CANCELLED' => 'CANCELADO',
+            'CANCELLED' => 'ANULADO',
             'PENDING' => 'PENDIENTE',
             // Añade más traducciones si es necesario
         ];
@@ -42,7 +42,7 @@
                              <span class="badge
                                  {{ $item->status === 'PAID' ? 'badge-success' : '' }}
                                  {{ $item->status === 'CANCELLED' ? 'badge-warning' : '' }}
-                                 {{ $item->status === 'PENDING' ? 'badge-primary' : '' }}
+                                 {{ $item->status === 'PENDING' ? 'badge-primary ' : '' }}
                                  {{ !in_array($item->status, ['PAID', 'CANCELLED', 'PENDING']) ? 'badge-secondary' : '' }}
                                  text-uppercase">
                                 {{ $statusTranslations[$item->status] ?? $item->status }}

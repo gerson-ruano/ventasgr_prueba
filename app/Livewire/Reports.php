@@ -154,7 +154,7 @@ class Reports extends Component
         $statusTranslations = [
             'PAID' => 'PAGADO',
             'PENDING' => 'PENDIENTE',
-            'CANCELLED' => 'CANCELADO',
+            'CANCELLED' => 'ANULADO',
             // Añade aquí más estados según sea necesario
         ];
 

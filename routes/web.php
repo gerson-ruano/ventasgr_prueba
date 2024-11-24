@@ -24,7 +24,7 @@ Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth','checkStatus'])->group(function () {
 
     Route::view('profile', 'profile')
         ->middleware(['auth'])
