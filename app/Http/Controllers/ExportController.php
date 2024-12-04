@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use App\Models\Sale;
+use App\Models\Company;
 use Dompdf\Options;
 use App\Exports\SaleExport;
 use Illuminate\Support\Facades\Response;
@@ -26,12 +27,7 @@ class ExportController extends Controller
         $this->currentDate = Carbon::now()->format('d-m-Y');
     }
 
-    public function obtenerNombreVendedor($id)
-    {
-        $vendedor = User::find($id);
-        return $vendedor ? $vendedor->name : 'pruebas';
-    }
-
+    // REPORTE DE VENTAS GENERAL
     public function reportPDF($userId, $reportType, $dateFrom = null, $dateTo = null, $selectTipoEstado = null){
 
         $data = [];
@@ -67,23 +63,26 @@ class ExportController extends Controller
         foreach ($data as $item) {
             $item->seller_name = $this->obtenerNombreVendedor($item->seller);  // Usar la función para obtener el nombre del vendedor
         }
+        $empresa = $this->companyVentas();
 
-        $pdf = Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo', 'selectTipoEstado'));
+        $pdf = Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo', 'selectTipoEstado','empresa'));
         //$pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
 
         return $pdf->stream("Reporte_{$this->currentDate}.pdf"); //visualizar
         //return $pdf->download('salesReport.pdf'); //descargar
     }
-
+    // IMPRESION DE NUEVA VENTA
     public function reportVenta($seller, $getNextSaleNumber){
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
+        $empresa = $this->companyVentas();
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.impresionventa', [
             'cart' => $cart,
             'getNextSaleNumber' => $getNextSaleNumber,
             'seller' => $seller,
+            'empresa' => $empresa,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
@@ -94,6 +93,7 @@ class ExportController extends Controller
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
         $sale = Sale::with('details')->find($getNextSaleNumber);
+        $empresa = $this->companyVentas();
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.reportedetails', [
@@ -101,17 +101,19 @@ class ExportController extends Controller
             'getNextSaleNumber' => $getNextSaleNumber,
             'details' => $sale->details,
             'seller' => $seller,
-            'sale' => $sale
+            'sale' => $sale,
+            'empresa' => $empresa,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
         return $pdf->stream("VentaDetails{$getNextSaleNumber}_{$this->currentDate}.pdf");
     }
-
+    // REPORTE DE CIERRE DE VENTA
     public function reportBox($seller, $getNextSaleNumber){
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
         $sale = Sale::with('details')->find($getNextSaleNumber);
+        $empresa = $this->companyVentas();
         //dd(Sale::with('details')->find($getNextSaleNumber));
 
         // Generar el PDF con la vista y los datos
@@ -120,13 +122,15 @@ class ExportController extends Controller
             'getNextSaleNumber' => $getNextSaleNumber,
             'details' => $sale->details,
             'seller' => $seller,
-            'sale' => $sale
+            'sale' => $sale,
+            'empresa' => $empresa,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
         return $pdf->stream("CloseBox{$getNextSaleNumber}_{$this->currentDate}.pdf");
     }
 
+    // FUNCION DE GENERAR PDF
     private function generatePdf($view, $data)
     {
         $options = [
@@ -138,7 +142,7 @@ class ExportController extends Controller
     }
 
 
-
+    // REPORTE DE VENTAS EXCEL
     public function reportExcel($userId, $reportType, $dateFrom = null, $dateTo = null, $selectTipoEstado = null)
     {
         /*$export = new SaleExport();
@@ -155,5 +159,19 @@ class ExportController extends Controller
 
     }
 
+    public function obtenerNombreVendedor($id)
+    {
+        $vendedor = User::find($id);
+        return $vendedor ? $vendedor->name : 'pruebas';
+    }
+
+    public function companyVentas(){
+        $empresa = Company::first();
+
+        if (!$empresa) {
+            abort(404, 'No se encontró ninguna compañía');
+        }
+        return $empresa; // Devuelve el modelo directamente
+    }
 
 }

@@ -6,20 +6,23 @@ $totalProduct = count($cart);
 
 @if($itemsQuantity > 0)
     <!-- Impresion Section -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 flex-grow h-auto sm:w-30 card
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2 flex-grow h-auto sm:w-30 card
         bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
 
-        <div class="flex items-center space-x-2">
+        <div class="flex items-center space-x-2 text-xs leading-tight py-4">
             <label id="salenumber" name="salenumber" class="font-medium">Venta No.</label>
-            <h5 class="font-bold">{{ $nextSaleNumber }}</h5>
+            <h5 class="text-md font-bold">{{ $nextSaleNumber }}</h5>
         </div>
 
-        <div class="card simple-title-task ui-sortable-handle mt-2">
-            <div class="flex items-center justify-center space-x-2">
+        <div class="text-xs leading-tight card simple-title-task ui-sortable-handle">
+            <div class="flex items-center justify-center space-x-1">
                 <!-- Sección de Vendedor -->
                 <div class="d-flex align-items-center mb-1 mr-2">
                     @if($vendedorSeleccionado != 0)
-                        <h6>Nombre: {{$this->obtenerNombreVendedor($vendedorSeleccionado)}}</h6>
+                        <div class="flex items-center space-x-2">
+                            <label id="namevendedor" name="namevendedor" class="font-medium">Nombre:</label>
+                            <h6 class="font-bold"> {{$this->obtenerNombreVendedor($vendedorSeleccionado)}}</h6>
+                        </div>
                     @else
                         <div class="flex items-center space-x-2">
                             <h6>Nombre:</h6>
@@ -29,8 +32,12 @@ $totalProduct = count($cart);
                 </div>
                 <!-- Sección de Pago -->
                 <div class="d-flex align-items-center mb-1">
+
                     @if($tipoPago != 0)
-                        <h6>Pago: {{$this->obtenerTipoPago($tipoPago)}}</h6>
+                        <div class="flex items-center space-x-2">
+                            <label id="namepago" name="namepago" class="font-medium">Pago:</label>
+                            <h6 class="font-bold"> {{$this->obtenerTipoPago($tipoPago)}}</h6>
+                        </div>
                     @else
                         <div class="flex items-center space-x-2">
                             <h6>Pago:</h6>
@@ -41,8 +48,9 @@ $totalProduct = count($cart);
             </div>
         </div>
 
+        @include('livewire.components.empresa_header', ['empresa' => $empresa])
 
-        <div class="grid grid-cols-2 sm:grid-cols-3 mt-2 lg:grid-cols-1 py-10">
+        <div class="text-xs leading-tight grid grid-cols-2 sm:grid-cols-3 mt-2 lg:grid-cols-1 py-0">
             <div class="text-right">
                 @if($efectivo == 0 || is_null($efectivo))
                     <h6 class="text-red-500 mb-0">INGRESAR! EFECTIVO</h6>
@@ -67,14 +75,17 @@ $totalProduct = count($cart);
             </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 place-items-center justify-center items-center mt-8">
-            <button wire:click="saveSale" class="btn btn-info d-print-none mb-1">Finalizar Venta</button>
-            <button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1"
-                    @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>Detalles Venta
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:place-items-center sm:justify-center items-center mt-4 mb-2">
+            <button wire:click="saveSale" class="btn btn-info d-print-none mb-1 w-full sm:w-auto">Finalizar Venta</button>
+            <button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1 w-full sm:w-auto"
+                    @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>
+                Detalles Venta
             </button>
-            <a href="#" class="btn btn-primary" onclick="openPdfWindow('{{ route('report.venta', ['seller' => $this->obtenerNombreVendedor($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber]) }}')"
-                @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>Imprimir
+            <a href="#" class="btn btn-primary w-full sm:w-auto mb-1" onclick="openPdfWindow('{{ route('report.venta', ['seller' => $this->obtenerNombreVendedor($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber]) }}')"
+               @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>
+                Imprimir
             </a>
         </div>
+
     </div>
 @endif

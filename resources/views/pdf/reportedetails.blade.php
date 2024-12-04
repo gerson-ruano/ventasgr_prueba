@@ -15,35 +15,27 @@
     <table class="rounded-table" cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td colspan="2" align="center">
-                <span style="font-size: 25px; font-weight: bold;"> Sistema {{ config('app.name') }}</span>
+                <!--span style="font-size: 25px; font-weight: bold;"> Sistema {{-- config('app.name') --}}</span-->
+                @include('livewire.components.empresa_header', ['empresa' => $empresa])
             </td>
         </tr>
         <tr>
             <!--td width="30%" style="vertical-align: top; padding-top: 10px; padding-left: 30px; position: relative">
-                <img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo"
+                <img src="{{-- public_path('img/ventasgr_logo.png') --}}" alt="Logo VentasGR" class="invoice-logo"
                      style="max-width: 100px;">
             </td-->
-            <td width="30%" style="vertical-align: top; padding-top: 10px; padding-left: 30px; position: relative">
-                <img src="{{ asset('img/ventasgr_logo.png') }}" alt="VentasGR" class="invoice-logo"
-                     style="max-width: 100px;">
-            </td>
-            <td width="70%" class="text-left text-company" style="vertical-align: top; padding-top: 10px">
+            <td colspan="2" style="padding: 10px; text-align: center;">
                 <span style="font-size: 16px"><strong>DETALLE DE VENTA</strong></span><br>
                 <span style="font-size: 16px"><strong>Venta # {{$getNextSaleNumber}}</strong></span>
                 <br>
-
                 <span style="font-size: 16px">Fecha de Consulta:<strong>
                 {{\Carbon\Carbon::now()->format('H:i:s d-m-Y')}}</strong></span>
-
                 <br>
                 <span style="font-size: 14px">Cliente: {{$seller}}</span>
             </td>
         </tr>
     </table>
 </section>
-
-
-<section class="header" style="top: -287px;">
 
     <!--h3 aling="">Venta #</h3-->
 
@@ -80,7 +72,7 @@
         </tfoot>
     </table>
 
-    <div class="total"><br>
+    <div class="total text-center"><br>
         <h6>Total: Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</h6>
     </div>
 
@@ -135,13 +127,13 @@
         <table cellpadding="0" cellspacing="0" class="" width="100%">
             <tr>
                 <td width="20%">
-                    <span>Sistema {{ config('app.name') }}</span>
+                    <span>Sistema {{ $empresa->name }}</span>
                 </td>
                 <td width="60%" class="text-center">
                     GR
                 </td>
                 <td class="text-center" width="20%">
-                    página <span class="pagenum"></span>
+                    pág. <span class="pagenum"></span>
                 </td>
             </tr>
         </table>

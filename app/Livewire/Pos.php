@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Sale;
 use App\Models\User;
+use App\Models\Company;
 use Exception;
 use App\Models\Denomination;
 use App\Models\Product;
@@ -21,6 +22,7 @@ class Pos extends Component
     public $efectivo = 0.00;
     public $revisionVenta = false;
     public $nextSaleNumber;
+    public $empresa;
 
     public function mount()
     {
@@ -34,6 +36,7 @@ class Pos extends Component
         $this->valores = $this->ListaPagos();
         $this->updateQuantityProducts();
         $this->getNextSaleNumber();
+        $this->empresa = $this->companyVentas();
     }
 
     public function render()
@@ -62,7 +65,7 @@ class Pos extends Component
         $reportTypes = [
             (object)['id' => '1', 'name' => 'PAGADO'],
             (object)['id' => '2', 'name' => 'PENDIENTE'],
-            //(object)['id' => '3', 'name' => 'CANCELADO'],
+            //(object)['id' => '3', 'name' => 'ANULADO'],
         ];
 
         return $reportTypes;
@@ -96,6 +99,7 @@ class Pos extends Component
 
     {
         $sellerProfiles = User::where('profile', 'seller')
+            ->where('status', 'Active') // Filtra solo los USUARIOS ACTIVOS EN EL SISTEMA
             ->pluck('name', 'id')
             ->map(function ($name, $id) {
                 return (object)['id' => $id, 'name' => $name];
@@ -135,11 +139,19 @@ class Pos extends Component
 
     public function getNextSaleNumber()
     {
-        // Obtener el último número de venta
-        $lastSale = Sale::latest('id')->first();
+        $lastSale = Sale::latest('id')->first();    // Obtener el último número de venta
         $lastSaleNumber = $lastSale ? $lastSale->id : 0;
-        // Incrementar el número para la próxima venta
-        $this->nextSaleNumber = $lastSaleNumber + 1;
+        $this->nextSaleNumber = $lastSaleNumber + 1;   // Incrementar el número para la próxima venta
+    }
+
+    public function companyVentas(){
+        $empresa = Company::first();
+
+        if (!$empresa) {
+            abort(404, 'No se encontró ninguna compañía');
+        }
+
+        return $empresa; // Devuelve el modelo directamente
     }
 
     protected $listeners = [

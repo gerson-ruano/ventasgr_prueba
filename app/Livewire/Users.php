@@ -23,31 +23,41 @@ class Users extends Component
     private $pagination = 10;
     public $isModalOpen = false;
 
-    protected $rules = [
-        'name' => 'required|min:3|unique:users,name',
-        'email' => 'required|unique:users|email',
-        'phone' => 'max:8',
-        'status' => 'required|not_in:Elegir',
-        'profile' => 'required|not_in:Elegir',
-        //'password' => 'required|min:4'
-    ];
+    protected function rules()
+    {
 
-    protected $messages = [
-        'name.required' => 'Ingresa el nombre',
-        'name.min' => 'El nombre del usuario debe tener al menos 3 caracteres',
-        'name.unique' => 'El nombre de usuario ya existe en el sistema',
-        'email.required' => 'Ingresa un correo',
-        'email.email' => 'Ingresa un correo valido',
-        'phone.min' => 'Ingrese un numero valido',
-        'phone.max' => 'El numero telefonico debe tener 8 digitos',
-        'email.unique' => 'El email ya existe en el sistema',
-        'status.required' => 'Selecciona el Estado del usuario',
-        'status.not_in' => 'Selecciona el Estado',
-        'profile.required' => 'Selecciona el Perfil/Rol del usuario',
-        'profile.not_in' => 'Selecciona el Perfil/Rol distinto a Elegir',
-        //'password.required' => 'Ingresa el Password',
-        'password.min' => 'El password debe tener al menos 4 caracteres'
-    ];
+        $rules = [
+            'name' => 'required|min:3|unique:users,name,' . $this->selected_id,
+            'email' => 'required|email|unique:users,email,' . $this->selected_id,
+            'phone' => 'max:8',
+            'status' => 'required|not_in:Elegir',
+            'profile' => 'required|not_in:Elegir',
+        ];
+
+        $messages = [
+            'name.required' => 'Ingresa el nombre',
+            'name.min' => 'El nombre del usuario debe tener al menos 3 caracteres',
+            'name.unique' => 'El nombre de usuario ya existe en el sistema',
+            'email.required' => 'Ingresa un correo',
+            'email.email' => 'Ingresa un correo valido',
+            'phone.min' => 'Ingrese un numero valido',
+            'phone.max' => 'El numero telefonico debe tener 8 digitos',
+            'email.unique' => 'El email ya existe en el sistema',
+            'status.required' => 'Selecciona el Estado del usuario',
+            'status.not_in' => 'Selecciona el Estado',
+            'profile.required' => 'Selecciona el Perfil/Rol del usuario',
+            'profile.not_in' => 'Selecciona el Perfil/Rol distinto a Elegir',
+            //'password.required' => 'Ingresa el Password',
+            'password.min' => 'El password debe tener al menos 4 caracteres'
+        ];
+
+        if ($this->password) {
+            $rules['password'] = 'required|min:4';
+        }
+
+        return $rules;
+    }
+
 
     public function paginationView()
     {
@@ -85,7 +95,8 @@ class Users extends Component
     }
 
     public function filtroTipoPerfil(){
-        return User::pluck('profile')->unique()->toArray();
+        //return User::pluck('profile')->unique()->toArray();
+        return User::distinct('profile')->pluck('profile')->toArray();
         //return $valores;
     }
 
@@ -107,8 +118,8 @@ class Users extends Component
     public function store()
     {
         // Validación de reglas
-        $this->rules['password'] = 'required|min:4';
-        $this->validate();
+        //$this->rules['password'] = 'required|min:4';
+        $this->validate($this->rules());
 
         $user = User::create([
             'name' => $this->name,
@@ -120,7 +131,6 @@ class Users extends Component
         ]);
 
         //$user->syncRoles($this->profile);
-
         // Asignar rol: buscar el rol por ID y asignar el nombre
         $role = Role::find($this->profile);
         if ($role) {
@@ -169,23 +179,15 @@ class Users extends Component
         $this->imageUrl = $user->image ? Storage::url('users/' . $user->image) : null;
         $this->password = '';
 
+        $this->profile = $user->roles->first()->id ?? $this->profile;
+
         $this->openModal();
     }
 
     public function update()
     {
-        // Actualización de reglas de validación para la edición
-        $this->rules['name'] = "required|min:3|unique:users,name,{$this->selected_id}";
-        $this->rules['email'] = "required|email|unique:users,email,{$this->selected_id}";
-
-        if (!empty($this->password)) {
-            $this->rules['password'] = 'required|min:4';
-        } else {
-            unset($this->rules['password']);
-        }
-
         // Validación
-        $this->validate();
+        $this->validate($this->rules());
 
         $user = User::find($this->selected_id);
 
@@ -203,7 +205,15 @@ class Users extends Component
 
         $user->update($data);
 
-        $user->syncRoles($this->profile);
+        //$user->syncRoles($this->profile);
+        $role = Role::find($this->profile);
+
+        if ($role) {
+            $user->syncRoles($role->name); // Asignar el nombre del rol
+        } else {
+            $this->dispatch('noty-error', type: 'error', message: 'El rol seleccionado no existe.');
+            return;
+        }
 
         if($this->image)
         {

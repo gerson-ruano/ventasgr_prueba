@@ -13,7 +13,8 @@
     <table class="rounded-table" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 30px;">
         <tr>
             <td colspan="2" align="center">
-                <span style="font-size: 25px; font-weight: bold;">Sistema {{ config('app.name') }}</span>
+                <!--span style="font-size: 25px; font-weight: bold;">Sistema {{-- config('app.name') --}}</span-->
+                @include('livewire.components.empresa_header', ['empresa' => $empresa])
             </td>
         </tr>
         <tr>
@@ -118,7 +119,7 @@
 <section class="footer table-items">
     <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
-            <td width="20%">Sistema {{ config('app.name') }}</td>
+            <td width="20%">Sistema {{ $empresa->name }}</td>
             <td width="60%" class="text-center">GR</td>
             <td width="20%" class="text-center">Pág. <span class="pagenum"></span></td>
         </tr>

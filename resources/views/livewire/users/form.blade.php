@@ -37,14 +37,12 @@
                     @error('password') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>
 
-
-
                 <div class="mb-4">
                     <label for="select_status" class="block text-sm font-medium text-gray-700 text-center mt-1">Estado</label>
                     <select wire:model="status" id="select_status"class="select select-info w-full">
                         <option value="Elegir" selected>Elegir</option>
-                        <option value="Active" selected>Activado</option>
-                        <option value="Locked" selected>Boqueado</option>
+                        <option value="Active" selected>Activo</option>
+                        <option value="Locked" selected>Deshabilitado</option>
                     </select>
                     @error('status') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                 </div>

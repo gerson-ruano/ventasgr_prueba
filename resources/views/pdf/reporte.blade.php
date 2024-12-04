@@ -54,6 +54,11 @@
         body {
             counter-reset: page;
         }
+
+        .invoice-logo {
+            max-width: 80px; /* Ajusta el tamaño del logo según el espacio disponible */
+            margin-bottom: 0;
+        }
     </style>
 </head>
 @php
@@ -67,35 +72,47 @@
 <body>
 <section class="header" style="top: -287px;">
     <table cellpadding="0" cellspacing="0" width="100%">
+        <section class="header" style="margin-bottom: 10px;">
+            <h1 style="font-size: 24px; margin: 0; font-weight: bold; text-align: center;">{{ $empresa->name }}</h1>
+            <table width="100%" cellpadding="0" cellspacing="0" style="text-align: left;">
+                <tr>
+                    <td width="30%" style="vertical-align: top;">
+                        <img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">
+                    </td>
+
+                    <!--td colspan="2" style="padding: 10px; text-align: center;"-->
+                    <td width="40%">
+                        @if($reportType == 0)
+                            <strong>Reporte de Ventas del Dia</strong>
+                        @else
+                            <strong>Reporte de Ventas por Fechas</strong>
+                        @endif
+                        <br>
+                        @if($reportType != 0)
+                            Fecha de consulta: <strong>{{ $dateFrom }} al {{ $dateTo }}</strong>
+                        @else
+                            Fecha de consulta: <strong>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</strong>
+                        @endif
+                        <br>
+                        Usuario: {{ $user }}
+                    </td>
+                    <td width="30%">
+                        <div class="empresa-header" style="line-height: 1.2;">
+                            <p style=" margin: 0;">{{ $empresa->address }}</p>
+                            <p style=" margin: 0;">Nit: {{ $empresa->nit }}</p>
+                            <p style=" margin: 0;">Email: {{ $empresa->email }} | Teléfono: {{ $empresa->phone }}</p>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </section>
         <tr>
-            <td colspan="2" align="center">
-                <span style="font-size: 25px; font-weight: bold;">Sistema {{ config('app.name') }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td width="30%" style="padding-top: 10px; padding-left: 30px;">
-                <img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 100px;">
-            </td>
-            <td width="70%" style="padding-top: 30px;">
-                @if($reportType == 0)
-                    <strong>Reporte de Ventas del Dia</strong>
-                @else
-                    <strong>Reporte de Ventas por Fechas</strong>
-                @endif
-                <br>
-                @if($reportType != 0)
-                    Fecha de consulta: <strong>{{ $dateFrom }} al {{ $dateTo }}</strong>
-                @else
-                    Fecha de consulta: <strong>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</strong>
-                @endif
-                <br>
-                Usuario: {{ $user }}
-            </td>
+
         </tr>
     </table>
 </section>
 
-<section style="margin-top: 10px">
+<section style="margin-top: 0px">
     <table cellpadding="0" cellspacing="0" class="table-items" width="100%">
         <thead>
         <tr>
@@ -111,7 +128,7 @@
         </thead>
         <tbody>
         @php
-            $firstPageCount = 35;  // Número de registros en la primera página
+            $firstPageCount = 36;  // Número de registros en la primera página
             $otherPagesCount = 42; // Número de registros en las páginas siguientes
         @endphp
 
@@ -133,7 +150,7 @@
                 <section class="footer table-items">
                     <table cellpadding="0" cellspacing="0" width="100%">
                         <tr>
-                            <td width="20%">Sistema {{ config('app.name') }}</td>
+                            <td width="20%">Sistema {{ $empresa->name }}</td>
                             <td width="60%" class="text-center">GR</td>
                             <td width="20%" class="text-center">Pág. <span class="pagenum"></span></td>
                         </tr>
@@ -147,7 +164,7 @@
                 <section class="footer table-items">
                     <table cellpadding="0" cellspacing="0" width="100%">
                         <tr>
-                            <td width="20%">Sistema {{ config('app.name') }}</td>
+                            <td width="20%">Sistema {{ $empresa->name }} }}</td>
                             <td width="60%" class="text-center">GR</td>
                             <td width="20%" class="text-center">Pág. <span class="pagenum"></span></td>
                         </tr>
@@ -170,7 +187,7 @@
 <section class="footer table-items">
     <table cellpadding="0" cellspacing="0" width="100%">
         <tr>
-            <td width="20%">Sistema {{ config('app.name') }}</td>
+            <td width="20%">Sistema {{ $empresa->name }}</td>
             <td width="60%" class="text-center">GR</td>
             <td width="20%" class="text-center">Pág. <span class="pagenum"></span></td>
         </tr>

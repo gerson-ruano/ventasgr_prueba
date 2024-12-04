@@ -15,34 +15,20 @@
     <table class="rounded-table" cellpadding="0" cellspacing="0" width="100%">
         <tr>
             <td colspan="2" align="center">
-                <span style="font-size: 25px; font-weight: bold;"> Sistema {{ config('app.name') }}</span>
+                @include('livewire.components.empresa_header', ['empresa' => $empresa])
             </td>
         </tr>
         <tr>
-            <!--td width="30%" style="vertical-align: top; padding-top: 10px; padding-left: 30px; position: relative">
-                <img src="{{-- public_path('img/ventasgr_logo.png') --}}" alt="Logo VentasGR" class="invoice-logo"
-                     style="max-width: 100px;">
-            </td-->
-            <td width="30%" style="vertical-align: top; padding-top: 10px; padding-left: 30px; position: relative">
-                <img src="{{ asset('img/ventasgr_logo.png') }}" alt="VentasGR" class="invoice-logo"
-                     style="max-width: 100px;">
-            </td>
-            <td width="70%" class="text-left text-company" style="vertical-align: top; padding-top: 30px">
-
-                <span style="font-size: 16px"><strong>Venta # {{$getNextSaleNumber}}</strong></span>
-
+            <td colspan="2" style="padding: 10px; text-align: center;">
+                <span style="font-size: 20px; font-weight: bold;">Venta # {{$getNextSaleNumber}}</span>
                 <br>
-
-                <span style="font-size: 16px">Fecha de venta:<strong>
-                {{\Carbon\Carbon::now()->format('H:i:s d-m-Y')}}</strong></span>
-
+                <span style="font-size: 14px;">Fecha de venta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span>
                 <br>
-                <span style="font-size: 14px">Cliente: {{$seller}}</span>
+                <span style="font-size: 14px;">Cliente: {{$seller}}</span>
             </td>
         </tr>
     </table>
 </section>
-
 
 <section class="header" style="top: -287px;">
 
@@ -66,7 +52,7 @@
                 <td align="center">{{$item->qty}}</td>
                 <td align="center">{{ $item->name }}</td>
                 <td align="center">{{ $item->subtotal }}</td>
-                <!--td align="center">{{ $item->attributes }}</td-->
+                <!--td align="center">{{-- $item->attributes --}}</td-->
                 <!--td align="center"><img src="{{-- asset('storage/products/' . $item->attributes[0])--}}" alt="imagen de producto" height="50"
                                         width="50" class="rounded"></td-->
                 <td align="center">
