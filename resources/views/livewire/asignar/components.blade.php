@@ -19,65 +19,70 @@
     </div>
 
     <!-- Table Section -->
-    <div class="overflow-x-auto bg-base-300 p-4 rounded-lg shadow-lg max-w-7xl mx-auto">
-        <table class="table-auto w-full">
-            <thead class="bg-base-300 dark:bg-gray-800">
-            <tr>
-                <th class="text-lg font-medium py-2 px-4 text-center">No.</th>
-                <th class="text-lg font-medium py-2 px-4 text-center">Permiso</th>
-                <th class="text-lg font-medium py-2 px-4 text-center">Asignar</th>
-                <th class="text-lg font-medium py-2 px-4 text-center">Roles con el Permiso</th>
-                <th class="text-lg font-medium py-2 px-4 text-center">Total Permisos</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($permisos as $index => $permiso)
-                <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                    <td class="py-2 px-4 text-center">
-                        {{ ($permisos->currentPage() - 1) * $permisos->perPage() + $index + 1 }}
-                    </td>
-                    <td class="text-center">
-                        <span class="label-text ml-1">{{ $permiso->name }}</span>
-                    </td>
-                    <td class="text-center">
-                        <div class="flex justify-center items-center">
-                            <label class="cursor-pointer label">
-                                <input type="checkbox" class="checkbox checkbox-info"
-                                       wire:change="syncPermiso($event.target.checked, '{{ $permiso->name }}' )"
-                                       id="permiso_{{ $permiso->id }}" name="permiso_{{ $permiso->id }}"
-                                       value="{{ $permiso->id }}" {{ $permiso->checked ? 'checked' : '' }}>
-                            </label>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                    @foreach ($roles as $role)
-                        @if ($rolePermissionsCount[$role->id] > 0)
-                            <span
-                                class="label-text ml-1">{{ $role->name }} ({{ $rolePermissionsCount[$role->id] }})</span>
-                        @endif
-                    @endforeach
-
-                    </td>
-                    <td class="text-center">
-                        @foreach ($roles as $role)
-                        {{ $rolePermissionsCount[$role->id] ?? 0 }} |
-                        @endforeach
-                    </td>
+    @if (count($permisos) > 0)
+        <div class="overflow-x-auto bg-base-300 p-4 rounded-lg shadow-lg max-w-7xl mx-auto">
+            <table class="table-auto w-full">
+                <thead class="bg-base-300 dark:bg-gray-800">
+                <tr>
+                    <th class="text-lg font-medium py-2 px-4 text-center">No.</th>
+                    <th class="text-lg font-medium py-2 px-4 text-center">Permiso</th>
+                    <th class="text-lg font-medium py-2 px-4 text-center">Asignar</th>
+                    <th class="text-lg font-medium py-2 px-4 text-center">Roles con el Permiso</th>
+                    <th class="text-lg font-medium py-2 px-4 text-center">Total Permisos</th>
                 </tr>
-            @endforeach
-            </tbody>
-            <tfoot class="bg-base-100 dark:bg-gray-800">
-            <tr>
-                <th class="py-2 px-4 text-center">No.</th>
-                <th class="py-2 px-4 text-center">Permiso</th>
-                <th class="py-2 px-4 text-center">Asignar</th>
-                <th class="py-2 px-4 text-center">Roles con el Permiso</th>
-                <th class="py-2 px-4 text-center">Total Permisos</th>
-            </tr>
-            </tfoot>
-        </table>
-        <div class="mt-4">
-            {{ $permisos->links() }}
+                </thead>
+                <tbody>
+                @foreach($permisos as $index => $permiso)
+                    <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
+                        <td class="py-2 px-4 text-center">
+                            {{ ($permisos->currentPage() - 1) * $permisos->perPage() + $index + 1 }}
+                        </td>
+                        <td class="text-center">
+                            <span class="label-text ml-1">{{ $permiso->name }}</span>
+                        </td>
+                        <td class="text-center">
+                            <div class="flex justify-center items-center">
+                                <label class="cursor-pointer label">
+                                    <input type="checkbox" class="checkbox checkbox-info"
+                                           wire:change="syncPermiso($event.target.checked, '{{ $permiso->name }}' )"
+                                           id="permiso_{{ $permiso->id }}" name="permiso_{{ $permiso->id }}"
+                                           value="{{ $permiso->id }}" {{ $permiso->checked ? 'checked' : '' }}>
+                                </label>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            @foreach ($roles as $role)
+                                @if ($rolePermissionsCount[$role->id] > 0)
+                                    <span
+                                        class="label-text ml-1">{{ $role->name }} ({{ $rolePermissionsCount[$role->id] }})</span>
+                                @endif
+                            @endforeach
+
+                        </td>
+                        <td class="text-center">
+                            @foreach ($roles as $role)
+                                {{ $rolePermissionsCount[$role->id] ?? 0 }} |
+                            @endforeach
+                        </td>
+                    </tr>
+                @endforeach
+                </tbody>
+                <tfoot class="bg-base-100 dark:bg-gray-800">
+                <tr>
+                    <th class="py-2 px-4 text-center">No.</th>
+                    <th class="py-2 px-4 text-center">Permiso</th>
+                    <th class="py-2 px-4 text-center">Asignar</th>
+                    <th class="py-2 px-4 text-center">Roles con el Permiso</th>
+                    <th class="py-2 px-4 text-center">Total Permisos</th>
+                </tr>
+                </tfoot>
+            </table>
+            <div class="mt-4">
+                {{ $permisos->links() }}
+            </div>
         </div>
-    </div>
+    @else
+        <!-- Mostrar notificación cuando no hay resultados -->
+        @include('livewire.components.no-results', ['result' => $permisos ,'name' => $componentName])
+    @endif
 </div>

@@ -9,7 +9,8 @@
                     <h1 style="font-size: 20px; margin: 0; font-weight: bold;">{{ $empresa->name }}</h1>
                     <p style="font-size: 12px; margin: 0;">{{ $empresa->address }}</p>
                     <p style="font-size: 12px; margin: 0;">Nit: {{ $empresa->nit }}</p>
-                    <p style="font-size: 12px; margin: 0;">Email: {{ $empresa->email }} | Teléfono: {{ $empresa->phone }}</p>
+                    <p style="font-size: 12px; margin: 0;">Teléfono: {{ $empresa->phone }}</p>
+                    <p style="font-size: 12px; margin: 0;">Email: {{ $empresa->email }}</p>
                 </div>
             </td>
         </tr>

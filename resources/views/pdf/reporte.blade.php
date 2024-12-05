@@ -76,12 +76,12 @@
             <h1 style="font-size: 24px; margin: 0; font-weight: bold; text-align: center;">{{ $empresa->name }}</h1>
             <table width="100%" cellpadding="0" cellspacing="0" style="text-align: left;">
                 <tr>
-                    <td width="30%" style="vertical-align: top;">
+                    <td width="20%" style="vertical-align: top; padding: 10px;">
                         <img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">
                     </td>
 
                     <!--td colspan="2" style="padding: 10px; text-align: center;"-->
-                    <td width="40%">
+                    <td width="50%">
                         @if($reportType == 0)
                             <strong>Reporte de Ventas del Dia</strong>
                         @else
@@ -98,9 +98,10 @@
                     </td>
                     <td width="30%">
                         <div class="empresa-header" style="line-height: 1.2;">
-                            <p style=" margin: 0;">{{ $empresa->address }}</p>
-                            <p style=" margin: 0;">Nit: {{ $empresa->nit }}</p>
-                            <p style=" margin: 0;">Email: {{ $empresa->email }} | Teléfono: {{ $empresa->phone }}</p>
+                            <p style="font-size: 14px; margin: 0;"><strong>{{ $empresa->address }}</strong></p>
+                            <p style="font-size: 14px; margin: 0;">Nit: <strong>{{ $empresa->nit }}</strong></p>
+                            <p style="font-size: 14px; margin: 0;">Email: <strong>{{ $empresa->email }}</strong></p>
+                            <p style="font-size: 14px; margin: 0;">Teléfono: <strong>{{ $empresa->phone }}</strong></p>
                         </div>
                     </td>
                 </tr>
@@ -128,7 +129,7 @@
         </thead>
         <tbody>
         @php
-            $firstPageCount = 36;  // Número de registros en la primera página
+            $firstPageCount = 35;  // Número de registros en la primera página
             $otherPagesCount = 42; // Número de registros en las páginas siguientes
         @endphp
 

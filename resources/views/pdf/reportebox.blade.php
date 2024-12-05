@@ -18,11 +18,9 @@
             </td>
         </tr>
         <tr>
-            <td width="30%" style="padding-top: 10px; padding-left: 30px;">
-                <img src="{{ asset('img/ventasgr_logo.png') }}" alt="VentasGR" class="invoice-logo" style="max-width: 100px;">
-            </td>
-            <td width="70%" class="text-left text-company" style="padding-top: 10px">
-                <span style="font-size: 16px"><strong>VENTA CERRADA</strong></span><br>
+
+            <td colspan="2" style="padding: 10px; text-align: center;">
+                <!--span style="font-size: 16px"><strong>VENTA</strong></span><br-->
                 <span style="font-size: 16px"><strong>Venta #{{$getNextSaleNumber}}</strong></span><br>
                 <span style="font-size: 16px">Fecha de Consulta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span><br>
                 <span style="font-size: 14px">Cliente: {{$seller}}</span>

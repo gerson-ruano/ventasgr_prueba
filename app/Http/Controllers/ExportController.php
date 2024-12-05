@@ -76,6 +76,7 @@ class ExportController extends Controller
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
         $empresa = $this->companyVentas();
+        $statusMessage = getSaleStatusMessage($getNextSaleNumber);
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.impresionventa', [
@@ -83,6 +84,7 @@ class ExportController extends Controller
             'getNextSaleNumber' => $getNextSaleNumber,
             'seller' => $seller,
             'empresa' => $empresa,
+            'statusMessage' => $statusMessage,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
@@ -93,7 +95,9 @@ class ExportController extends Controller
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
         $sale = Sale::with('details')->find($getNextSaleNumber);
+        $statusMessage = getSaleStatusMessage($getNextSaleNumber);
         $empresa = $this->companyVentas();
+        //dd($statusMessage);
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.reportedetails', [
@@ -102,6 +106,7 @@ class ExportController extends Controller
             'details' => $sale->details,
             'seller' => $seller,
             'sale' => $sale,
+            'statusMessage' => $statusMessage,
             'empresa' => $empresa,
         ]);
 
@@ -171,7 +176,7 @@ class ExportController extends Controller
         if (!$empresa) {
             abort(404, 'No se encontró ninguna compañía');
         }
-        return $empresa; // Devuelve el modelo directamente
+        return $empresa;
     }
 
 }

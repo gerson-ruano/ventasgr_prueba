@@ -103,4 +103,26 @@ body {
     .pagenum:before {
         content: counter(page);
     }
+    .status-message {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 0;
+        padding: 0;
+        line-height: 1;
+    }
+    .text-blue {
+        color: blue;
+    }
+
+    .text-red {
+        color: red;
+    }
+
+    .text-green {
+        color: green;
+    }
+    .text-gray {
+        color: gray;
+    }
+
 }
