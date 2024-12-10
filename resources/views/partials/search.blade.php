@@ -4,13 +4,13 @@
     <input id="code" type="text" placeholder="code" />
 </label>
 
-{{--<script>
+{{--<partials>
 document.addEventListener('DOMContentLoaded', function() {
     Livewire.on('scan-code', action => {
         document.getElementById('code').value = '';
     });
 });
-</script>--}}
+</partials>--}}
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

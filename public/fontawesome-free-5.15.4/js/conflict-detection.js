@@ -678,9 +678,9 @@
       iTag.setAttribute('class', 'fa fa-coffee');
       iTag.setAttribute('id', testIconId);
       var diagScript = DOCUMENT.createElement('script');
-      diagScript.setAttribute('id', diagScriptId); // WARNING: this function will be toString()'d and assigned to innerText of the diag script
+      diagScript.setAttribute('id', diagScriptId); // WARNING: this function will be toString()'d and assigned to innerText of the diag partials
       // element that we'll be putting into a diagnostic iframe.
-      // That means that this code won't compile until after the outer script has run and injected
+      // That means that this code won't compile until after the outer partials has run and injected
       // this code into the iframe. There are some compile time errors that might occur there.
       // For example, using single line (double-slash) comments like this one inside that function
       // will probably cause it to choke. Chrome will show an error like this:
@@ -897,7 +897,7 @@
     } else {
       console.info("Testing ".concat(testCount, " possible conflicts."));
       console.info("We'll wait about ".concat(Math.round(WINDOW.FontAwesomeDetection.timeout / 10) / 100, " seconds while testing these and\n") + "then up to another ".concat(Math.round(WINDOW.FontAwesomeDetection.resultsCollectionMaxWait / 10) / 100, " to allow the browser time\n") + "to accumulate the results. But we'll probably be outta here way before then.\n\n");
-      console.info("You can adjust those durations by assigning values to these attributes on the <script> element that loads this detection:");
+      console.info("You can adjust those durations by assigning values to these attributes on the <partials> element that loads this detection:");
       console.info("\t%c".concat(timeoutAttr, "%c: milliseconds to wait for each test before deciding whether it's a conflict."), 'font-weight: bold;', 'font-size: normal;');
       console.info("\t%c".concat(resultsCollectionMaxWaitAttr, "%c: milliseconds to wait for the browser to accumulate test results before giving up."), 'font-weight: bold;', 'font-size: normal;');
       pollUntil({

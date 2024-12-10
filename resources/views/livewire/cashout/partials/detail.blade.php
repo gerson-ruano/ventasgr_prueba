@@ -12,13 +12,12 @@
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Colaborador</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Fecha y Hora</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Detalles</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 @foreach($sales as $index => $item)
-                    {{--dd($item)--}}
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                         <td class="py-2 px-4 text-center">
                             {{ ($sales->currentPage() - 1) * $sales->perPage() + $index + 1 }}</td>

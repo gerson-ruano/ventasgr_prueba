@@ -21,8 +21,8 @@
                     <th class="text-lg font-medium py-3 px-4 text-center">Usuario</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cliente/Vendedor</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Fecha y Hora</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Detalles</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Editar</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Acciones</th>
+                    <!--th class="text-lg font-medium py-3 px-4 text-center">Editar</th-->
                 </tr>
                 </thead>
                 <tbody>
@@ -52,31 +52,29 @@
                             <h6>{{ $item->user }}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
-                            <h6>{{$this->obtenerNombreVendedor($item->seller)}}</h6>
+                            <h6>{{getNameSeller($item->seller)}}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y H:i:s') }}</h6>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="py-2 px-4 text-center align-middle">
                             <div class="flex flex-row items-center justify-center space-x-2">
-                                <button wire:click.prevent="getDetails({{$item->id}})" title="Detalles"
-                                        class="btn btn-sm btn-outline btn-accent btn-i">
+                                <button wire:click.prevent="getDetails({{ $item->id }})" title="Detalles"
+                                        class="btn btn-sm btn-outline btn-accent">
                                     <i class="fas fa-indent"></i>
                                 </button>
-                            </div>
-                        </td>
-                        <td class="py-2 px-4 text-center">
-                            <div class="flex flex-row items-center justify-center space-x-2">
-                                <button wire:click.prevent="Edit({{$item->id}})" title="Editar"
-                                        class="btn btn-sm btn-outline btn-success btn-i">
+                                <button wire:click.prevent="Edit({{ $item->id }})" title="Editar"
+                                        class="btn btn-sm btn-outline btn-success">
                                     <i class="fas fa-edit"></i>
                                 </button>
+                                {{-- Botón comentado para eliminar --}}
                                 {{--
                                 <button class="btn btn-sm btn-outline btn-error"
                                         onclick="Confirm('{{ $item->id }}','este CARRITO','{{ $item->name }}')"
                                         title="Eliminar">
                                     <i class="fas fa-trash"></i>
-                                </button>--}}
+                                </button>
+                                --}}
                             </div>
                         </td>
                     </tr>

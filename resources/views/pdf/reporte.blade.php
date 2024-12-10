@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reportes</title>
     <link rel="stylesheet" href="{{ asset('css/custom_pdf.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/custom_page.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pdf.css') }}">
     <style>
         .table-items {
             width: 100%;
@@ -89,16 +89,16 @@
                         @endif
                         <br>
                         @if($reportType != 0)
-                            Fecha de consulta: <strong>{{ $dateFrom }} al {{ $dateTo }}</strong>
+                            Fecha de consulta: <strong>{{ $dateFrom }}</strong> al <strong>{{ $dateTo }}</strong>
                         @else
                             Fecha de consulta: <strong>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</strong>
                         @endif
                         <br>
-                        Usuario: {{ $user }}
+                        Usuario:  <strong>{{ $user }}</strong>
                     </td>
                     <td width="30%">
                         <div class="empresa-header" style="line-height: 1.2;">
-                            <p style="font-size: 14px; margin: 0;"><strong>{{ $empresa->address }}</strong></p>
+                            <p style="font-size: 14px; margin: 0;">Dirección: <strong>{{ $empresa->address }}</strong></p>
                             <p style="font-size: 14px; margin: 0;">Nit: <strong>{{ $empresa->nit }}</strong></p>
                             <p style="font-size: 14px; margin: 0;">Email: <strong>{{ $empresa->email }}</strong></p>
                             <p style="font-size: 14px; margin: 0;">Teléfono: <strong>{{ $empresa->phone }}</strong></p>
@@ -165,7 +165,7 @@
                 <section class="footer table-items">
                     <table cellpadding="0" cellspacing="0" width="100%">
                         <tr>
-                            <td width="20%">Sistema {{ $empresa->name }} }}</td>
+                            <td width="20%">Sistema {{ $empresa->name }} </td>
                             <td width="60%" class="text-center">GR</td>
                             <td width="20%" class="text-center">Pág. <span class="pagenum"></span></td>
                         </tr>
@@ -185,6 +185,10 @@
         </tfoot>
     </table>
 </section>
+<div class="align">
+    <span style="font-size: 10px">Usuario: <strong>{{ $usuario->name }}</strong></span>
+    <span style="font-size: 10px">Fecha de Consulta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span>
+</div>
 <section class="footer table-items">
     <table cellpadding="0" cellspacing="0" width="100%">
         <tr>

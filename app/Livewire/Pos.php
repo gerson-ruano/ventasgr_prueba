@@ -110,13 +110,6 @@ class Pos extends Component
         return $sellerProfiles;
     }
 
-    public function obtenerNombreVendedor($id) //Obtiene el 'NOMBRE DE VENDEDOR' y lo muestra en la vista de IMPRESION
-    {
-        $vendedor = User::find($id);
-        return $vendedor ? $vendedor->name : 'No ingresado';
-    }
-
-
     public function revisarVenta() //Indica que vista utiliza para el index
     {
         $this->revisionVenta = true;
@@ -144,14 +137,15 @@ class Pos extends Component
         $this->nextSaleNumber = $lastSaleNumber + 1;   // Incrementar el número para la próxima venta
     }
 
-    public function companyVentas(){
+    public function companyVentas() // Devuelve la Compañia actual #1
+    {
         $empresa = Company::first();
 
         if (!$empresa) {
             abort(404, 'No se encontró ninguna compañía');
         }
 
-        return $empresa; // Devuelve el modelo directamente
+        return $empresa;
     }
 
     protected $listeners = [
@@ -383,12 +377,12 @@ class Pos extends Component
         if (isset($this->vendedorSeleccionado)) {
             $vendedorAgregado = $this->vendedorSeleccionado;
             if ($vendedorAgregado == 0) {
-                $vendedorAgregado = 'Cliente Final';
+                $vendedorAgregado = '0';
             }
         } else {
-            $vendedorAgregado = 'Cliente Final';
-            //$this->emit('sale-error','DEBE SELECCIONAR UN VENDEDOR O CLIENTE FINAL');
-            //return;
+            $vendedorAgregado = '0';
+            $this->dispatch('showNotification', 'Debe seleccionar un tipo de cliente o vendedor correcto', 'warning');
+            return;
         }
 
         DB::beginTransaction();
@@ -441,6 +435,29 @@ class Pos extends Component
             //$this->dispatch('sale-error', $e->getMessage());
             $this->dispatch('showNotification', $e->getMessage(), 'error');
         }
+    }
+
+    public function saveSaleAndPrint()
+    {
+        if ($this->tipoPago == 0 || $this->efectivo < $this->totalPrice) {
+            $this->dispatch('showNotification', 'La venta no se puede finalizar','warning');
+            return;
+        }
+        $nextSaleNumber = $this->nextSaleNumber;
+
+        $this->saveSale();
+
+        $sale = Sale::with('details')->find($nextSaleNumber);
+        //dd($sale);
+
+        $url = route('report.venta', [
+            'change' => $sale->change,
+            'efectivo' => $sale->cash,
+            'seller' => getNameSeller($sale->seller),
+            'nextSaleNumber' => $sale->id,
+        ]);
+
+        $this->dispatch('printSale', $url);
     }
 
 }

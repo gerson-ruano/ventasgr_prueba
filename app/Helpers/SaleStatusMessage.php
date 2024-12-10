@@ -6,7 +6,7 @@ if (!function_exists('getSaleStatusMessage')) {
         $sale = \App\Models\Sale::with('details')->find($saleNumber);
 
         if (!$sale) {
-            return '"en proceso"';
+            return '"en proceso.."';
         }
 
         // Verifica el estado de la venta
@@ -16,10 +16,10 @@ if (!function_exists('getSaleStatusMessage')) {
 
         // Nuevo estado: 'CANCELLED' (Cancelado)
         if ($sale->status === 'CANCELLED') {
-            return '"anulado"';
+            return '"anulada"';
         }
 
         // Si no es 'PENDING' ni 'CANCELLED', se considera 'pagado'
-        return '"pagado"';
+        return '"pagada"';
     }
 }

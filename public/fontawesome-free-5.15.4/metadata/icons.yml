@@ -16044,7 +16044,7 @@ scroll:
       - dnd
       - fantasy
       - paper
-      - script
+      - partials
   styles:
     - solid
   unicode: f70e

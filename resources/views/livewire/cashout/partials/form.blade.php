@@ -77,7 +77,7 @@
 
             <form wire:submit="{{ $userid ? 'update' : 'store' }}">
                 <div class="flex justify-end mt-4">
-                    <a href="#" class="btn btn-primary mr-1" onclick="openPdfWindow('{{ route('report.box', ['seller' => $this->obtenerNombreVendedor($item->seller), 'nextSaleNumber' => $saleId]) }}')"
+                    <a href="#" class="btn btn-primary mr-1" onclick="openPdfWindow('{{ route('report.box', ['seller' => getNameSeller($item->seller), 'nextSaleNumber' => $saleId]) }}')"
                        >Imprimir
                     </a>
                     <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>

@@ -56,7 +56,7 @@ Route::middleware(['auth','checkStatus'])->group(function () {
         //REPORTES CIERRE DE CAJA PDF
         Route::get('report/box/{seller}/{nextSaleNumber}', [ExportController::class, 'reportBox'])->name('report.box');
         //IMPRESION VENTA PDF
-        Route::get('report/venta/{seller}/{nextSaleNumber}', [ExportController::class, 'reportVenta'])->name('report.venta');
+        Route::get('report/venta/{change}/{efectivo}/{seller}/{nextSaleNumber}', [ExportController::class, 'reportVenta'])->name('report.venta');
 
         //REPORTES EXCEL
         Route::get('report-excel/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class, 'reportExcel']);

@@ -225,7 +225,7 @@
   var initial = WINDOW.FontAwesomeConfig || {};
 
   function getAttrConfig(attr) {
-    var element = DOCUMENT.querySelector('script[' + attr + ']');
+    var element = DOCUMENT.querySelector('partials[' + attr + ']');
 
     if (element) {
       return element.getAttribute(attr);
@@ -235,7 +235,7 @@
   function coerce(val) {
     // Getting an empty string will occur if the attribute is set on the HTML tag but without a value
     // We'll assume that this is an indication that it should be toggled to true
-    // For example <script data-search-pseudo-elements src="..."></script>
+    // For example <partials data-search-pseudo-elements src="..."></partials>
     if (val === '') return true;
     if (val === 'false') return false;
     if (val === 'true') return true;

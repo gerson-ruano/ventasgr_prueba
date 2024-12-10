@@ -92,12 +92,6 @@ class Cashout extends Component
         $this->openModal();
     }
 
-    public function obtenerNombreVendedor($seller)
-    {
-        $vendedor = User::find($seller);
-        return $vendedor ? $vendedor->name : 'Consumidor Final';
-    }
-
     public function updatedToDate()
     {
         if (Carbon::parse($this->fromDate)->gt(Carbon::parse($this->toDate))) {

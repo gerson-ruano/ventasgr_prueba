@@ -240,12 +240,6 @@ class Reports extends Component
         $this->resetErrorBag();
     }
 
-    public function obtenerNombreVendedor($seller)
-    {
-        $vendedor = User::find($seller);
-        return $vendedor ? $vendedor->name : 'Consumidor Final';
-    }
-
     protected $listeners = [
         'closeModal' => 'closeModal'
     ];

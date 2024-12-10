@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="{{ asset('css/custom_pdf.css') }}">
     <link rel="stylesheet" href="{{ asset('css/pdf.css') }}">
 </head>
+@php
+    $statusTranslations = [
+        'PAID' => 'PAGADO',
+        'CANCELLED' => 'ANULADO',
+        'PENDING' => 'PENDIENTE'
+    ];
+@endphp
 
 <body>
 
@@ -26,23 +33,18 @@
             </td-->
             <td colspan="2" style="padding: 5px; text-align: center;">
                 <span style="font-size: 16px; display: flex; align-items: center;">
-                    <strong>DETALLE DE VENTA</strong>
-                    <span class="status-message {{ trim($statusMessage) === '"en proceso"' ? 'text-blue' : (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' : (trim($statusMessage) === '"anulado"' ? 'text-gray' : 'text-green')) }}">
+                    <strong>DETALLE DE VENTA #{{$getNextSaleNumber}}</strong>
+                    <span
+                        class="status-message {{ trim($statusMessage) === '"en proceso.."' ? 'text-blue' : (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' : (trim($statusMessage) === '"anulada"' ? 'text-gray' : 'text-green')) }}">
                         {{ $statusMessage }}
                     </span>
                 </span>
-                <span style="font-size: 16px"><strong>Venta # {{$getNextSaleNumber}}</strong></span>
-                <br>
-                <span style="font-size: 16px">Fecha de Consulta:<strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span>
-                <br>
-                <span style="font-size: 14px">Cliente: {{$seller}}</span>
+                <span style="font-size: 14px">Cliente: <strong>{{$seller_name}}</strong></span>
             </td>
 
         </tr>
     </table>
 </section>
-
-<!--h3 aling="">Venta #</h3-->
 
 <table class="table-items">
     <thead>
@@ -77,57 +79,46 @@
     </tr>
     </tfoot>
 </table>
+<br>
 
-<div class="total text-center"><br>
-    <h6>Total: Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</h6>
-</div>
+<!--div class="total text-center"><br>
+    <h6>Total: Q. {{-- number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) --}}</h6>
+</div-->
 
 <table class="table-items">
     <thead>
     <tr>
-        <th>No.</th>
-        <th>Cantidad</th>
-        <th>Nombre</th>
-        <th>Precio</th>
-        <th>Imagen</th>
+        <th>Total</th>
+        <th>Efectivo</th>
+        <th>Cambio</th>
+        <th>Descuento</th>
+        <th>Estado</th>
+        <th>Ingreso</th>
+        <th>Modificado</th>
     </tr>
     </thead>
     <tbody>
-    @foreach($cart as $item)
-        <tr>
-            <td>{{ $loop->iteration }}</td>
-            <td>{{ $item->qty }}</td>
-            <td>{{ $item->name }}</td>
-            <td>{{ $item->subtotal }}</td>
-            <td>
-                @php
-                    $imagePath = 'storage/products/' . $item->options->image;
-                    $defaultImagePath = 'img/noimg.jpg';
-                @endphp
-
-                @if (is_file(public_path($imagePath)))
-                    <img src="{{ asset($imagePath) }}" alt="Imagen del producto" height="20" width="20"
-                         class="rounded">
-                @else
-                    <img src="{{ asset($defaultImagePath) }}" alt="Imagen por defecto" height="20" width="20"
-                         class="rounded">
-                @endif
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
-    <tfoot>
     <tr>
-        <td><b>TOTALES:</b></td>
-        <td><strong>{{ $cart->sum('qty') }}</strong></td>
-        <td></td>
-        <td>
-            <strong>Q. {{ number_format($cart->sum(function($item) { return $item->price * $item->qty; }), 2) }}</strong>
-        </td>
-        <td></td>
+        <td>{{ $sale->total }}</td>
+        <td>{{ $sale->cash }}</td>
+        <td>{{ $sale->change }}</td>
+        <td>Q. {{ number_format($descuento, 2) }}</td>
+        <td>{{ $statusTranslations[$sale->status] ?? $sale->status }}</td>
+        <td>{{ \Carbon\Carbon::parse($sale->created_at)->format('d-m-Y H:i') }}</td>
+        @if($sale->created_at != $sale->updated_at)
+            <td>{{ \Carbon\Carbon::parse($sale->updated_at)->format('d-m-Y H:i') }}</td>
+        @else
+            <td>Sin cambios</td>
+        @endif
     </tr>
-    </tfoot>
+    </tbody>
 </table>
+<br>
+
+<div class="align">
+    <span style="font-size: 10px">Usuario: <strong>{{ $usuario->name }}</strong></span>
+    <span style="font-size: 10px">Fecha de Consulta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span>
+</div>
 
 <section class="footer table-items">
     <table cellpadding="0" cellspacing="0" class="" width="100%">
@@ -145,18 +136,7 @@
     </table>
 </section>
 <script type="text/php">
-    if (isset($pdf)) {
-            $pdf->page_script('
-                if ($PAGE_COUNT > 1) {
-                    $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                    $size = 10;
-                    $pageText = "Página: " . $PAGE_NUM . " de " . $PAGE_COUNT;
-                    $y = 15;
-                    $x = 520;
-                    $pdf->text($x, $y, $pageText, $font, $size);
-                }
-            ');
-        }
+    @include('pdf.partials.pdf_script')
 </script>
 
 </body>

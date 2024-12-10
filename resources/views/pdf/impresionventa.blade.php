@@ -10,7 +10,7 @@
 </head>
 
 <body>
-
+{{--dd($data)--}}
 <section class="header" style="top: -287px;">
     <table class="rounded-table" cellpadding="0" cellspacing="0" width="100%">
         <tr>
@@ -22,101 +22,137 @@
             <td colspan="2" style="padding: 10px; text-align: center;">
         <span style="font-size: 16px; display: flex; align-items: center;">
             <strong>VENTA # {{$getNextSaleNumber}}</strong>
-            <span class="status-message {{ trim($statusMessage) === '"en proceso"' ? 'text-blue' : (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' : (trim($statusMessage) === '"anulado"' ? 'text-gray' : 'text-green')) }}">
+            <span
+                class="status-message {{ trim($statusMessage) === '"en proceso.."' ? 'text-blue' : (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' : (trim($statusMessage) === '"anulada"' ? 'text-gray' : 'text-green')) }}">
                 {{ $statusMessage }}
             </span>
             </span>
-                <span style="font-size: 16px;">Fecha de venta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span>
-                <br>
-                <span style="font-size: 14px;">Cliente: {{$seller}}</span>
+                <span style="font-size: 14px;">Cliente: <strong>{{$seller}}</strong></span>
             </td>
-        </tr>
-
     </table>
 </section>
 
-<!--h3 aling="">Venta #</h3-->
+@if ($cart->isNotEmpty())
+    <!-- Tabla de Carrito -->
+    <table cellpadding="0" cellspacing="0" width="100%" class="table-items">
+        <thead>
+        <tr>
+            <th align="center">No.</th>
+            <th align="center">Cantidad</th>
+            <th align="center">Producto</th>
+            <th align="center">Precio</th>
+            <th align="center">Imagen</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($cart as $item)
+            <tr>
+                <td align="center">{{ $loop->iteration }}</td>
+                <td align="center">{{$item->qty}}</td>
+                <td align="center">{{ $item->name }}</td>
+                <td align="center">{{ $item->subtotal }}</td>
+                <td align="center">
+                    @php
+                        $imagePath = 'storage/products/' . $item->options->image;
+                        $defaultImagePath = 'img/noimg.jpg';
+                    @endphp
 
-<table cellpadding="0" cellspacing="0" width="100%" class="table-items">
+                    @if (is_file(public_path($imagePath)))
+                        <img src="{{ asset($imagePath) }}" alt="Imagen del producto" height="20" width="20" class="rounded">
+                    @else
+                        <img src="{{ asset($defaultImagePath) }}" alt="Imagen por defecto" height="20" width="20" class="rounded">
+                    @endif
+                </td>
+            </tr>
+        @endforeach
+        </tbody>
+        <tfoot>
+        <tr>
+            <td align="center"><span><b>TOTALES:</b></span></td>
+            <td align="center" class="text-center"><strong>{{ $cart->sum('qty') }}</strong></td>
+            <td colspan="1"></td>
+            <td align="center"><strong>Q. {{ number_format($cart->sum(function ($item) { return $item->price * $item->qty; }), 2) }}</strong></td>
+            <td colspan="1"></td>
+        </tr>
+        </tfoot>
+    </table>
+@else
+    <!-- Tabla de Detalles de Venta -->
+    <table class="table-items">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th>Precio Unitario</th>
+            <th>Cantidad</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach($details as $d)
+            <tr>
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $d->product->name }}</td>
+                <td>Q. {{ number_format($d->price, 2) }}</td>
+                <td>{{ number_format($d->quantity, 2) }}</td>
+                <td>Q. {{ number_format($d->price * $d->quantity, 2) }}</td>
+            </tr>
+        @endforeach
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="2"><strong>Totales:</strong></td>
+            <td><strong>Q. {{ number_format($details->sum('price'), 2) }}</strong></td>
+            <td><strong>{{ number_format($details->sum('quantity'), 2) }}</strong></td>
+            <td>
+                <strong>Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</strong>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+@endif
+
+
+<table class="table-items">
     <thead>
     <tr>
-        <th align="center">No.</th>
-        <th align="center">Cantidad</th>
-        <th align="center">Nombre</th>
-        <th align="center">Precio</th>
-        <th align="center">Imagen</th>
+        <th>Efectivo</th>
+        <th>Cambio</th>
+        <th>Descuento</th>
+        <th>Colaborador</th>
+        <th>Ingreso</th>
     </tr>
     </thead>
     <tbody>
-    @foreach($cart as $item)
-        {{--dd($item)--}}
-        <tr>
-            <td align="center">{{ $loop->iteration }}</td>
-            <td align="center">{{$item->qty}}</td>
-            <td align="center">{{ $item->name }}</td>
-            <td align="center">{{ $item->subtotal }}</td>
-            <!--td align="center">{{-- $item->attributes --}}</td-->
-            <!--td align="center"><img src="{{-- asset('storage/products/' . $item->attributes[0])--}}" alt="imagen de producto" height="50"
-                                        width="50" class="rounded"></td-->
-            <td align="center">
-                @php
-                    $imagePath = 'storage/products/' . $item->options->image;
-                    $defaultImagePath = 'img/noimg.jpg';
-                @endphp
-
-                @if (is_file(public_path($imagePath)))
-                    <img src="{{ asset($imagePath) }}" alt="Imagen del producto" height="20" width="20" class="rounded">
-                @else
-                    <img src="{{ asset($defaultImagePath) }}" alt="Imagen por defecto" height="20" width="20"
-                         class="rounded">
-                @endif
-            </td>
-        </tr>
-    @endforeach
-    </tbody>
-    <tfoot>
     <tr>
-        <td align="center"><span><b>TOTALES:</b></span></td>
-        <td align="center" class="text-center" style=""><strong>{{ $cart->sum('qty')}}</strong></td>
-        <!--td align="center"  colspan="1" class="text-center"><span><strong> Q. {{ number_format($cart->sum('price'),2)  }}</strong></span></td-->
-        <td colspan="1"></td>
-        <td align="center"><strong>Q. {{ number_format($cart->sum(function ($item) {
-            return $item->price * $item->qty;
-                    }), 2) }}</strong></td>
-        <td colspan="1"></td>
+        <td>Q. {{ number_format($efectivo, 2) }}</td>
+        <td>Q. {{ number_format($change, 2) }}</td>
+        <td>Q. {{ number_format($descuento, 2) }}</td>
+        <td>{{ $usuario->name }}</td>
+        <td>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</td>
     </tr>
-    </tfoot>
+    </tbody>
 </table>
+<br>
 
 <section class="footer table-items">
     <table cellpadding="0" cellspacing="0" class="rounded" width="100%">
         <tr>
             <td width="20%">
-                <span>Sistema {{ config('app.name') }}</span>
-                </td>
-                <td width="60%" class="text-center">
-                    GR
-                </td>
-                <td class="text-center" width="20%">
-                    página <span class="pagenum"></span>
-                </td>
-            </tr>
-        </table>
-    </section>
-    <script type="text/php">
-        if (isset($pdf)) {
-                $pdf->page_script('
-                    if ($PAGE_COUNT > 1) {
-                        $font = $fontMetrics->get_font("Arial, Helvetica, sans-serif", "normal");
-                        $size = 10;
-                        $pageText = "Página: " . $PAGE_NUM . " de " . $PAGE_COUNT;
-                        $y = 15;
-                        $x = 520;
-                        $pdf->text($x, $y, $pageText, $font, $size);
-                    }
-                ');
-            }
-    </script>
+                <span>Sistema {{ $empresa->name }}</span>
+            </td>
+            <td width="60%" class="text-center">
+                GR
+            </td>
+            <td class="text-center" width="20%">
+                página <span class="pagenum"></span>
+            </td>
+        </tr>
+    </table>
+</section>
+<script type="text/php">
+    @include('pdf.partials.pdf_script')
+</script>
 
 </body>
 

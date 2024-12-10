@@ -69,9 +69,6 @@
                 </tr>
             </table>
             </tbody>
-            {{--}}<div class="mt-4">
-                {{ $data->links() }}
-            </div>--}}
         </div>
     </div>
 
@@ -79,11 +76,12 @@
     <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
         <div class="flex justify-end mt-4">
             <a href="#" class="btn btn-primary mr-1"
-               onclick="openPdfWindow('{{ route('report.details', ['seller' => $this->obtenerNombreVendedor($item->seller), 'nextSaleNumber' => $saleId]) }}')">
+               onclick="openPdfWindow('{{ route('report.details', ['seller' => getNameSeller($item->seller), 'nextSaleNumber' => $saleId]) }}')">
                 Imprimir
             </a>
             <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
         </div>
     </form>
+
 
 
