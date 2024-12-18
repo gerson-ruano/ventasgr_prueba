@@ -14,23 +14,19 @@ use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Illuminate\Support\Carbon;
 
-class SaleExport
+class SaleExportBox
 {
-    protected $userId;
-    protected $dateFrom;
-    protected $dateTo;
-    protected $reportType;
+    protected $userid;
+    protected $fromDate;
+    protected $toDate;
     protected $fileName;
-    protected $selectTipoEstado;
 
-    public function __construct($userId, $reportType, $f1, $f2, $selectTipoEstado)
+    public function __construct($userid, $fromDate, $toDate)
     {
-        $this->userId = $userId;
-        $this->reportType = $reportType;
-        $this->dateFrom = $f1;
-        $this->dateTo = $f2;
-        $this->selectTipoEstado = $selectTipoEstado;
-        $this->fileName = 'Reporte_' . now()->format('h_i__d_m_Y') . '.xlsx';
+        $this->userid = $userid;
+        $this->fromDate = Carbon::parse($fromDate)->startOfDay();
+        $this->toDate = Carbon::parse($toDate)->endOfDay();
+        $this->fileName = 'ReporteBox_' . now()->format('h_i__d_m_Y') . '.xlsx';
     }
 
     public function reportExcel()
@@ -67,11 +63,12 @@ class SaleExport
         ]);
 
         // Obtener datos de ventas
-        $data = $this->fetchSalesData();
+        $data = $this->collection();
 
         // Escribir datos en la hoja
         $row = 2;
         foreach ($data as $sale) {
+            //dd($sale);
             $translatedStatus = $statusTranslations[$sale->status] ?? $sale->status;
 
             $sheet->setCellValue('A' . $row, $sale->id)
@@ -79,7 +76,7 @@ class SaleExport
                 ->setCellValue('C' . $row, $sale->items)
                 ->setCellValue('D' . $row, $translatedStatus)
                 ->setCellValue('E' . $row, getNameSeller($sale->seller))
-                ->setCellValue('F' . $row, $sale->user)
+                ->setCellValue('F' . $row, getNameSeller($sale->user_id))
                 ->setCellValue('G' . $row, Date::dateTimeToExcel($sale->created_at));
 
             $row++;
@@ -121,34 +118,14 @@ class SaleExport
         return $filePath;
     }
 
-    protected function fetchSalesData()
+    public function collection()
     {
-        $from = Carbon::parse($this->dateFrom)->format('Y-m-d') . ' 00:00:00';
-        $to = Carbon::parse($this->dateTo)->format('Y-m-d') . ' 23:59:59';
-
-        if ($this->reportType == 0) {
-            // Si es el tipo de reporte 0, el rango de fechas no debe ser considerado
-            $from = Carbon::now()->format('Y-m-d') . ' 00:00:00';
-            $to = Carbon::now()->format('Y-m-d') . ' 23:59:59';
-        }
-
-        $query = Sale::join('users as u', 'u.id', 'sales.user_id')
-            ->select('sales.id', 'sales.total', 'sales.items', 'sales.status', 'sales.seller', 'u.name as user', 'sales.created_at')
-            ->whereBetween('sales.created_at', [$from, $to]);
-
-        if ($this->userId != 0) {
-            $query->where('user_id', $this->userId);
-        }
-
-        if ($this->selectTipoEstado) {
-            $query->where('sales.status', $this->selectTipoEstado);
-        }
-
-        return $query->get();
+        // Devuelve la colección de ventas
+        return Sale::whereBetween('created_at', [$this->fromDate, $this->toDate])
+            ->where('status', 'Paid')
+            ->where('user_id', $this->userid)
+            ->get([
+                'id', 'total', 'items', 'status', 'seller', 'user_id', 'created_at'
+            ]);
     }
-    /*public function obtenerNombreVendedor($seller)
-    {
-        $vendedor = User::find($seller);
-        return $vendedor ? $vendedor->name : 'C/F';
-    }*/
 }

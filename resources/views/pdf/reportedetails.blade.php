@@ -99,9 +99,9 @@
     </thead>
     <tbody>
     <tr>
-        <td>{{ $sale->total }}</td>
-        <td>{{ $sale->cash }}</td>
-        <td>{{ $sale->change }}</td>
+        <td>Q. {{ number_format($sale->total, 2) }}</td>
+        <td>Q. {{ number_format($sale->cash, 2) }}</td>
+        <td>Q. {{ number_format($sale->change, 2) }}</td>
         <td>Q. {{ number_format($descuento, 2) }}</td>
         <td>{{ $statusTranslations[$sale->status] ?? $sale->status }}</td>
         <td>{{ \Carbon\Carbon::parse($sale->created_at)->format('d-m-Y H:i') }}</td>

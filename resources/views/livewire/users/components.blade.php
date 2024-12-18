@@ -53,7 +53,7 @@
                                     <i class="fas fa-edit"></i>
                                 </button>
                                 <button class="btn btn-sm btn-outline btn-danger"
-                                        onclick="Confirm('{{ $user->id }}','{{ $componentName }}','{{ $user->name }}')"
+                                        onclick="Confirm('{{ $user->id }}','{{ $componentName }}','{{ $user->name }}','{{ $user->saleDetails?->count() ?? 0 }}','USUARIOS')"
                                         title="Eliminar">
                                     <i class="fas fa-trash"></i>
                                 </button>

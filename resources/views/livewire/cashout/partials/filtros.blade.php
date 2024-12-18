@@ -56,10 +56,33 @@
 
 
     <!-- Buttons -->
+    {{--}}<div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2">
+        <button wire:click.prevent="Consultar()" class="btn btn-accent text-xs mb-1"
+                @if (empty($sales)) disabled @endif>
+            <i class="fas fa-paper-plane"></i> Consultar
+        </button>
+    </div>--}}
+
+    <!-- Buttons PDF / EXCEL -->
     <div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2">
         <button wire:click.prevent="Consultar()" class="btn btn-accent text-xs mb-1"
                 @if (empty($sales)) disabled @endif>
             <i class="fas fa-paper-plane"></i> Consultar
         </button>
+
+        @if($userid && $fromDate && $toDate)
+            <a class="btn btn-primary"
+               href="{{ url('report/box' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
+               target="_blank"><i class="fas fa-file-pdf"></i>
+                Generar PDF
+            </a>
+
+            <a class="btn btn-primary mb-3"
+               href="{{ url('report-excel' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
+               target="_blank"><i class="fas fa-file-excel"></i>
+                Exportar a EXCEL
+            </a>
+        @endif
+
     </div>
 </div>

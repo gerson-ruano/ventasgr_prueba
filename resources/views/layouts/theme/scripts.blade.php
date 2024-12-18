@@ -167,6 +167,7 @@
             }
         });
 
+
         //Notifiaciones SWIFTALERT SUCCESS
         Livewire.on('noty-done', (event) => {
             const {type, message} = event;
@@ -265,12 +266,20 @@
         }, 100);  // Espera 500 ms para asegurarse de que el PDF se ha abierto primero
     }
 
-    // Manejar el evento de impresión despues de la VENTA
+    // Manejar el evento de impresión POST-VENTA
     Livewire.on('printSale', function (url) {
         if (url) {
+
+            var width = 800;
+            var height = 700;
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 2;
+
             setTimeout(function() {
-                window.open(url, '_blank'); // Abrir en una nueva pestaña
-            }, 2000); // 500 milisegundos de retraso
+                //window.open(url, '_blank'); // Abrir en una nueva pestaña
+                window.open(url, 'PDF', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left + ', resizable=yes, scrollbars=yes');
+            }, 2000); // 2000 milisegundos de retraso
+
         } else {
             Livewire.dispatch('ShowNotification');
             //alert('No se pudo generar la URL de impresión.');

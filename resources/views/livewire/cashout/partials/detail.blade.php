@@ -26,7 +26,7 @@
                             <h6>{{ $item->items }}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
-                            <h6>{{$this->obtenerNombreVendedor($item->seller)}}</h6>
+                            <h6>{{getNameSeller($item->seller)}}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y H:i:s') }}</h6>

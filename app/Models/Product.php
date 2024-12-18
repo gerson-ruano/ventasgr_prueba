@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\SaleDetail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,14 +10,25 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'barcode','cost','price','stock','alerts','image','category_id'];
+    protected $fillable = ['name', 'barcode', 'cost', 'price', 'stock', 'alerts', 'image', 'category_id'];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
 
-    public function getImagenAttribute() {
+    public function saleDetails()
+    {
+        return $this->hasMany(SaleDetail::class);
+    }
+
+    public function sales()
+    {
+        return $this->hasManyThrough(Sale::class, SaleDetail::class, 'product_id', 'id', 'id', 'sale_id');
+    }
+
+    public function getImagenAttribute()
+    {
         $imagePath = 'storage/products/' . ($this->image ? $this->image : 'noimg.jpg');
 
         // Verifica si la imagen existe en la ruta especificada
@@ -27,4 +39,5 @@ class Product extends Model
             return asset('assets/img/noimg.jpg');
         }
     }
+
 }

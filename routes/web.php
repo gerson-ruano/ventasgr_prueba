@@ -49,17 +49,22 @@ Route::middleware(['auth','checkStatus'])->group(function () {
         Route::get('reports', Reports::class)->name('reports');
         Route::get('cashout', Cashout::class)->name('cashout');
 
-        //REPORTES GENERALES PDF
+        //REPORTE GENERAL DE VENTAS PDF
         Route::get('report/pdf/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class, 'reportPDF']);
-        //REPORTE VENTA PDF
+        //REPORTE DE X VENTA PDF
         Route::get('report/details/{seller}/{nextSaleNumber}', [ExportController::class, 'reportDetails'])->name('report.details');
-        //REPORTES CIERRE DE CAJA PDF
+        //REPORTE CIERRE DE CAJA X VENTA PDF
         Route::get('report/box/{seller}/{nextSaleNumber}', [ExportController::class, 'reportBox'])->name('report.box');
+        //REPORTE GENERAL DE CIERRE DE CAJA PDF
+        Route::get('report/box/{userid}/{f1}/{f2}', [ExportController::class, 'reportBoxGeneral'])->name('report.boxgeneral');
         //IMPRESION VENTA PDF
         Route::get('report/venta/{change}/{efectivo}/{seller}/{nextSaleNumber}', [ExportController::class, 'reportVenta'])->name('report.venta');
 
         //REPORTES EXCEL
+        //Reporte general de ventas
         Route::get('report-excel/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class, 'reportExcel']);
+        //Reporte general de cierre de caja
+        Route::get('report-excel/{userid}/{f1}/{f2}', [ExportController::class, 'reportBoxExcel']);
         //Route::get('report-excel', [ExportController::class,'reportExcel']);
     });
 

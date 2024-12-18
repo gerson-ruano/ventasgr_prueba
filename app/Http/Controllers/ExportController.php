@@ -12,6 +12,7 @@ use App\Models\Sale;
 use App\Models\Company;
 use Dompdf\Options;
 use App\Exports\SaleExport;
+use App\Exports\SaleExportBox;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
@@ -74,6 +75,34 @@ class ExportController extends Controller
         //$pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
 
         return $pdf->stream("Reporte_{$this->currentDate}.pdf"); //visualizar
+        //return $pdf->download('salesReport.pdf'); //descargar
+    }
+
+    // REPORTE DE CIERRE DE CAJA GENERAL
+    public function reportBoxGeneral($userid, $fromDate = null, $toDate = null)
+    {
+
+        $from = Carbon::parse($fromDate)->startOfDay();
+        $to = Carbon::parse($toDate)->endOfDay();
+
+        $data = Sale::whereBetween('created_at', [$from, $to])
+            ->where('status','Paid')
+            ->where('user_id', $userid)
+            ->get();
+
+
+        $user = $userid == 0 ? 'Todos' : User::find($userid)->name;
+
+        foreach ($data as $item) {
+            $item->seller_name = getNameSeller($item->seller);  // Usar la función para obtener el nombre del vendedor
+        }
+        $empresa = $this->companyVentas();
+        $usuario = $this->currentUser();
+
+        $pdf = Pdf::loadView('pdf.reporteboxgeneral', compact('data', 'user', 'fromDate', 'toDate', 'empresa','usuario'));
+        //$pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
+
+        return $pdf->stream("ReporteBox_{$this->currentDate}.pdf"); //visualizar
         //return $pdf->download('salesReport.pdf'); //descargar
     }
 
@@ -199,6 +228,18 @@ class ExportController extends Controller
         return response()->download($filePath)->deleteFileAfterSend(true);*/
 
         $export = new SaleExport($userId, $reportType, $dateFrom, $dateTo, $selectTipoEstado);
+        $filePath = $export->reportExcel();
+
+        // Descargar el archivo y eliminarlo después de la descarga
+        return response()->download($filePath)->deleteFileAfterSend(true);
+
+    }
+
+    // REPORTE DE CIERRE DE CAJA EXCEL
+    public function reportBoxExcel($userid, $fromDate = null, $toDate = null)
+    {
+
+        $export = new SaleExportBox($userid, $fromDate, $toDate);
         $filePath = $export->reportExcel();
 
         // Descargar el archivo y eliminarlo después de la descarga

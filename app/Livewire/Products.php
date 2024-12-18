@@ -8,7 +8,9 @@ use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 use Livewire\Attributes\On;
 use App\Models\Category;
+use App\Models\SaleDetail;
 use Illuminate\Support\Facades\Storage;
+
 
 class Products extends Component
 {
@@ -194,7 +196,8 @@ class Products extends Component
         'searchUpdated' => 'updateSearch',
     ];
 
-    public function destroy($id){
+    public function destroy($id)
+    {
 
         /*$imageTemp = $product->image;
         $product->delete();
@@ -209,23 +212,32 @@ class Products extends Component
         $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
     }*/
 
-    $product = Product::find($id);
+        $product = Product::find($id);
 
         if ($product) {
+            // Verificar si el producto tiene ventas asociadas
+            $hasSales = SaleDetail::where('product_id', $id)->exists();
+
+            if ($hasSales) {
+                // Notificar que el producto tiene ventas asociadas
+                $this->dispatch('noty-warning', type: 'PRODUCTO', name: $product->name);
+                return;
+            }
+
+            // Si no tiene ventas, eliminar el producto
             $imageName = $product->image;
             $product->delete();
 
-            if ($imageName != null) {
-                if (file_exists(storage_path('app/public/products/' . $imageName))) {
-                    unlink(storage_path('app/public/products/' . $imageName));
-                }
+            if ($imageName != null && file_exists(storage_path('app/public/products/' . $imageName))) {
+                unlink(storage_path('app/public/products/' . $imageName));
             }
 
-            // Restablecer UI y emitir evento
             $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
         } else {
-            // Manejo de caso donde la categoría no se encuentra
-            $this->dispatch('noty-not-found', type: 'PRODUCTO', name: $product->id);
+            $this->dispatch('noty-not-found', [
+                'type' => 'PRODUCTO',
+                'name' => $id,
+            ]);
         }
     }
 
