@@ -122,8 +122,8 @@
             <th width="12%">IMPORTE</th>
             <th width="10%">CANTIDAD</th>
             <th width="10%">ESTADO</th>
-            <th width="10%">CLIENTE</th>
-            <th width="14%">USUARIO</th>
+            <th width="12%">CLIENTE</th>
+            <th width="12%">USUARIO</th>
             <th width="16%">FECHA/HORA</th>
         </tr>
         </thead>

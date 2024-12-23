@@ -84,8 +84,8 @@ class Reports extends Component
             //$from = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 00:00:00';
             //$to = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 23:59:59';
             // Asignar las fechas actuales a las propiedades dateFrom y dateTo
-            $this->dateFrom = Carbon::now()->format('Y-m-d');
-            $this->dateTo = Carbon::now()->format('Y-m-d');
+            $this->dateFrom = Carbon::now()->format('d-m-Y');
+            $this->dateTo = Carbon::now()->format('d-m-Y');
 
             // Formatear las fechas para la consulta
             $from = $this->dateFrom . ' 00:00:00';

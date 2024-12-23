@@ -35,7 +35,10 @@
                     <td class="py-2 px-4 text-left">{{ $product->name }}</td>
                     <td class="py-2 px-4 text-left">{{ $product->category->name }}</td>
                     <td class="py-2 px-4 text-left">{{ $product->price }}</td>
-                    <td class="py-2 px-4 text-left">{{ $product->stock }}</td>
+                    {{--}}<td class="py-2 px-4 text-left">{{ $product->stock }}</td>--}}
+                    <td class="py-2 px-4 text-left"><span
+                            class="badge {{ $product->stock >= $product->alerts ? 'badge-success' : 'badge-warning'}} text-uppercase">{{ $product->stock }}</span>
+                    </td>
                     <td class="py-2 px-4 text-center">{{ $product->alerts }}</td>
                     <td class="py-2 px-4 text-center">
                         <img src="{{ $product->imagen }}" alt="Imagen de {{ $product->name }}"

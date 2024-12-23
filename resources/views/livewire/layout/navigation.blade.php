@@ -31,6 +31,7 @@ new class extends Component {
     'pos' => __('Ventas'),
     'reports' => __('Reportes'),
     'cashout' => __('Cierre de Caja'),
+    'graphics' => __('Estadistica'),
     // Añade más rutas aquí según sea necesario
     ];
 $routeExists = false;

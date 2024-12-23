@@ -54,7 +54,7 @@ details summary {
                     </a>
                 </li>
                 <li class="">
-                    <a href="{{url('pos')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
+                    <a href="{{url('graphics')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-chart-bar mr-1"></i>Estadistica
                     </a>
                 </li>
