@@ -70,7 +70,7 @@ class Roles extends Component
         try {
             // Validación de reglas
             $this->validate();
-            $this->authorize('create', Role::class);
+            $this->authorize('roles.create', Role::class);
 
             Role::create([
                 'name' => $this->roleName
@@ -100,7 +100,7 @@ class Roles extends Component
 
             // Validación
             $this->validate();
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('roles.update', $this->selected_id);
 
             $role = Role::find($this->selected_id);
             $role->name = $this->roleName;
@@ -117,15 +117,23 @@ class Roles extends Component
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $id);
-            $permissionCount = Role::find($id)->permissions()->count();
+            $role = Role::findOrFail($id);
+            $this->authorize('roles.delete', $role);
+
+            if ($role->permissions()->count() > 0) {
+                $this->dispatch('noty-done', type: 'error', message: 'EL ROL seleccionado tiene permisos asignados.');
+                return;
+            }
+
+            /*$permissionCount = Role::find($id)->permissions()->count();
             if ($permissionCount > 0) {
                 $this->dispatch();
                 return;
             }
 
             $role = Role::find($id);
-            Role::find($id)->delete();
+            Role::find($id)->delete();*/
+            $role->delete();
             // Restablecer UI y emitir evento
             $this->dispatch('noty-deleted', type: 'ROL', name: $role->name);
         } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {

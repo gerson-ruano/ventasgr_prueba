@@ -78,7 +78,7 @@ class Cashout extends Component
     public function viewDetails(Sale $sale)
     {
         try {
-            $this->authorize('details', $sale);
+            $this->authorize('cierre.details', $sale);
             $fi = Carbon::parse($this->fromDate)->format('Y-m-d') . ' 00:00:00';
             $ff = Carbon::parse($this->toDate)->format('Y-m-d') . ' 23:59:59';
 

@@ -123,7 +123,7 @@ class Users extends Component
             // Validación de reglas
             //$this->rules['password'] = 'required|min:4';
             $this->validate($this->rules());
-            $this->authorize('create', Users::class);
+            $this->authorize('users.create', Users::class);
 
             $user = User::create([
                 'name' => $this->name,
@@ -196,7 +196,7 @@ class Users extends Component
         try {
             // Validación
             $this->validate($this->rules());
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('users.update', $this->selected_id);
 
             $user = User::find($this->selected_id);
 
@@ -250,9 +250,9 @@ class Users extends Component
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $id);
-            $user = User::find($id);
 
+            $user = User::find($id);
+            $this->authorize('users.delete', $user);
             if (!$user) {
                 // Manejo de caso donde el usuario no se encuentra
                 $this->dispatch('noty-not-found', type: 'USUARIO', name: $user->id);

@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class CashoutPolicy extends BasePolicy
 {
+    public function __construct()
+    {
+        parent::__construct('cashout');
+    }
     public function hasPermissionTo(User $user, Model $sale): bool
     {
         // Implement your permission logic here

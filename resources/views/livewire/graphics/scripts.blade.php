@@ -127,6 +127,7 @@
         const chartData = {
             daysOfWeek: getSafeJsonData('daysOfWeek'),
             salesData: getSafeJsonData('salesData'),
+            totalStock: getSafeJsonData('totalStock'),
             datosDeVentas: getSafeJsonData('datosDeVentas'),
             productosConMenosExistencias: getSafeJsonData('productosConMenosExistencias'),
             // ... (obtener resto de datos)

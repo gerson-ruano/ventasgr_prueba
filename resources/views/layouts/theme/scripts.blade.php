@@ -45,7 +45,7 @@
                     iconColor: "#0ca152", //color verde oscuro
                     title: `se agrego ${data.type} "${data.name}" con exito!`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 2000
                 });
             } else {
                 console.error(
@@ -62,7 +62,7 @@
                     iconColor: "#0c4ca1", //color Azul oscuro
                     title: `se actualizó ${data.type} "${data.name}" con exito!`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 2000
                 });
             } else {
                 console.error(
@@ -78,7 +78,7 @@
                     icon: "error",
                     title: `se eliminó ${data.type} "${data.name}" exitosamente!`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 2000
                 });
             } else {
                 console.error(
@@ -94,7 +94,7 @@
                     icon: "error",
                     title: `la ${data.type} con "${data.id}" no se encuentra!`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 2000
                 });
             } else {
                 console.error(
@@ -108,9 +108,9 @@
             if (data && data.type && data.name) {
                 Swal.fire({
                     icon: "error",
-                    title: `la ${data.type} con "${data.id}" no se encuentra!`,
+                    title: `la ${data.type} con "${data.name}" no se encuentra!`,
                     showConfirmButton: false,
-                    timer: 1500
+                    timer: 2000
                 });
             } else {
                 console.error(

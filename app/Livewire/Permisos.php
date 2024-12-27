@@ -72,7 +72,7 @@ class Permisos extends Component
         try {
             // Validación de reglas
             $this->validate();
-            $this->authorize('create', Permission::class);
+            $this->authorize('permissions.create', Permission::class);
 
             Permission::create([
                 'name' => $this->permissionName
@@ -102,7 +102,7 @@ class Permisos extends Component
 
             // Validación
             $this->validate();
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('permissions.update', $this->selected_id);
 
             $permiso = Permission::find($this->selected_id);
             $permiso->name = $this->permissionName;
@@ -118,15 +118,16 @@ class Permisos extends Component
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $id);
-            $rolesCount = Permission::find($id)->getRoleNames()->count();
-            if ($rolesCount > 0) {
-                $this->dispatch('showNotification', 'No se puede eliminar el role porque tiene permisos asociados', 'warning');
+            $permiso = Permission::findOrFail($id);
+            $this->authorize('permissions.delete', $permiso);
+
+            if ($permiso->getRoleNames()->count() > 0) {
+                $this->dispatch('showNotification', 'No se puede eliminar el ROL porque tiene permisos asociados', 'warning');
                 return;
             }
 
-            $permiso = Permission::find($id);
-            Permission::find($id)->delete();
+            $permiso->delete();
+
             $this->dispatch('noty-deleted', type: 'PERMISO', name: $permiso->name);
         } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
             $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');

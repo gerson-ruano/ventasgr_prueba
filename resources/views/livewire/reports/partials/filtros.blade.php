@@ -64,14 +64,14 @@
         </button>
 
         @if(count($data) > 0)
-            @can('pdf')
+            @can('reports.pdf')
             <a class="btn btn-primary"
                href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo . '/' . $selectTipoEstado) }}"
                target="_blank"><i class="fas fa-file-pdf"></i>
                 Generar PDF
             </a>
             @endcan
-            @can('excel')
+            @can('reports.excel')
                 <a class="btn btn-primary mb-3"
                    href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo .  '/' . $selectTipoEstado) }}"
                    target="_blank"><i class="fas fa-file-excel"></i>

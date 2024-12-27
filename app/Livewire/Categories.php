@@ -81,7 +81,7 @@ class Categories extends Component
             // Validación de reglas
             $this->validate();
 
-            $this->authorize('create', Category::class);
+            $this->authorize('categories.create', Category::class);
             // Crear la categoría
             $category = Category::create([
                 'name' => $this->name
@@ -121,7 +121,7 @@ class Categories extends Component
 
             // Validación
             $this->validate();
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('categories.update', $this->selected_id);
             $category = Category::find($this->selected_id);
             $category->update([
                 'name' => $this->name
@@ -151,8 +151,8 @@ class Categories extends Component
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $id);
             $category = Category::find($id);
+            $this->authorize('categories.delete', $category);
 
             if ($category) {
                 $imageName = $category->image;

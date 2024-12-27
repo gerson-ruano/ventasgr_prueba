@@ -132,7 +132,7 @@ class Reports extends Component
     public function getDetails($saleId, $modal = 'detail')
     {
         try {
-            $this->authorize('details', $saleId);
+            $this->authorize('reports.details', $saleId);
             $this->details = SaleDetail::join('products as p', 'p.id', 'sale_details.product_id')
                 ->select('sale_details.id', 'sale_details.price', 'sale_details.quantity', 'p.name as product')
                 ->where('sale_details.sale_id', $saleId)
@@ -207,7 +207,7 @@ class Reports extends Component
             $this->validate([
                 'selectedStatus' => 'required|not_in:Elegir', // Asegúrate de que 'Elegir' sea el valor por defecto
             ]);
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('reports.update', $this->selected_id);
 
             // Obtén la venta correspondiente por su ID
             $sale = Sale::find($this->selectedId);
@@ -241,7 +241,7 @@ class Reports extends Component
             }
         } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
             // Notificación de error de autorización
-            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS');
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ACTUALIZAR');
         }
     }
 

@@ -78,7 +78,7 @@ class Coins extends Component
         try {
             // Validación de reglas
             $this->validate();
-            $this->authorize('create', Denomination::class);
+            $this->authorize('denominations.create', Denomination::class);
 
             $denomination = Denomination::create([
                 'type' => $this->type,
@@ -119,7 +119,7 @@ class Coins extends Component
 
             // Validación
             $this->validate();
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('denominations.update', $this->selected_id);
 
             $denomination = Denomination::find($this->selected_id);
             $denomination->update([
@@ -152,8 +152,8 @@ class Coins extends Component
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $id);
             $denomination = Denomination::find($id);
+            $this->authorize('denominations.delete', $denomination);
 
             if ($denomination) {
                 $imageName = $denomination->image;

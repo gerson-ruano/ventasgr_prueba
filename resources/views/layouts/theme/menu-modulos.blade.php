@@ -45,7 +45,7 @@ details summary {
             <ul>
                 <li class="">
                     <a href="{{url('cashout')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
-                        <i class="fas fa-cash-register mr-1"></i>Cierre de caja
+                        <i class="fas fa-cash-register mr-1"></i>Cierre
                     </a>
                 </li>
                 <li class="">
@@ -79,7 +79,7 @@ details summary {
                 </li>
                 <li class="">
                     <a href="{{url('asignar')}}" class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin') ? '' : 'opacity-50 pointer-events-none' }}">
-                        <i class="fas fa-check-square mr-1"></i>Asignar
+                        <i class="fas fa-check-square mr-1"></i>Asignar Permisos
                     </a>
                 </li>
                 <li class="">

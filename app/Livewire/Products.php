@@ -98,7 +98,7 @@ class Products extends Component
         try {
             // Validación de reglas
             $this->validate();
-            $this->authorize('create', Products::class);
+            $this->authorize('products.create', Products::class);
 
             $product = Product::create([
                 'name' => $this->name,
@@ -151,7 +151,7 @@ class Products extends Component
 
             // Validación
             $this->validate();
-            $this->authorize('update', $this->selected_id);
+            $this->authorize('products.update', $this->selected_id);
 
             $product = Product::find($this->selected_id);
 
@@ -212,8 +212,8 @@ class Products extends Component
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $id);
             $product = Product::find($id);
+            $this->authorize('products.delete', $product);
 
             if ($product) {
                 // Verificar si el producto tiene ventas asociadas

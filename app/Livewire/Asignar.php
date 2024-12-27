@@ -4,8 +4,11 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Livewire\WithPagination;
-use Spatie\Permission\Models\Permission;
+//use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use App\Models\Module;
+use Spatie\Permission\Models\Permission as SpatiePermission;
+use App\Models\Permission;
 use DB;
 
 class Asignar extends Component
@@ -13,7 +16,7 @@ class Asignar extends Component
 
     use WithPagination;
 
-    public $role, $componentName, $permisosSelected = [], $old_permissions = [];
+    public $role, $componentName, $permisosSelected = [], $old_permissions = [], $moduleSelected = '';
     private $pagination = 10;
 
     public function paginationView()
@@ -24,55 +27,81 @@ class Asignar extends Component
     {
         $this->role = 'Elegir';
         $this->componentName = 'Asignar Permisos';
+        //$this->ensureModulesExist();
+    }
+
+    private function ensureModulesExist()
+    {
+        // Módulos base que deberían existir
+        $baseModules = [
+            'users' => 'Usuarios',
+            'roles' => 'Roles',
+            'products' => 'Productos',
+            'categories' => 'Categorias',
+            'permissions' => 'Permisos',
+            'denominations' => 'Billetes',
+            'cierre' => 'Cierre de Caja',
+            'reports' => 'Reportes',
+            'grafics' => 'Estadistica',
+            'assign' => 'Asigar',
+            'pos' => 'Ventas',
+            // Agrega más módulos según necesites
+        ];
+
+        foreach ($baseModules as $name => $description) {
+            Module::firstOrCreate(
+                ['name' => $name],
+                ['description' => $description]
+            );
+        }
     }
 
     public function render()
     {
-        $permisos = Permission::select('name', 'id', DB::raw("0 as checked"))
-            ->orderBy('name', 'asc')
-            ->paginate($this->pagination);
 
-        $rolePermissionsCount = [];
+        $query = Permission::select('permissions.*', DB::raw("0 as checked"));
 
-        if ($this->role != 'Elegir') {
-            $role = Role::find($this->role);
-
-            if ($role) {
-                $assignedPermissions = $role->permissions()->pluck('id')->toArray();
-
-                foreach ($permisos as $permiso) {
-                    if (in_array($permiso->id, $assignedPermissions)) {
-                        $permiso->checked = 1;
-                    }
-                }
-
-                $this->old_permissions = $assignedPermissions;
-
-                // Contar los permisos del rol seleccionado
-                $rolePermissionsCount[$this->role] = $role->permissions()->count();
+        if ($this->moduleSelected !== 'all') {
+            // Filtrar permisos por módulo seleccionado
+            $module = Module::find($this->moduleSelected);
+            if ($module) {
+                $query->whereHas('modules', function ($q) use ($module) {
+                    $q->where('modules.id', $module->id);
+                });
             }
         }
 
-        // Contar los permisos para todos los roles
+        $permisos = $query->orderBy('name', 'asc')->paginate($this->pagination);
+
+        // Cargar los roles disponibles
         $allRoles = Role::orderBy('name', 'asc')->get();
-        foreach ($allRoles as $role) {
-            $rolePermissionsCount[$role->id] = $role->permissions()->count();
+
+        if ($this->role != 'Elegir') {
+            $role = Role::find($this->role);
+            if ($role) {
+                // Marcar permisos asignados al rol actual
+                $assignedPermissions = $role->permissions()->pluck('id')->toArray();
+                foreach ($permisos as $permiso) {
+                    $permiso->checked = in_array($permiso->id, $assignedPermissions);
+                }
+            }
         }
 
+        $modules = Module::where('active', true)->get();
 
-        return view('livewire.asignar.components',[
-            'roles' =>  Role::orderBy('name','asc')->get(),
+        return view('livewire.asignar.components', [
+            'roles' => $allRoles,
             'permisos' => $permisos,
-            'rolePermissionsCount' => $rolePermissionsCount,
-        ])->extends('layouts.app')
-        ->section('content');
+            'modules' => $modules,
+        ])->extends('layouts.app')->section('content');
     }
 
     public function Removeall()
     {
         if($this->role == 'Elegir')
         {
-            $this->dispatch('showNotification', 'Elegir un Rol válido', 'warning');
+            //$this->dispatch('showNotification', 'Elegir un Rol válido', 'warning');
+            $this->dispatch('noty-done', type:'warning', message: 'Selecciona un Rol válido');
             return;
         }
 
@@ -87,7 +116,7 @@ class Asignar extends Component
     {
         if($this->role == 'Elegir')
         {
-            $this->dispatch('showNotification', 'Elegir un Rol válido', 'warning');
+            $this->dispatch('noty-done', type:'warning', message: 'Selecciona un Rol válido');
             return;
         }
 
@@ -113,7 +142,8 @@ class Asignar extends Component
     public function syncPermiso($state, $permisoName)
     {
         if ($this->role == 'Elegir') {
-            $this->dispatch('showNotification', 'Elige un Rol válido', 'warning');
+            //$this->dispatch('showNotification', 'Elige un Rol válido', 'warning');
+            $this->dispatch('noty-done', type:'warning', message: 'Selecciona un Rol válido');
             return;
         }
 
@@ -126,6 +156,31 @@ class Asignar extends Component
             $this->dispatch('showNotification', 'Permiso eliminado correctamente', 'error');
         }
     }
+
+    public function syncAllFromModule()
+    {
+        if ($this->role == 'Elegir') {
+            $this->dispatch('noty-done', type: 'warning', message: 'Selecciona un ROL válido');
+            return;
+        }
+
+        if ($this->moduleSelected == 'all') {
+            $this->dispatch('noty-done', type: 'warning', message: 'Selecciona un MODULO específico');
+            return;
+        }
+
+        $role = Role::find($this->role);
+        $module = Module::where('id', $this->moduleSelected)->first();
+
+        if ($module) {
+            $permissions = $module->permissions->pluck('id')->toArray();
+            $role->syncPermissions($permissions);
+            $this->dispatch('showNotification', 'Se asignaron todos los permisos del módulo seleccionado', 'success');
+        } else {
+            $this->dispatch('noty-done', type: 'error', message: 'No se encontró el módulo seleccionado');
+        }
+    }
+
 
     protected $listeners = [
         'syncAllConfirmed' => 'performSync',

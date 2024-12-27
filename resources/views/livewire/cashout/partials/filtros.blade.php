@@ -71,7 +71,7 @@
         </button>
 
         @if($userid && $fromDate && $toDate)
-            @can('pdf')
+            @can('cierre.pdf')
             <a class="btn btn-primary"
                href="{{ url('report/box' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
                target="_blank"><i class="fas fa-file-pdf"></i>
@@ -79,7 +79,7 @@
             </a>
             @endcan
 
-            @can('excel')
+            @can('cierre.excel')
             <a class="btn btn-primary mb-3"
                href="{{ url('report-excel' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
                target="_blank"><i class="fas fa-file-excel"></i>

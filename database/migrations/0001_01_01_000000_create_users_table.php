@@ -22,6 +22,7 @@ return new class extends Migration
             $table->enum('profile',['Admin','Employee','Seller'])->default('Employee');
             $table->enum('status',['Active','Locked'])->default('Active');
             $table->string('image',50)->nullable();
+            $table->boolean('tema')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
