@@ -37,7 +37,7 @@ class Categories extends Component
         $this->pageTitle = 'Listado';
         $this->componentName = 'Categorias';
     }
-    
+
 
     public function paginationView()
     {
@@ -48,18 +48,18 @@ class Categories extends Component
     {
         $query = Category::orderBy('id', 'desc');
 
-    if ($this->search) {
-        $query->where('name', 'like', '%' . $this->search . '%');
+        if ($this->search) {
+            $query->where('name', 'like', '%' . $this->search . '%');
+        }
+
+        $categories = $query->paginate($this->pagination);
+
+        return view('livewire.category.components', compact('categories'))
+            ->extends('layouts.app')
+            ->section('content');
     }
 
-    $categories = $query->paginate($this->pagination);
 
-    return view('livewire.category.components', compact('categories'))
-        ->extends('layouts.app')
-        ->section('content');
-    }
-
-    
     public function openModal()
     {
         $this->isModalOpen = true;
@@ -77,23 +77,29 @@ class Categories extends Component
 
     public function store()
     {
-        // Validación de reglas
-        $this->validate();
+        try {
+            // Validación de reglas
+            $this->validate();
 
-        // Crear la categoría
-        $category = Category::create([
-            'name' => $this->name
-        ]);
+            $this->authorize('create', Category::class);
+            // Crear la categoría
+            $category = Category::create([
+                'name' => $this->name
+            ]);
 
-        // Manejo de la imagen
-        if ($this->image) {
-            $customFileName = uniqid() . '.' . $this->image->extension();
-            $this->image->storeAs('public/categories', $customFileName);
-            $category->image = $customFileName;
-            $category->save();
+            // Manejo de la imagen
+            if ($this->image) {
+                $customFileName = uniqid() . '.' . $this->image->extension();
+                $this->image->storeAs('public/categories', $customFileName);
+                $category->image = $customFileName;
+                $category->save();
+            }
+
+            $this->dispatch('noty-added', type: 'CATEGORÍA', name: $category->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'CREAR');
         }
-    
-        $this->dispatch('noty-added', type: 'CATEGORÍA', name: $category->name);
     }
 
     public function edit($id)
@@ -109,56 +115,63 @@ class Categories extends Component
 
     public function update()
     {
-        // Actualización de reglas de validación para la edición
-        $this->rules['name'] = "required|min:3|unique:categories,name,{$this->selected_id}";
+        try {
+            // Actualización de reglas de validación para la edición
+            $this->rules['name'] = "required|min:3|unique:categories,name,{$this->selected_id}";
 
-        // Validación
-        $this->validate();
+            // Validación
+            $this->validate();
+            $this->authorize('update', $this->selected_id);
+            $category = Category::find($this->selected_id);
+            $category->update([
+                'name' => $this->name
+            ]);
 
-        $category = Category::find($this->selected_id);
-        $category->update([
-            'name' => $this->name
-        ]);
+            if ($this->image) {
+                $customFileName = uniqid() . '_.' . $this->image->extension();
+                $this->image->storeAs('public/categories', $customFileName);
 
-        if($this->image)
-        {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/categories', $customFileName);
+                $imageName = $category->image;
+                $category->image = $customFileName;
+                $category->save();
 
-            $imageName = $category->image;
-            $category->image = $customFileName;
-            $category->save();
-
-            if($imageName !=null)
-            {
-                if(file_exists('storage/categories' . $imageName))
-                {
-                    unlink('storage/categories' . $imageName);
+                if ($imageName != null) {
+                    if (file_exists('storage/categories' . $imageName)) {
+                        unlink('storage/categories' . $imageName);
+                    }
                 }
             }
+            $this->dispatch('noty-updated', type: 'CATEGORÍA', name: $category->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ACTUALIZAR');
         }
-        $this->dispatch('noty-updated', type: 'CATEGORÍA', name: $category->name);
     }
 
     public function destroy($id)
     {
-        $category = Category::find($id);
+        try {
+            $this->authorize('delete', $id);
+            $category = Category::find($id);
 
-        if ($category) {
-            $imageName = $category->image;
-            $category->delete();
+            if ($category) {
+                $imageName = $category->image;
+                $category->delete();
 
-            if ($imageName != null) {
-                if (file_exists(storage_path('app/public/categories/' . $imageName))) {
-                    unlink(storage_path('app/public/categories/' . $imageName));
+                if ($imageName != null) {
+                    if (file_exists(storage_path('app/public/categories/' . $imageName))) {
+                        unlink(storage_path('app/public/categories/' . $imageName));
+                    }
                 }
-            }
 
-            // Restablecer UI y emitir evento
-            $this->dispatch('noty-deleted', type: 'CATEGORÍA', name: $category->name);
-        } else {
-            // Manejo de caso donde la categoría no se encuentra
-            $this->dispatch('noty-not-found', type: 'CATEGORÍA', name: $category->id);
+                // Restablecer UI y emitir evento
+                $this->dispatch('noty-deleted', type: 'CATEGORÍA', name: $category->name);
+            } else {
+                // Manejo de caso donde la categoría no se encuentra
+                $this->dispatch('noty-not-found', type: 'CATEGORÍA', name: $category->id);
+            }
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');
         }
     }
 
@@ -180,5 +193,5 @@ class Categories extends Component
     {
         $this->search = $search;
     }
-    
+
 }

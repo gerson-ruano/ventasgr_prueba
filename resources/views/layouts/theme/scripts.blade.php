@@ -119,6 +119,22 @@
             }
         });
 
+        // Escuchar el evento `not-permission`
+        Livewire.on('noty-permission', (data) => {
+            if (data && data.type && data.name && data.permission) {
+                Swal.fire({
+                    icon: "error",
+                    title: `${data.type} no tiene "${data.name}" para "${data.permission}"`,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            } else {
+                console.error(
+                    'Los datos recibidos del evento Livewire "noty-error" no tienen el formato esperado.',
+                    data);
+            }
+        });
+
         //Confirmar la sincronizacion de todos los permisos ASIGNAR
         Livewire.on('confirmSyncAll', (data) => {
             //console.log('Event Data:', data);

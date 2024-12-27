@@ -77,17 +77,17 @@
 
         <div
             class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:place-items-center sm:justify-center items-center mt-4 mb-2">
-            <button wire:click="saveSaleAndPrint" class="btn btn-info d-print-none mb-1 w-full sm:w-auto">Finalizar Venta
+            <button wire:click="saveSaleAndPrint" class="btn btn-info d-print-none mb-1 w-full sm:w-auto"><i class="fas fa-cart-plus"></i>Finalizar Venta
             </button>
-            <button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1 w-full sm:w-auto"
+            {{--<button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1 w-full sm:w-auto"
                     @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>
                 Detalles Venta
-            </button>
+            </button>--}}
             <a href="#" class="btn btn-primary w-full sm:w-auto mb-1" onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo,'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber]) }}')"
                @if ($tipoPago==0 || $efectivo < $totalPrice)
                 disabled
-            @endif>
-                Imprimir
+            @endif><i class="fas fa-print"></i>
+                Detalles de venta
             </a>
         </div>
     </div>

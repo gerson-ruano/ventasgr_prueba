@@ -70,6 +70,7 @@ class Users extends Component
         $this->componentName = 'Usuarios';
         $this->status = 'Elegir';
     }
+
     public function render()
     {
         $query = User::query();
@@ -91,10 +92,11 @@ class Users extends Component
             'users' => $data,
             'valores' => $valores,
         ])->extends('layouts.app')
-        ->section('content');
+            ->section('content');
     }
 
-    public function filtroTipoPerfil(){
+    public function filtroTipoPerfil()
+    {
         //return User::pluck('profile')->unique()->toArray();
         return User::distinct('profile')->pluck('profile')->toArray();
         //return $valores;
@@ -117,38 +119,43 @@ class Users extends Component
 
     public function store()
     {
-        // Validación de reglas
-        //$this->rules['password'] = 'required|min:4';
-        $this->validate($this->rules());
+        try {
+            // Validación de reglas
+            //$this->rules['password'] = 'required|min:4';
+            $this->validate($this->rules());
+            $this->authorize('create', Users::class);
 
-        $user = User::create([
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'status' => $this->status,
-            'profile' => $this->profile,
-            'password' => bcrypt($this->password)
-        ]);
+            $user = User::create([
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'status' => $this->status,
+                'profile' => $this->profile,
+                'password' => bcrypt($this->password)
+            ]);
 
-        //$user->syncRoles($this->profile);
-        // Asignar rol: buscar el rol por ID y asignar el nombre
-        $role = Role::find($this->profile);
-        if ($role) {
-            $user->syncRoles($role->name); // Asigna el nombre del rol
-        } else {
-            // Manejo de error si el rol no existe
-            $this->dispatch('noty-error', type: 'error', message: 'El rol seleccionado no existe.');
-            return;
+            //$user->syncRoles($this->profile);
+            // Asignar rol: buscar el rol por ID y asignar el nombre
+            $role = Role::find($this->profile);
+            if ($role) {
+                $user->syncRoles($role->name); // Asigna el nombre del rol
+            } else {
+                // Manejo de error si el rol no existe
+                $this->dispatch('noty-error', type: 'error', message: 'El rol seleccionado no existe.');
+                return;
+            }
+
+            if ($this->image) {
+                $customFileName = uniqid() . ' _.' . $this->image->extension();
+                $this->image->storeAs('public/users', $customFileName);
+                $user->image = $customFileName;
+                $user->save();
+            }
+            $this->dispatch('noty-added', type: 'USUARIO', name: $user->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'CREAR');
         }
-
-        if($this->image)
-        {
-            $customFileName = uniqid() . ' _.' . $this->image->extension();
-            $this->image->storeAs('public/users', $customFileName);
-            $user->image = $customFileName;
-            $user->save();
-        }
-        $this->dispatch('noty-added', type: 'USUARIO', name: $user->name);
 
     }
 
@@ -186,89 +193,97 @@ class Users extends Component
 
     public function update()
     {
-        // Validación
-        $this->validate($this->rules());
+        try {
+            // Validación
+            $this->validate($this->rules());
+            $this->authorize('update', $this->selected_id);
 
-        $user = User::find($this->selected_id);
+            $user = User::find($this->selected_id);
 
-        $data = [
-            'name' => $this->name,
-            'email' => $this->email,
-            'phone' => $this->phone,
-            'status' => $this->status,
-            'profile' => $this->profile,
-        ];
+            $data = [
+                'name' => $this->name,
+                'email' => $this->email,
+                'phone' => $this->phone,
+                'status' => $this->status,
+                'profile' => $this->profile,
+            ];
 
-        if (!empty($this->password)) {
-            $data['password'] = bcrypt($this->password);
-        }
-
-        $user->update($data);
-
-        //$user->syncRoles($this->profile);
-        $role = Role::find($this->profile);
-
-        if ($role) {
-            $user->syncRoles($role->name); // Asignar el nombre del rol
-        } else {
-            $this->dispatch('noty-error', type: 'error', message: 'El rol seleccionado no existe.');
-            return;
-        }
-
-        if($this->image)
-        {
-            $customFileName = uniqid() . ' _.' . $this->image->extension();
-            $this->image->storeAs('public/users', $customFileName);
-            $imageTemp = $user->image;
-
-            $user->image = $customFileName;
-            $user->save();
-
-            if($imageTemp != null)
-            {
-                if(file_exists('storage/users/' . $imageTemp))
-                {
-                    unlink('storage/users/' . $imageTemp);
-                }
+            if (!empty($this->password)) {
+                $data['password'] = bcrypt($this->password);
             }
 
+            $user->update($data);
+
+            //$user->syncRoles($this->profile);
+            $role = Role::find($this->profile);
+
+            if ($role) {
+                $user->syncRoles($role->name); // Asignar el nombre del rol
+            } else {
+                $this->dispatch('noty-error', type: 'error', message: 'El rol seleccionado no existe.');
+                return;
+            }
+
+            if ($this->image) {
+                $customFileName = uniqid() . ' _.' . $this->image->extension();
+                $this->image->storeAs('public/users', $customFileName);
+                $imageTemp = $user->image;
+
+                $user->image = $customFileName;
+                $user->save();
+
+                if ($imageTemp != null) {
+                    if (file_exists('storage/users/' . $imageTemp)) {
+                        unlink('storage/users/' . $imageTemp);
+                    }
+                }
+
+            }
+            $this->dispatch('noty-updated', type: 'USUARIO', name: $user->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ACTUALIZAR');
         }
-        $this->dispatch('noty-updated', type: 'USUARIO', name: $user->name);
 
     }
 
     public function destroy($id)
     {
-        $user = User::find($id);
+        try {
+            $this->authorize('delete', $id);
+            $user = User::find($id);
 
-        if (!$user) {
-            // Manejo de caso donde el usuario no se encuentra
-            $this->dispatch('noty-not-found', type: 'USUARIO', name: $user->id);
-            return;
+            if (!$user) {
+                // Manejo de caso donde el usuario no se encuentra
+                $this->dispatch('noty-not-found', type: 'USUARIO', name: $user->id);
+                return;
+            }
+
+            // Contar las ventas asociadas al usuario
+            $salesCount = Sale::where('user_id', $user->id)->count();
+
+            if ($salesCount > 0) {
+                // Manejo de caso donde el usuario tiene ventas asociadas
+                $this->dispatch('showNotification', 'No se puede eliminar el Usuario porque tiene ventas asociadas', 'warning');
+                return;
+            }
+
+            // Guardar el nombre de la imagen antes de eliminar el usuario
+            $imageName = $user->image;
+            $userDelete = $user->name;
+
+            $user->delete();
+
+            // Eliminar la imagen del almacenamiento si existe
+            if ($imageName && file_exists(storage_path('app/public/users/' . $imageName))) {
+                unlink(storage_path('app/public/users/' . $imageName));
+            }
+
+            // Emitir evento de notificación de eliminación exitosa
+            $this->dispatch('noty-deleted', type: 'USUARIO', name: $userDelete);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');
         }
-
-        // Contar las ventas asociadas al usuario
-        $salesCount = Sale::where('user_id', $user->id)->count();
-
-        if ($salesCount > 0) {
-            // Manejo de caso donde el usuario tiene ventas asociadas
-            $this->dispatch('showNotification', 'No se puede eliminar el Usuario porque tiene ventas asociadas', 'warning');
-            return;
-        }
-
-        // Guardar el nombre de la imagen antes de eliminar el usuario
-        $imageName = $user->image;
-        $userDelete = $user->name;
-
-        $user->delete();
-
-        // Eliminar la imagen del almacenamiento si existe
-        if ($imageName && file_exists(storage_path('app/public/users/' . $imageName))) {
-            unlink(storage_path('app/public/users/' . $imageName));
-        }
-
-        // Emitir evento de notificación de eliminación exitosa
-        $this->dispatch('noty-deleted', type: 'USUARIO', name: $userDelete);
     }
 
     protected $listeners = [

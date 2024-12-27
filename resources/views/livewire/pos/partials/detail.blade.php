@@ -72,8 +72,6 @@
                                 </button>
                             </div>
                         </td>
-
-
                     </tr>
                         <?php $index++; ?>
                 @endforeach

@@ -42,6 +42,7 @@ class Coins extends Component
     {
         return 'vendor.livewire.tailwind';
     }
+
     public function render()
     {
         $query = Denomination::orderBy('id', 'desc');
@@ -53,8 +54,8 @@ class Coins extends Component
         $data = $query->paginate($this->pagination);
 
         return view('livewire.denominations.components', ['coins' => $data])
-        ->extends('layouts.app')
-        ->section('content');
+            ->extends('layouts.app')
+            ->section('content');
     }
 
     public function openModal()
@@ -74,28 +75,33 @@ class Coins extends Component
 
     public function store()
     {
-        // Validación de reglas
-        $this->validate();
+        try {
+            // Validación de reglas
+            $this->validate();
+            $this->authorize('create', Denomination::class);
 
-        $denomination = Denomination::create([
-            'type' => $this->type,
-            'value' => $this->value
-        ]);
+            $denomination = Denomination::create([
+                'type' => $this->type,
+                'value' => $this->value
+            ]);
 
-        if($this->image)
-        {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/denominations', $customFileName);
-            $denomination->image = $customFileName;
-            $denomination->save();
+            if ($this->image) {
+                $customFileName = uniqid() . '_.' . $this->image->extension();
+                $this->image->storeAs('public/denominations', $customFileName);
+                $denomination->image = $customFileName;
+                $denomination->save();
+            }
+
+            $this->dispatch('noty-added', type: 'DENOMINACION', name: $denomination->type);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'CREAR');
         }
-
-        $this->dispatch('noty-added', type: 'DENOMINACION', name: $denomination->type);
     }
 
     public function edit($id)
     {
-        $record = Denomination::find($id, ['id','type','value','image']);
+        $record = Denomination::find($id, ['id', 'type', 'value', 'image']);
         $this->type = $record->type;
         $this->value = $record->value;
         $this->selected_id = $record->id;
@@ -107,58 +113,66 @@ class Coins extends Component
 
     public function update()
     {
-        // Actualización de reglas de validación para la edición
-        $this->rules['value'] = "required|unique:denominations,value,{$this->selected_id}";
+        try {
+            // Actualización de reglas de validación para la edición
+            $this->rules['value'] = "required|unique:denominations,value,{$this->selected_id}";
 
-        // Validación
-        $this->validate();
+            // Validación
+            $this->validate();
+            $this->authorize('update', $this->selected_id);
 
-        $denomination = Denomination::find($this->selected_id);
-        $denomination->update([
-            'type' => $this->type,
-            'value' => $this->value
-        ]);
+            $denomination = Denomination::find($this->selected_id);
+            $denomination->update([
+                'type' => $this->type,
+                'value' => $this->value
+            ]);
 
-        if($this->image)
-        {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/denominations', $customFileName);
+            if ($this->image) {
+                $customFileName = uniqid() . '_.' . $this->image->extension();
+                $this->image->storeAs('public/denominations', $customFileName);
 
-            $imageName = $denomination->image;
-            $denomination->image = $customFileName;
-            $denomination->save();
+                $imageName = $denomination->image;
+                $denomination->image = $customFileName;
+                $denomination->save();
 
-            if($imageName !=null)
-            {
-                if(file_exists('storage/denominations' . $imageName))
-                {
-                    unlink('storage/denominations' . $imageName);
+                if ($imageName != null) {
+                    if (file_exists('storage/denominations' . $imageName)) {
+                        unlink('storage/denominations' . $imageName);
+                    }
                 }
             }
-        }
 
-        $this->dispatch('noty-updated', type:'DENOMINACIÓN', name: $denomination->type);
+            $this->dispatch('noty-updated', type: 'DENOMINACIÓN', name: $denomination->type);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ACTUALIZAR');
+        }
     }
 
     public function destroy($id)
     {
-        $denomination = Denomination::find($id);
+        try {
+            $this->authorize('delete', $id);
+            $denomination = Denomination::find($id);
 
-        if ($denomination) {
-            $imageName = $denomination->image;
-            $denomination->delete();
+            if ($denomination) {
+                $imageName = $denomination->image;
+                $denomination->delete();
 
-            if ($imageName != null) {
-                if (file_exists(storage_path('app/public/denominations/' . $imageName))) {
-                    unlink(storage_path('app/public/denominations/' . $imageName));
+                if ($imageName != null) {
+                    if (file_exists(storage_path('app/public/denominations/' . $imageName))) {
+                        unlink(storage_path('app/public/denominations/' . $imageName));
+                    }
                 }
-            }
 
-            // Restablecer UI y emitir evento
-            $this->dispatch('noty-deleted', type: 'DENOMINACIÓN', name: $denomination->type);
-        } else {
-            // Manejo de caso donde la categoría no se encuentra
-            $this->dispatch('noty-not-found', type: 'DENOMINACIÓN', name: $denomination->id);
+                // Restablecer UI y emitir evento
+                $this->dispatch('noty-deleted', type: 'DENOMINACIÓN', name: $denomination->type);
+            } else {
+                // Manejo de caso donde la categoría no se encuentra
+                $this->dispatch('noty-not-found', type: 'DENOMINACIÓN', name: $denomination->id);
+            }
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');
         }
     }
 

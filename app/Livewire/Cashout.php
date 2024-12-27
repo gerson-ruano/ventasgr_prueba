@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Sale;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -60,11 +61,11 @@ class Cashout extends Component
 
     public function Consultar()
     {
-        $fi= Carbon::parse($this->fromDate)->format('Y-m-d') . ' 00:00:00';
-        $ff= Carbon::parse($this->toDate)->format('Y-m-d') . ' 23:59:59';
+        $fi = Carbon::parse($this->fromDate)->format('Y-m-d') . ' 00:00:00';
+        $ff = Carbon::parse($this->toDate)->format('Y-m-d') . ' 23:59:59';
 
         $this->sales = Sale::whereBetween('created_at', [$fi, $ff])
-            ->where('status','Paid')
+            ->where('status', 'Paid')
             ->where('user_id', $this->userid)
             //->get();
             ->paginate($this->pagination);
@@ -73,23 +74,30 @@ class Cashout extends Component
         $this->items = $this->sales ? $this->sales->sum('items') : 0;
 
     }
+
     public function viewDetails(Sale $sale)
     {
-        $fi= Carbon::parse($this->fromDate)->format('Y-m-d') . ' 00:00:00';
-        $ff= Carbon::parse($this->toDate)->format('Y-m-d') . ' 23:59:59';
+        try {
+            $this->authorize('details', $sale);
+            $fi = Carbon::parse($this->fromDate)->format('Y-m-d') . ' 00:00:00';
+            $ff = Carbon::parse($this->toDate)->format('Y-m-d') . ' 23:59:59';
 
-        $this->details = Sale::join('sale_details as d', 'd.sale_id','sales.id')
-            ->join('products as p', 'p.id','d.product_id')
-            ->select('d.sale_id','p.name as product','d.quantity','d.price')
-            ->whereBetween('sales.created_at', [$fi, $ff])
-            ->where('sales.status', 'Paid')
-            ->where('sales.user_id', $this->userid)
-            ->where('sales.id', $sale->id)
-            ->get();
+            $this->details = Sale::join('sale_details as d', 'd.sale_id', 'sales.id')
+                ->join('products as p', 'p.id', 'd.product_id')
+                ->select('d.sale_id', 'p.name as product', 'd.quantity', 'd.price')
+                ->whereBetween('sales.created_at', [$fi, $ff])
+                ->where('sales.status', 'Paid')
+                ->where('sales.user_id', $this->userid)
+                ->where('sales.id', $sale->id)
+                ->get();
 
-        $this->saleId = $sale->id; // Almacena el ID de la venta
+            $this->saleId = $sale->id; // Almacena el ID de la venta
 
-        $this->openModal();
+            $this->openModal();
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: Auth::user()->name, name: 'PERMISOS', permission: 'DETALLES');
+        }
     }
 
     public function updatedToDate()

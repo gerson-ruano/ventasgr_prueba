@@ -10,6 +10,7 @@ use Livewire\Attributes\On;
 use App\Models\Category;
 use App\Models\SaleDetail;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Gate;
 
 
 class Products extends Component
@@ -23,25 +24,25 @@ class Products extends Component
 
     protected $rules = [
         'name' => 'required|unique:products|min:3',
-            'cost' => 'required',
-            'barcode' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
-            'alerts' => 'required',
-            'categoryid' => 'required|not_in:Elegir'
+        'cost' => 'required',
+        'barcode' => 'required',
+        'price' => 'required',
+        'stock' => 'required',
+        'alerts' => 'required',
+        'categoryid' => 'required|not_in:Elegir'
     ];
 
     protected $messages = [
         'name.required' => 'Nombre del producto requerido',
-            'name.unique' => 'Ya existe el nombre del producto',
-            'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
-            'barcode.required' => 'El codigo es requerido',
-            'price.required' => 'El precio es requerido',
-            'cost.required' => 'El costo es requerido',
-            'stock.required' => 'El stock es requerido',
-            'alerts.required' => 'Ingresa el valor minimo de existencia',
-            'categoryid.required' => 'Elige una categoria',
-            'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
+        'name.unique' => 'Ya existe el nombre del producto',
+        'name.min' => 'El nombre del producto tiene que tener por lo menos 3 caracteres',
+        'barcode.required' => 'El codigo es requerido',
+        'price.required' => 'El precio es requerido',
+        'cost.required' => 'El costo es requerido',
+        'stock.required' => 'El stock es requerido',
+        'alerts.required' => 'Ingresa el valor minimo de existencia',
+        'categoryid.required' => 'Elige una categoria',
+        'categoryid.not_in' => 'Elige un nombre de categoria diferente a Elegir'
     ];
 
     public function paginationView()
@@ -55,6 +56,7 @@ class Products extends Component
         $this->componentName = 'Productos';
         $this->categoryid = 'Elegir';
     }
+
     public function render()
     {
         $query = Product::orderBy('id', 'desc');
@@ -70,9 +72,9 @@ class Products extends Component
 
         return view('livewire.products.components', [
             'products' => $products,
-            'categories' => Category::orderBy('name','asc')->get()])
-        ->extends('layouts.app')
-        ->section('content');
+            'categories' => Category::orderBy('name', 'asc')->get()])
+            ->extends('layouts.app')
+            ->section('content');
 
     }
 
@@ -90,36 +92,43 @@ class Products extends Component
         $this->resetUI();
         $this->resetValidation();
     }
-        public function store()
+
+    public function store()
     {
-        // Validación de reglas
-        $this->validate();
+        try {
+            // Validación de reglas
+            $this->validate();
+            $this->authorize('create', Products::class);
 
-        $product = Product::create([
-            'name' => $this->name,
-            'cost' => $this->cost,
-            'price' => $this->price,
-            'barcode' => $this->barcode,
-            'stock' => $this->stock,
-            'alerts' => $this->alerts,
-            'category_id' => $this->categoryid,
+            $product = Product::create([
+                'name' => $this->name,
+                'cost' => $this->cost,
+                'price' => $this->price,
+                'barcode' => $this->barcode,
+                'stock' => $this->stock,
+                'alerts' => $this->alerts,
+                'category_id' => $this->categoryid,
 
-        ]);
+            ]);
 
-        if($this->image)
-        {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/products', $customFileName);
-            $product->image = $customFileName;
-            $product->save();
+            if ($this->image) {
+                $customFileName = uniqid() . '_.' . $this->image->extension();
+                $this->image->storeAs('public/products', $customFileName);
+                $product->image = $customFileName;
+                $product->save();
+            }
+
+            $this->dispatch('noty-added', type: 'PRODUCTO', name: $product->name);
+
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'CREAR');
         }
-
-        $this->dispatch('noty-added', type: 'PRODUCTO', name: $product->name);
     }
 
     public function edit($id)
     {
-        $product = Product::find($id, ['id', 'name', 'barcode','cost','price','stock','alerts','category_id','image']);
+        $product = Product::find($id, ['id', 'name', 'barcode', 'cost', 'price', 'stock', 'alerts', 'category_id', 'image']);
         $this->name = $product->name;
         $this->selected_id = $product->id;
         $this->barcode = $product->barcode;
@@ -136,56 +145,60 @@ class Products extends Component
 
     public function update()
     {
-        // Actualización de reglas de validación para la edición
-        $this->rules['name'] = "required|min:3|unique:products,name,{$this->selected_id}";
+        try {
+            // Actualización de reglas de validación para la edición
+            $this->rules['name'] = "required|min:3|unique:products,name,{$this->selected_id}";
 
-        // Validación
-        $this->validate();
+            // Validación
+            $this->validate();
+            $this->authorize('update', $this->selected_id);
 
-        $product = Product::find($this->selected_id);
+            $product = Product::find($this->selected_id);
 
-        $product->update([
-            'name' => $this->name,
-            'cost' => $this->cost,
-            'price' => $this->price,
-            'barcode' => $this->barcode,
-            'stock' => $this->stock,
-            'alerts' => $this->alerts,
-            'category_id' => $this->categoryid,
+            $product->update([
+                'name' => $this->name,
+                'cost' => $this->cost,
+                'price' => $this->price,
+                'barcode' => $this->barcode,
+                'stock' => $this->stock,
+                'alerts' => $this->alerts,
+                'category_id' => $this->categoryid,
 
-        ]);
+            ]);
 
-        if($this->image)
-        {
-            $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('public/products', $customFileName);
-            $imageTemp = $product->image; //image Temporal
-            $product->image = $customFileName;
-            $product->save();
+            if ($this->image) {
+                $customFileName = uniqid() . '_.' . $this->image->extension();
+                $this->image->storeAs('public/products', $customFileName);
+                $imageTemp = $product->image; //image Temporal
+                $product->image = $customFileName;
+                $product->save();
 
-            if($imageTemp !=null)
-            {
-                if(file_exists('storage/products/' . $imageTemp)){
-                    unlink('storage/products/' . $imageTemp);
+                if ($imageTemp != null) {
+                    if (file_exists('storage/products/' . $imageTemp)) {
+                        unlink('storage/products/' . $imageTemp);
+                    }
                 }
             }
-        }
 
-        $this->dispatch('noty-updated', type: 'PRODUCTO', name: $product->name);
+            $this->dispatch('noty-updated', type: 'PRODUCTO', name: $product->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ACTUALIZAR');
+        }
     }
 
     public function resetUI()
     {
-        $this->name ='';
-        $this->barcode ='';
-        $this->cost ='';
-        $this->cost ='';
-        $this->price ='';
-        $this->stock ='';
-        $this->alerts ='';
+        $this->name = '';
+        $this->barcode = '';
+        $this->cost = '';
+        $this->cost = '';
+        $this->price = '';
+        $this->stock = '';
+        $this->alerts = '';
         $this->imageUrl = null;
-        $this->search ='';
-        $this->categoryid ='Elegir';
+        $this->search = '';
+        $this->categoryid = 'Elegir';
         $this->image = null;
         $this->selected_id = 0;
 
@@ -198,46 +211,37 @@ class Products extends Component
 
     public function destroy($id)
     {
+        try {
+            $this->authorize('delete', $id);
+            $product = Product::find($id);
 
-        /*$imageTemp = $product->image;
-        $product->delete();
+            if ($product) {
+                // Verificar si el producto tiene ventas asociadas
+                $hasSales = SaleDetail::where('product_id', $id)->exists();
 
-        if($imageTemp !=null){
-            if(file_exists('storage/products/' . $imageTemp)){
-                unlink('storage/products/' . $imageTemp);
+                if ($hasSales) {
+                    // Notificar que el producto tiene ventas asociadas
+                    $this->dispatch('noty-warning', type: 'PRODUCTO', name: $product->name);
+                    return;
+                }
+
+                // Si no tiene ventas, eliminar el producto
+                $imageName = $product->image;
+                $product->delete();
+
+                if ($imageName != null && file_exists(storage_path('app/public/products/' . $imageName))) {
+                    unlink(storage_path('app/public/products/' . $imageName));
+                }
+
+                $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
+            } else {
+                $this->dispatch('noty-not-found', [
+                    'type' => 'PRODUCTO',
+                    'name' => $id,
+                ]);
             }
-        }
-
-        //$this->resetUI();
-        $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
-    }*/
-
-        $product = Product::find($id);
-
-        if ($product) {
-            // Verificar si el producto tiene ventas asociadas
-            $hasSales = SaleDetail::where('product_id', $id)->exists();
-
-            if ($hasSales) {
-                // Notificar que el producto tiene ventas asociadas
-                $this->dispatch('noty-warning', type: 'PRODUCTO', name: $product->name);
-                return;
-            }
-
-            // Si no tiene ventas, eliminar el producto
-            $imageName = $product->image;
-            $product->delete();
-
-            if ($imageName != null && file_exists(storage_path('app/public/products/' . $imageName))) {
-                unlink(storage_path('app/public/products/' . $imageName));
-            }
-
-            $this->dispatch('noty-deleted', type: 'PRODUCTO', name: $product->name);
-        } else {
-            $this->dispatch('noty-not-found', [
-                'type' => 'PRODUCTO',
-                'name' => $id,
-            ]);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');
         }
     }
 

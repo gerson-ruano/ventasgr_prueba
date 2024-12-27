@@ -30,13 +30,13 @@ class Roles extends Component
 
     public function render()
     {
-        if(strlen($this->search) > 0)
-        $data = Role::where('name','like', '%' . $this->search . '%')->paginate($this->pagination);
-    else
-        $data = Role::orderBy('id', 'desc')->paginate($this->pagination);
+        if (strlen($this->search) > 0)
+            $data = Role::where('name', 'like', '%' . $this->search . '%')->paginate($this->pagination);
+        else
+            $data = Role::orderBy('id', 'desc')->paginate($this->pagination);
         return view('livewire.roles.components', ['roles' => $data])
-        ->extends('layouts.app')
-        ->section('content'); 
+            ->extends('layouts.app')
+            ->section('content');
     }
 
     public function mount()
@@ -64,17 +64,25 @@ class Roles extends Component
         $this->resetUI();
         $this->resetValidation();
     }
+
     public function store()
     {
-        // Validación de reglas
-        $this->validate();
+        try {
+            // Validación de reglas
+            $this->validate();
+            $this->authorize('create', Role::class);
 
-        Role::create([
-            'name' => $this->roleName
-        ]);
+            Role::create([
+                'name' => $this->roleName
+            ]);
 
-        $this->dispatch('noty-added', type: 'ROL', name: $this->roleName);
+            $this->dispatch('noty-added', type: 'ROL', name: $this->roleName);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'CREAR');
+        }
     }
+
     public function edit(Role $role)
     {
         //$role = Role::find($id);
@@ -86,33 +94,43 @@ class Roles extends Component
 
     public function update()
     {
-        // Actualización de reglas de validación para la edición
-        $this->rules['roleName'] = "required|min:3|unique:roles,name, {$this->selected_id}";
+        try {
+            // Actualización de reglas de validación para la edición
+            $this->rules['roleName'] = "required|min:3|unique:roles,name, {$this->selected_id}";
 
-        // Validación
-        $this->validate();
+            // Validación
+            $this->validate();
+            $this->authorize('update', $this->selected_id);
 
-        $role = Role::find($this->selected_id);
-        $role->name = $this->roleName;
-        $role->save();
+            $role = Role::find($this->selected_id);
+            $role->name = $this->roleName;
+            $role->save();
 
-        $this->dispatch('noty-updated', type: 'ROLE', name: $role->name );
+            $this->dispatch('noty-updated', type: 'ROLE', name: $role->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ACTUALIZAR');
+        }
 
     }
 
     public function destroy($id)
     {
-        $permissionCount = Role::find($id)->permissions()->count();
-        if($permissionCount > 0)
-        {
-            $this->dispatch();
-            return;
+        try {
+            $this->authorize('delete', $id);
+            $permissionCount = Role::find($id)->permissions()->count();
+            if ($permissionCount > 0) {
+                $this->dispatch();
+                return;
+            }
+
+            $role = Role::find($id);
+            Role::find($id)->delete();
+            // Restablecer UI y emitir evento
+            $this->dispatch('noty-deleted', type: 'ROL', name: $role->name);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');
         }
-        
-        $role = Role::find($id);
-        Role::find($id)->delete();
-        // Restablecer UI y emitir evento
-        $this->dispatch('noty-deleted', type: 'ROL', name: $role->name);
 
     }
 
@@ -142,6 +160,7 @@ class Roles extends Component
         $this->selected_id = 0;
         $this->resetValidation();
     }
+
     public function updateSearch($search)
     {
         $this->search = $search;

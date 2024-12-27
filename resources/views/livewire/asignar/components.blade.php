@@ -59,7 +59,7 @@
                             @endforeach
 
                         </td>
-                        <td class="text-center">
+                        <td class="text-center">|
                             @foreach ($roles as $role)
                                 {{ $rolePermissionsCount[$role->id] ?? 0 }} |
                             @endforeach
@@ -81,6 +81,7 @@
                 {{ $permisos->links() }}
             </div>
         </div>
+
     @else
         <!-- Mostrar notificación cuando no hay resultados -->
         @include('livewire.components.no-results', ['result' => $permisos ,'name' => $componentName])

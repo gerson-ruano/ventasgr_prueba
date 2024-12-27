@@ -63,7 +63,7 @@
                                         class="btn btn-sm btn-outline btn-accent">
                                     <i class="fas fa-indent"></i>
                                 </button>
-                                <button wire:click.prevent="Edit({{ $item->id }})" title="Editar"
+                                <button wire:click.prevent="edit({{ $item->id }})" title="Editar"
                                         class="btn btn-sm btn-outline btn-success">
                                     <i class="fas fa-edit"></i>
                                 </button>

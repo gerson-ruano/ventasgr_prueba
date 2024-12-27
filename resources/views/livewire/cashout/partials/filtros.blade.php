@@ -71,17 +71,21 @@
         </button>
 
         @if($userid && $fromDate && $toDate)
+            @can('pdf')
             <a class="btn btn-primary"
                href="{{ url('report/box' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
                target="_blank"><i class="fas fa-file-pdf"></i>
                 Generar PDF
             </a>
+            @endcan
 
+            @can('excel')
             <a class="btn btn-primary mb-3"
                href="{{ url('report-excel' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
                target="_blank"><i class="fas fa-file-excel"></i>
                 Exportar a EXCEL
             </a>
+            @endcan
         @endif
 
     </div>

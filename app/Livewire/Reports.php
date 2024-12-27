@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\User;
@@ -84,8 +85,8 @@ class Reports extends Component
             //$from = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 00:00:00';
             //$to = Carbon::parse(Carbon::now())->format('Y-m-d') . ' 23:59:59';
             // Asignar las fechas actuales a las propiedades dateFrom y dateTo
-            $this->dateFrom = Carbon::now()->format('d-m-Y');
-            $this->dateTo = Carbon::now()->format('d-m-Y');
+            $this->dateFrom = Carbon::now()->format('Y-m-d');
+            $this->dateTo = Carbon::now()->format('Y-m-d');
 
             // Formatear las fechas para la consulta
             $from = $this->dateFrom . ' 00:00:00';
@@ -130,22 +131,28 @@ class Reports extends Component
 
     public function getDetails($saleId, $modal = 'detail')
     {
-        $this->details = SaleDetail::join('products as p', 'p.id', 'sale_details.product_id')
-            ->select('sale_details.id', 'sale_details.price', 'sale_details.quantity', 'p.name as product')
-            ->where('sale_details.sale_id', $saleId)
-            ->get();
+        try {
+            $this->authorize('details', $saleId);
+            $this->details = SaleDetail::join('products as p', 'p.id', 'sale_details.product_id')
+                ->select('sale_details.id', 'sale_details.price', 'sale_details.quantity', 'p.name as product')
+                ->where('sale_details.sale_id', $saleId)
+                ->get();
 
-        $suma = $this->details->sum(function ($item) {
-            return $item->price * $item->quantity;
-        });
+            $suma = $this->details->sum(function ($item) {
+                return $item->price * $item->quantity;
+            });
 
-        $this->sumDetails = $suma;
+            $this->sumDetails = $suma;
 
-        $this->countDetails = $this->details->sum('quantity');
-        //dd($this->countDetails);
+            $this->countDetails = $this->details->sum('quantity');
+            //dd($this->countDetails);
 
-        $this->saleId = $saleId;
-        $this->openModal($modal);
+            $this->saleId = $saleId;
+            $this->openModal($modal);
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: Auth::user()->name, name: 'PERMISOS', permission: 'DETALLES');
+        }
     }
 
     public function tipoPago()
@@ -179,7 +186,7 @@ class Reports extends Component
         return $reportTypes;
     }
 
-    public function Edit($id, $modal = 'edit')
+    public function edit($id, $modal = 'edit')
     {
         // Almacena el ID en la propiedad
         $this->selectedId = $id;
@@ -196,38 +203,45 @@ class Reports extends Component
 
     public function update()
     {
-        $this->validate([
-            'selectedStatus' => 'required|not_in:Elegir', // Asegúrate de que 'Elegir' sea el valor por defecto
-        ]);
-        // Obtén la venta correspondiente por su ID
-        $sale = Sale::find($this->selectedId);
-        //dd($sale);
+        try {
+            $this->validate([
+                'selectedStatus' => 'required|not_in:Elegir', // Asegúrate de que 'Elegir' sea el valor por defecto
+            ]);
+            $this->authorize('update', $this->selected_id);
 
-        // Verifica si se encontró la venta
-        if ($sale) {
+            // Obtén la venta correspondiente por su ID
+            $sale = Sale::find($this->selectedId);
+            //dd($sale);
 
-            // Verifica si el estado es el mismo que el actual
-            if ($sale->status == $this->selectedStatus) {
-                // Envía mensaje si el estado no ha cambiado
-                $this->dispatch('noty-done', type: 'info', message: 'Venta sin Modificar');
+            // Verifica si se encontró la venta
+            if ($sale) {
+
+                // Verifica si el estado es el mismo que el actual
+                if ($sale->status == $this->selectedStatus) {
+                    // Envía mensaje si el estado no ha cambiado
+                    $this->dispatch('noty-done', type: 'info', message: 'Venta sin Modificar');
+                    return;
+                }
+                // Asigna el nuevo estado al modelo de venta
+                $sale->status = $this->selectedStatus; // Asumiendo que 'type' contiene el nuevo estado
+                $sale->updated_at = now();   //Fecha de actualizacion
+                $sale->mod_id = auth()->user()->id; //Nombre del usuario o id de quien lo actualizo
+
+                // Guarda el cambio en la base de datos
+                $sale->save();
+
+                // Puedes emitir un evento o realizar alguna acción adicional si es necesario
+                $this->resetUI();
+                $this->dispatch('noty-done', type: 'success', message: 'Venta actualizada con éxito');
+            } else {
+                $this->dispatch('showNotification', 'Debe seleccionar un Tipo de ESTADO', 'dark');
                 return;
+                // Manejo si la venta no existe
+                // Puedes emitir un mensaje de error o realizar alguna acción apropiada
             }
-            // Asigna el nuevo estado al modelo de venta
-            $sale->status = $this->selectedStatus; // Asumiendo que 'type' contiene el nuevo estado
-            $sale->updated_at = now();   //Fecha de actualizacion
-            $sale->mod_id = auth()->user()->id; //Nombre del usuario o id de quien lo actualizo
-
-            // Guarda el cambio en la base de datos
-            $sale->save();
-
-            // Puedes emitir un evento o realizar alguna acción adicional si es necesario
-            $this->resetUI();
-            $this->dispatch('noty-done', type: 'success', message: 'Venta actualizada con éxito');
-        } else {
-            $this->dispatch('showNotification', 'Debe seleccionar un Tipo de ESTADO', 'dark');
-            return;
-            // Manejo si la venta no existe
-            // Puedes emitir un mensaje de error o realizar alguna acción apropiada
+        } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
+            // Notificación de error de autorización
+            $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS');
         }
     }
 

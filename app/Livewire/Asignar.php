@@ -126,6 +126,7 @@ class Asignar extends Component
             $this->dispatch('showNotification', 'Permiso eliminado correctamente', 'error');
         }
     }
+
     protected $listeners = [
         'syncAllConfirmed' => 'performSync',
     ];

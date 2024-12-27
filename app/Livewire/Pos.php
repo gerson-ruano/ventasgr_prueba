@@ -41,7 +41,7 @@ class Pos extends Component
 
     public function render()
     {
-        if ($this->revisionVenta) {
+        /*if ($this->revisionVenta) {
 
             return view('livewire.pos.revision_venta', [
                 'denominations' => Denomination::orderBy('value', 'desc')->get(),
@@ -49,18 +49,19 @@ class Pos extends Component
             ])
                 ->extends('layouts.app')
                 ->section('content');
-        } else {
-            return view('livewire.pos.components', [
-                'denominations' => Denomination::orderBy('value', 'desc')->get(),
-                'cart' => Cart::content(),
-            ])
-                ->extends('layouts.app')
-                ->section('content');
-        }
+        } else {*/
 
+        return view('livewire.pos.components', [
+            'denominations' => Denomination::orderBy('value', 'desc')->get(),
+            'cart' => Cart::content(),
+        ])
+            ->extends('layouts.app')
+            ->section('content');
     }
 
-    public function ListaPagos()
+
+    public
+    function ListaPagos()
     {
         $reportTypes = [
             (object)['id' => '1', 'name' => 'PAGADO'],
@@ -96,7 +97,6 @@ class Pos extends Component
     }
 
     public function ListaVendedores()
-
     {
         $sellerProfiles = User::where('profile', 'seller')
             ->where('status', 'Active') // Filtra solo los USUARIOS ACTIVOS EN EL SISTEMA
@@ -110,10 +110,10 @@ class Pos extends Component
         return $sellerProfiles;
     }
 
-    public function revisarVenta() //Indica que vista utiliza para el index
+    /*public function revisarVenta() //Indica que vista utiliza para el index
     {
         $this->revisionVenta = true;
-    }
+    }*/
 
     public function clearChange()
     {
@@ -148,7 +148,8 @@ class Pos extends Component
         return $empresa;
     }
 
-    protected $listeners = [
+    protected
+        $listeners = [
         'scan-code' => 'scanCode',
         'deleteRow' => 'removeItem',
         'deleteAllConfirmed' => 'deleteAllConfirmedCart',
@@ -440,7 +441,7 @@ class Pos extends Component
     public function saveSaleAndPrint()
     {
         if ($this->tipoPago == 0 || $this->efectivo < $this->totalPrice) {
-            $this->dispatch('showNotification', 'La venta no se puede finalizar','warning');
+            $this->dispatch('showNotification', 'La venta no se puede finalizar', 'warning');
             return;
         }
         $nextSaleNumber = $this->nextSaleNumber;

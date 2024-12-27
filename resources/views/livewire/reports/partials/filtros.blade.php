@@ -1,7 +1,7 @@
 <div
     class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 flex-grow h-auto sm:h-30 card bg-base-300 rounded-box place-items-center mb-1 ml-1 lg:mb-1 lg:ml-1 lg:mr-0">
 
-{{--Filtro de USUARIOS--}}
+    {{--Filtro de USUARIOS--}}
     <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
         @include('livewire.components.select_filtro', [
                     'default' => 'Todos',
@@ -64,17 +64,20 @@
         </button>
 
         @if(count($data) > 0)
+            @can('pdf')
             <a class="btn btn-primary"
                href="{{ url('report/pdf' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo . '/' . $selectTipoEstado) }}"
                target="_blank"><i class="fas fa-file-pdf"></i>
                 Generar PDF
             </a>
-
-            <a class="btn btn-primary mb-3"
-               href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo .  '/' . $selectTipoEstado) }}"
-               target="_blank"><i class="fas fa-file-excel"></i>
-                Exportar a EXCEL
-            </a>
+            @endcan
+            @can('excel')
+                <a class="btn btn-primary mb-3"
+                   href="{{ url('report-excel' . '/' . $userId . '/' . $reportType . '/' . $dateFrom . '/' . $dateTo .  '/' . $selectTipoEstado) }}"
+                   target="_blank"><i class="fas fa-file-excel"></i>
+                    Exportar a EXCEL
+                </a>
+            @endcan
         @endif
 
     </div>
