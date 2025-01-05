@@ -10,5 +10,6 @@
             @endforeach
         @endif
     </select>
+
     @error("{{ $model }}") <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
 </div>

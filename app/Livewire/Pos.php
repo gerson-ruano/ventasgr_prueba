@@ -41,16 +41,6 @@ class Pos extends Component
 
     public function render()
     {
-        /*if ($this->revisionVenta) {
-
-            return view('livewire.pos.revision_venta', [
-                'denominations' => Denomination::orderBy('value', 'desc')->get(),
-                'cart' => Cart::content(),
-            ])
-                ->extends('layouts.app')
-                ->section('content');
-        } else {*/
-
         return view('livewire.pos.components', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::content(),
@@ -60,8 +50,7 @@ class Pos extends Component
     }
 
 
-    public
-    function ListaPagos()
+    public function ListaPagos()
     {
         $reportTypes = [
             (object)['id' => '1', 'name' => 'PAGADO'],
@@ -109,11 +98,6 @@ class Pos extends Component
 
         return $sellerProfiles;
     }
-
-    /*public function revisarVenta() //Indica que vista utiliza para el index
-    {
-        $this->revisionVenta = true;
-    }*/
 
     public function clearChange()
     {

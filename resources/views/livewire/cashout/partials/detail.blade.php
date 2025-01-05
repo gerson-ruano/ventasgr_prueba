@@ -10,7 +10,7 @@
                     <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Colaborador</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Cliente/Vendedor</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Fecha y Hora</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Acciones</th>
                 </tr>

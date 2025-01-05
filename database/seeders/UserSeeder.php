@@ -27,8 +27,8 @@ class UserSeeder extends Seeder
         ]);
         $adminUser->assignRole($adminRole);
         $employeeUser = User::create([
-            'name'=>'Invitado',
-            'phone'=>'1029534344',
+            'name'=>'Empleado',
+            'phone'=>'10295343',
             'email'=>'employee@gmail.com',
             'profile'=>'Employee',
             'status'=>'Active',
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
         ]);
         $employeeUser->assignRole($employeeRole);
         $sellerUser = User::create([
-            'name'=>'Invitado',
+            'name'=>'Vendedor',
             'phone'=>'12345678',
             'email'=>'seller@gmail.com',
             'profile'=>'Seller',

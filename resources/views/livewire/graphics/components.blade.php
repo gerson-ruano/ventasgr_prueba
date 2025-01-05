@@ -130,7 +130,7 @@
             <div id="ventasTipoPago" hidden>@json($ventasTipoPago)</div>
         @endif
 
-        <script type="module" src="{{ asset('js/scripts.js') }}"></script>
+        <!--script type="module" src="{{ asset('js/scripts.js') }}"></script-->
     </div>
 @endsection
 
