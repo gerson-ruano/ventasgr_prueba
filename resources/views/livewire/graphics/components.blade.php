@@ -3,6 +3,63 @@
 
 @section('content')
     <div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 p-2">
+            <!-- Card 1 -->
+            <div class="card shadow-md bg-gray-500 text-white border border-blue-300 rounded-md p-2 flex flex-col items-center justify-center">
+                <div class="flex items-center">
+                    <div class="text-xl">
+                        <i class="fas fa-money-bill-alt"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-xs font-bold">Activo</h2>
+                        <p class="text-sm">{{ number_format($totalMoney[1], 2) }} Q</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="card shadow-md bg-gray-500 text-white border border-blue-300 rounded-md p-2 flex flex-col items-center justify-center">
+                <div class="flex items-center">
+                    <div class="text-xl">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-xs font-bold">Usuarios</h2>
+                        <p class="text-sm">{{ $users }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card shadow-md bg-gray-500 text-white border border-blue-300 rounded-md p-2 flex flex-col items-center justify-center">
+                <div class="flex items-center">
+                    <div class="text-xl">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-xs font-bold">Ventas</h2>
+                        <p class="text-sm">{{ $totalSales }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="card shadow-md bg-gray-500 text-white border border-blue-300 rounded-md p-2 flex flex-col items-center justify-center">
+                <div class="flex items-center">
+                    <div class="text-xl">
+                        <i class="fas fa-shopping-basket"></i>
+                    </div>
+                    <div class="ml-4">
+                        <h2 class="text-xs font-bold">Productos</h2>
+                        <p class="text-sm">{{ $products }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
         <div class="container mx-auto text-center text-black mt-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @php

@@ -24,8 +24,10 @@ class Pos extends Component
     public $nextSaleNumber;
     public $empresa;
 
+
     public function mount()
     {
+
         //$this->efectivo = number_format($this->efectivo, 2);
         $this->efectivo = 0000.00;
         $this->change = 0;
@@ -37,6 +39,7 @@ class Pos extends Component
         $this->updateQuantityProducts();
         $this->getNextSaleNumber();
         $this->empresa = $this->companyVentas();
+
     }
 
     public function render()
@@ -49,7 +52,6 @@ class Pos extends Component
             ->section('content');
     }
 
-
     public function ListaPagos()
     {
         $reportTypes = [
@@ -57,9 +59,7 @@ class Pos extends Component
             (object)['id' => '2', 'name' => 'PENDIENTE'],
             //(object)['id' => '3', 'name' => 'ANULADO'],
         ];
-
         return $reportTypes;
-
     }
 
     public function translateTipoPago($tipoPago)
@@ -366,8 +366,8 @@ class Pos extends Component
             }
         } else {
             $vendedorAgregado = '0';
-            $this->dispatch('showNotification', 'Debe seleccionar un tipo de cliente o vendedor correcto', 'warning');
-            return;
+            //$this->dispatch('showNotification', 'Debe seleccionar un tipo de cliente o vendedor correcto', 'warning');
+            //return;  //Modificado para que Guarde sin imprimir y no marque alerta de C/F
         }
 
         DB::beginTransaction();
@@ -428,10 +428,9 @@ class Pos extends Component
             $this->dispatch('showNotification', 'La venta no se puede finalizar', 'warning');
             return;
         }
-        $nextSaleNumber = $this->nextSaleNumber;
-
         $this->saveSale();
 
+        /*$nextSaleNumber = $this->nextSaleNumber;
         $sale = Sale::with('details')->find($nextSaleNumber);
         //dd($sale);
 
@@ -441,8 +440,8 @@ class Pos extends Component
             'seller' => getNameSeller($sale->seller),
             'nextSaleNumber' => $sale->id,
         ]);
-
-        $this->dispatch('printSale', $url);
+        $this->dispatch('printSale', $url);*/
     }
+
 
 }

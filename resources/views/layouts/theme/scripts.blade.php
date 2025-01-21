@@ -135,6 +135,34 @@
             }
         });
 
+        // Escuchar el evento `not-api-error` muestra los errores de API FACTUS
+        Livewire.on('noty-api-error', (data) => {
+            mostrarMensajeError(data);
+        });
+
+        function mostrarMensajeError(data) {
+            if (data && data.type && data.name && data.details) {
+                Swal.fire({
+                    icon: "error",
+                    width: '900px',
+                    title: `${data.type} "${data.name}" =>>> "${data.details}"`,
+                    showCancelButton: true,
+                    cancelButtonText: 'Cancelar',
+                    confirmButtonText: 'Intentar nuevamente',
+                    // Otras opciones de personalización de SweetAlert2
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Lógica a ejecutar si se hace clic en "Intentar nuevamente"
+                        // Por ejemplo, reintentar la acción que causó el error
+                    }
+                });
+            } else {
+                console.error(
+                    'Los datos recibidos del evento Livewire "noty-api-error" no tienen el formato esperado.',
+                    data);
+            }
+        }
+
         //Confirmar la sincronizacion de todos los permisos ASIGNAR
         Livewire.on('confirmSyncAll', (data) => {
             //console.log('Event Data:', data);
