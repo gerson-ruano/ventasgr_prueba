@@ -28,23 +28,18 @@ Route::fallback(function () {
 });
 
 Route::middleware(['auth','checkStatus'])->group(function () {
-
     Route::view('profile', 'profile')
         ->middleware(['auth'])
         ->name('profile');
 
 //Route::prefix('admin')->middleware(['permission'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
-
         Route::get('users', Users::class)->name('users');
         Route::get('roles', Roles::class)->name('roles');
         Route::get('permisos', Permisos::class)->name('permisos');
         Route::get('asignar', Asignar::class)->name('asignar');
-
-
     });
     Route::middleware(['role:Admin|Employee'])->group(function () {
-
         Route::get('categories', Categories::class)->name('categories');
         Route::get('products', Products::class)->name('products');
         Route::get('coins', Coins::class)->name('coins');

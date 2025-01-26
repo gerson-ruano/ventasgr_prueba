@@ -1,71 +1,120 @@
 <div class="text-center mt-4">
-    <div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
+    <div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 mr-2 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
         <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
-            <button wire:click="show" class="btn btn-primary"><i class="fas fa-file-import mr-1"></i>Ver Facturas</button>
+            <button wire:click="show" class="btn btn-accent">
+                <i class="fas fa-exchange-alt mr-1"></i>Actualizar
+            </button>
             @include('livewire.components.button_add', ['color' => 'success' ,'model' => 'crear', 'icon' => 'plus', 'title' => "agregar factura"])
-            @include('livewire.components.button_add', ['color' => 'gray' ,'model' =>  'validar', 'icon' => 'check-double', 'title' => "validar factura"])
-        </div>
-        <div class="align flex-row border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
-            @if ($datos)
-                <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto mb-2">
-                    <table class="table table-xs">
-                        <thead class="bg-base-200 dark:bg-gray-800">
-                        <tr>
-                            <th class="text-lg font-medium py-3 px-4 text-center">#</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">ID</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Documento</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Cliente</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Codigo de Referencia</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Identificación</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Fecha de Validado</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Forma de pago</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($datos as $key => $item)
-                            {{--dd($key+1)--}}
-                            <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                                <td class="py-2 px-4 text-center">{{ $key+1 }}</td>
-                                <td class="py-2 px-4 text-center">{{ $item['id'] }}</td>
-                                <td class="py-2 px-4 text-center">{{ $item['number'] }}</td>
-                                <td class="py-2 px-4 text-center">{{ $item['client_name'] }}</td>
-                                <td class="py-2 px-4 text-left"><span
-                                        class="badge {{ $item['reference_code'] == 'sin codigo' ? 'badge-warning' : 'badge-white'}} text-uppercase">{{ $item['reference_code'] }}</span>
-                                </td>
-                                <td class="py-2 px-4 text-left">{{ $item['identification'] }}</td>
-                                <td class="py-2 px-4 text-center">{{ $item['total'] }}</td>
-                                <td class="py-2 px-4 text-center"><span
-                                        class="badge {{ $item['status'] == 'No enviado' ? 'badge-warning' : 'badge-success'}} text-uppercase">{{ $item['status'] }}</span>
-                                </td>
-                                <td class="py-2 px-4 text-center">{{ $item['created_at'] }}</td>
-                                <td class="py-2 px-4 text-center">{{ $item['payment_form'] }}</td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <!-- Paginación -->
-                    {{-- $datos->links() --}}
-                </div>
-                @include('livewire.api.form')
-            @endif
-        </div>
+            {{--}}@include('livewire.components.button_add', ['color' => 'primary' ,'model' => 'validar', 'icon' => 'check-double', 'title' => "buscar factura"])--}}
+            {{--}}@include('livewire.components.button_add', ['color' => 'info' ,'model' => 'buscar', 'icon' => 'search', 'title' => "Buscar factura"])--}}
 
-        {{--}}@include('livewire.api.modal_crear')--}}
+        </div>
+        {{--}}<div class="flex justify-between items-center mb-4">
+            <input
+                type="text"
+                wire:model.debounce.500ms="searchTerm"
+                placeholder="Buscar..."
+                class="input input-bordered input-accent w-full max-w-xs"
+            />--}}
     </div>
-    @if (session('message'))
-        <div class="alert alert-success mt-2">
-            {{ session('message') }}
-        </div>
-    @endif
+    <div class="align flex-row border overflow-x-auto bg-base-200 rounded-lg shadow-lg mx-auto ml:mb-1 ml:ml-2 lg:ml-2 lg:mr-2">
+        @if ($datos)
+            <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto mb-2">
+                <table class="table table-xs">
+                    <thead class="bg-base-200 dark:bg-gray-800">
+                    <tr>
+                        <th class="text-lg font-medium py-3 px-4 text-center">#</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">ID</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">Documento</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">Cliente</th>
+                        <th class="text-lg font-medium py-3 px-4 text-left">Codigo de Referencia</th>
+                        <th class="text-lg font-medium py-3 px-4 text-left">Identificación</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">Forma de pago</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
+                        <th class="text-lg font-medium py-3 px-4 text-left">Fecha de Validación</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
+                        <th class="text-lg font-medium py-3 px-4 text-center">Acción</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @forelse ($datos as $key => $item)
+                        {{--dd($datos)--}}
+                        <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
+                            <td class="py-2 px-4 text-center">{{ $key+1 }}</td>
+                            <td class="py-2 px-4 text-center">{{ $item['id'] }}</td>
+                            <td class="py-2 px-4 text-center">{{ $item['number'] }}</td>
+                            <td class="py-2 px-4 text-center">{{ $item['api_client_name'] }}</td>
+                            <td class="py-2 px-4 text-left">
+                                    <span
+                                        class="badge {{ $item['reference_code'] == 'sin codigo' ? 'badge-warning' : 'badge-white'}} text-uppercase">
+                                        {{ $item['reference_code'] }}
+                                    </span>
+                            </td>
+                            <td class="py-2 px-4 text-left">{{ $item['identification'] }}</td>
+                            <td class="py-2 px-4 text-center">{{ $item['payment_form']['name'] }}</td>
+                            <td class="py-2 px-4 text-center">{{ $item['total'] }}</td>
+                            <td class="py-2 px-4 text-left">
+                                    <span
+                                        class="badge {{ $item['created_at'] == null ? 'badge-warning'  : 'badge-white'}} text-uppercase">
+                                        {{ $item['created_at'] == null ? 'Sin fecha de Validación' : $item['created_at'] }}
+                                    </span>
+                            </td>
+                            <td class="py-2 px-4 text-center">
+                                    <span
+                                        class="{{ $item['status'] == '0' ? 'bg-yellow-400' : 'bg-green-500' }} inline-block w-4 h-4 rounded-full"></span>
+                            </td>
+                            <td class="py-2 px-4 text-center">
+                                <div class="flex flex-row items-center justify-center space-x-2">
+                                    <button class="btn btn-sm btn-success" title="Validar"
+                                            wire:click="validates('{{ $item['number'] }}')"
+                                            @if ( $item['status'] == '1') disabled @endif>
+                                        @if ($item['status'] == 1)
+                                            <i class="fas fa-check-double text-green-500"></i>
+                                        @else
+                                            <i class="fas fa-check text-gray-500"></i>
+                                        @endif
+                                    </button>
+                                    <button class="btn btn-sm btn-info" title="Detalles"
+                                            wire:click="bill('{{ $item['number'] }}')"><i
+                                            class="fas fa-indent mr-1"></i>
+                                    </button>
+                                </div>
+                            </td>
 
-    @if (session('error'))
-        <div class="alert alert-danger mt-2">
-            {{ session('error') }}
-        </div>
-    @endif
+                        </tr>
+                        {{--}}@endforeach--}}
+                    @empty
+                        <tr>
+                            <td colspan="11" class="py-4 px-4 text-center">No se encontraron resultados...</td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+                {{-- Paginación --}}
+                <div class="flex justify-center items-center mt-4">
+                    @foreach ($pagination as $link)
+                        @if (isset($link['page']))
+                            @if ($link['active'])
+                                <span class="btn btn-sm btn-info mx-1">
+                                        {{ $loop->last ? 'Última Pagina' : $link['label'] }}
+                                    </span>
+                            @else
+                                <button wire:click="show({{ $link['page'] }})" class="btn btn-sm btn-outline mx-1">
+                                    {{-- Cambiar nombre de la última página --}}
+                                    {{ $loop->last ? 'Última Pagina' : $link['label'] }}
+                                </button>
+                            @endif
+                        @elseif ($link['label'] === '...')
+                            <span class="btn btn-sm btn-disabled mx-1">...</span>
+                        @endif
+                    @endforeach
+                </div>
 
+                {{-- Fin de Paginación --}}
+                @include('livewire.api.form')
+                @endif
+            </div>
+    </div>
 </div>
 
 

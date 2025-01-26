@@ -6,34 +6,97 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Services\ApiAuthService;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
+
 
 class ApiIntegration extends Component
 {
-    public $selected_id;
-    public $isModalOpen = false;
-    public $datos = [];
+    public $baseUrl;
     protected $apiAuthService;
-    public $facturas;
+    public $selected_id, $reference_code, $observation, $municipality_id, $document_number, $payment_method_code, $documentos;
+    public $isModalOpen = false;
     public $currentModal = '';
+    public $datos = [];
+    public $pagination = [];
     public $customer = [];
     public $items = [];
+    public $factura = [];
+    public $municipalitys = [];
+    public $searchTerm = '';
+
 
     public function mount(ApiAuthService $apiAuthService)
     {
         if ($apiAuthService) {
             $this->apiAuthService = $apiAuthService;
+            $this->baseUrl = config('factus.base_url');
         } else {
-            throw new \Exception('El servicio ApiAuthService no está disponible11.');
+            throw new \Exception('El servicio ApiAuthService no está disponible.');
         }
+
         try {
-            // Solo llamar a show() después de que el servicio se haya configurado
-            $this->facturas = $this->show();
+            $this->documentos = $this->show();
         } catch (\Exception $e) {
-            //\Log::error('Error al obtener facturas: ' . $e->getMessage());
-            //session()->flash('error', 'Error al obtener las facturas.');
-            $this->dispatch('noty-api-error', type: 'ERROR', name: 'al visualizar las facturas', details: $response->body());
+            $this->dispatch('noty-api-error', [
+                'type' => 'ERROR',
+                'name' => 'al visualizar las facturas',
+                'details' => $e->getMessage()
+            ]);
         }
+
+        $jsonPath = storage_path('app/data/municipalitys.json');
+
+        $this->municipalitys = Cache::remember('municipalitys', 3600, function () use ($jsonPath) {
+            if (!file_exists($jsonPath)) {
+                abort(404, "El archivo JSON no fue encontrado.");
+            }
+
+            $jsonContent = file_get_contents($jsonPath);
+            if ($jsonContent === false) {
+                abort(500, "No se pudo leer el archivo JSON.");
+            }
+
+            $muni = json_decode($jsonContent, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                abort(500, "Error al decodificar JSON: " . json_last_error_msg());
+            }
+            return $muni['data'] ?? [];
+        });
     }
+
+    protected $rules = [
+        'reference_code' => 'required|string|max:255',
+        'observation' => 'nullable|string|max:500',
+        'payment_method_code' => 'required|integer',
+        'customer.identification' => 'required|string|max:50',
+        'customer.names' => 'required|string|max:255',
+        'customer.municipality_id' => 'required|string|max:255',
+        'customer.address' => 'required|string|max:255',
+        'customer.email' => 'nullable|email|max:255',
+        'customer.phone' => 'nullable|string|max:20',
+        'items.0.code_reference' => 'required|string|max:255',
+        'items.0.name' => 'required|string|max:255',
+        'items.0.quantity' => 'required|integer|min:1',
+        'items.0.price' => 'required|numeric|min:0',
+    ];
+
+    protected $messages = [
+        'reference_code.required' => 'Codigo de Ref. de Factura requerido',
+        'payment_method_code.required' => 'Metodo de Pago requerido',
+        'customer.identification.required' => 'Identificacion requerido',
+        'customer.names.required' => 'Nombre requerido',
+        'customer.municipality_id.required' => 'Municipio requerido',
+        'customer.address.required' => 'Dirección requerido',
+        'customer.email.required' => 'Correo electronico requerido',
+        'customer.phone.required' => 'Telefono requerido',
+        'item.0.quantity.min' => 'La cantidad del producto tiene que tener por lo menos 1',
+        'items.0.code_reference.required' => 'El codigo de Ref. de producto es requerido',
+        'price.required' => 'El precio es requerido',
+        'items.0.name.required' => 'El nombre del producto es requerido',
+        'items.0.quantity.required' => 'Ingresa al menos un producto',
+        'items.0.price.required' => 'El precio es requerido',
+    ];
 
     public function render()
     {
@@ -54,11 +117,15 @@ class ApiIntegration extends Component
     {
         $this->isModalOpen = false;
         $this->currentModal = '';
+        $this->document_number = '';
+        $this->factura = [];
+        $this->customer = [];
+        $this->items = [];
         $this->resetUI();
         $this->resetValidation();
     }
 
-    public function crear($modal = 'crear')
+    public function crear($modal = 'add')
     {
         $this->openModal($modal);
     }
@@ -68,14 +135,15 @@ class ApiIntegration extends Component
         $this->openModal($modal);
     }
 
+
     public function store()
     {
+        $this->validate();
         $this->apiAuthService = app(ApiAuthService::class);
         if ($this->apiAuthService) {
             $token = $this->apiAuthService->getAccessToken();
-            //dd($token);
             if ($token) {
-                // Establecer valores predeterminados para `customer` y `items`
+
                 $defaultCustomer = [
                     'identification' => '',
                     'dv' => 3,
@@ -86,15 +154,13 @@ class ApiIntegration extends Component
                     'legal_organization_document_id' => 3,
                     'tribute_id' => 21,
                     'identification_document_id' => 3,
-                    'municipality_id' => 980,
-                ];
-
+                    'municipality_id' => '',];
                 $defaultItem = [
                     'code_reference' => '',
                     'name' => '',
                     'quantity' => 0,
                     'discount_rate' => 20.00,
-                    'price' => 0.00,
+                    'price' => 0,
                     'tax_rate' => 19.00,
                     'unit_measure_id' => 70,
                     'standard_code_id' => 1,
@@ -103,33 +169,34 @@ class ApiIntegration extends Component
                     'withholding_taxes' => [],
                 ];
 
-                // Rellenar datos faltantes con valores predeterminados
+                if (!is_array($this->customer)) {
+                    throw new \Exception('El atributo customer no es un array.');
+                }
                 $this->customer = array_merge($defaultCustomer, $this->customer);
-
-                foreach ($this->items as &$item) {
+                foreach ($this->items as $index => &$item) {
+                    if (!is_array($item)) {
+                        throw new \Exception("El elemento items[$index] no es un array.");
+                    }
                     $item = array_merge($defaultItem, $item);
                 }
 
-                // Construir la factura
                 $datosFactura = [
                     "numbering_range_id" => 8,
-                    "reference_code" => "12345931AT",
-                    "observation" => "Esta es la descripción default",
-                    "payment_method_code" => 10,
+                    "reference_code" => $this->reference_code,
+                    "observation" => $this->observation,
+                    "payment_method_code" => $this->payment_method_code,
                     "customer" => $this->customer,
                     "items" => $this->items,
                 ];
 
-                // Realizar la solicitud POST a la API
-                $response = Http::withToken($token)->post('https://api-sandbox.factus.com.co/v1/bills/store', $datosFactura);
-
+                //dd($datosFactura);
+                $url = $this->baseUrl . 'bills/validate';
+                //dd($url);
+                $response = Http::withToken($token)->post($url, $datosFactura);
                 if ($response->successful()) {
-                    //session()->flash('message', 'Factura creada exitosamente.');
                     $this->dispatch('noty-done', type: 'success', message: 'Documento creado con éxito');
                 } else {
-                    //session()->flash('error', 'Error al crear la factura: ' . $response->body());
                     $this->dispatch('noty-api-error', type: 'ERROR', name: 'al crear la factura', details: $response->body());
-                    //$this->dispatch('noty-done', type: 'info', message: 'Error al crear la factura: ' . $response->body());
                 }
             } else {
                 session()->flash('error', 'Token no válido.');
@@ -139,36 +206,107 @@ class ApiIntegration extends Component
         }
     }
 
-    public function show()
+
+    public function show($page = 1)
     {
         $this->apiAuthService = app(ApiAuthService::class);
-        //dd($this->apiAuthService);
-        // Verificar si el servicio de autenticación está disponible antes de realizar cualquier acción
         if (!$this->apiAuthService) {
             session()->flash('error', 'El servicio de autenticación no está disponible...');
             return;
         }
+
         $token = $this->apiAuthService->getAccessToken();
-        //dd($token);
-
         if ($token) {
-            $response = Http::withToken($token)->get('https://api-sandbox.factus.com.co/v1/bills');
 
+            $params = [
+                'page' => $page,
+            ];
+
+            if (!empty($this->searchTerm)) {
+                $params['filter'] = $this->searchTerm;
+            }
+
+            $url = $this->baseUrl . 'bills?';
+            $response = Http::withToken($token)->get($url, $params);
             if ($response->successful()) {
-                $this->datos = $this->formatearDatos($response->json());
+                $data = $response->json();
+                $this->datos = $data['data']['data'] ?? [];
+                $this->pagination = $data['data']['pagination']['links'] ?? [];
             } else {
-                //session()->flash('error', 'No se pudieron obtener los datos.');
                 $this->dispatch('noty-api-error', type: 'ERROR', name: 'al visualizar las facturas', details: $response->body());
             }
         } else {
             session()->flash('error', 'Token no válido.');
         }
+    }
 
+    public function validates($number, $modal = 'view')
+    {
+        $documentNumber = $number;
+        if (empty($documentNumber)) {
+            session()->flash('error', 'Debe ingresar un número de documento para validar.');
+            return;
+        }
+
+        $this->apiAuthService = app(ApiAuthService::class);
+        if (!$this->apiAuthService) {
+            session()->flash('error', 'El servicio de autenticación no está disponible...');
+            return;
+        }
+        $token = $this->apiAuthService->getAccessToken();
+        if ($token) {
+            $url = $this->baseUrl . "send/{$documentNumber}";
+            $response = Http::withToken($token)->post($url);
+            if ($response->successful()) {
+                $this->dispatch('noty-done', type: 'success', message: 'Validacion creada con éxito');
+                return $response->json();
+            } else {
+                $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: $response->body());
+            }
+        } else {
+            session()->flash('error', 'Token no válido.');
+        }
+    }
+
+    public function bill($number, $modal = 'view')
+    {
+        $documentNumber = $number;
+        if (empty($documentNumber)) {
+            session()->flash('error', 'Debe ingresar un número de documento para validar.');
+            return;
+        }
+        $this->apiAuthService = app(ApiAuthService::class);
+        if (!$this->apiAuthService) {
+            session()->flash('error', 'El servicio de autenticación no está disponible...');
+            return;
+        }
+
+        $token = $this->apiAuthService->getAccessToken();
+        if ($token) {
+            $url = $this->baseUrl . "bills/show/{$documentNumber}";
+            $response = Http::withToken($token)->get($url); // Cambiar a POST si es necesario
+            if ($response->successful()) {
+                $factura = $response->json();
+                if (!empty($factura['data'])) {
+                    $this->factura = $factura['data'];
+                    $this->isModalOpen = true;
+                    $this->openModal($modal);
+                    $this->dispatch('showNotification', 'Factura encontrada con exito', 'success');
+                    return $this->factura;
+                } else {
+                    $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: 'No se encontraron datos para este documento.');
+                }
+            } else {
+                $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: $response->body());
+            }
+        } else {
+            session()->flash('error', 'Token no válido.');
+        }
     }
 
     private function formatearDatos($datos)
     {
-        // Accedemos a los datos relevantes y los formateamos
+
         $formateados = [];
 
         if (isset($datos['data']['data'])) {
@@ -176,7 +314,6 @@ class ApiIntegration extends Component
                 //dd($item);
 
                 try {
-                    // Si la fecha no es válida, utilizar un valor por defecto
                     $fecha = \Carbon\Carbon::createFromFormat('d-m-Y h:i:s A', $item['created_at']);
                     $createdAt = $fecha->format('Y-m-d H:i:s');
                 } catch (\Exception $e) {
@@ -200,24 +337,11 @@ class ApiIntegration extends Component
                 ];
             }
         }
-
         return $formateados;
-    }
-
-// Obtener el nombre del estado (por ejemplo, 1 -> 'Activo')
-    private function getStatusName($status)
-    {
-        $statuses = [
-            1 => 'Enviado',
-            0 => 'No enviado',
-        ];
-
-        return $statuses[$status] ?? 'Desconocido';
     }
 
     public function resetUI()
     {
         $this->resetErrorBag();
     }
-
 }
