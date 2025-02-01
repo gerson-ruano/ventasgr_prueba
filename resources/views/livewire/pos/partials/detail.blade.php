@@ -2,8 +2,7 @@
     $index = 1; // Inicializamos el contador fuera del bucle
 @endphp
 
-
-<div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
+<div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-1 lg:mb-2 lg:ml-2 lg:mr-2">
     @if ($totalProduct = count($cart) > 0 )
         <!-- Table Section -->
         <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
@@ -75,16 +74,7 @@
                     </tr>
                         <?php $index++; ?>
                 @endforeach
-
                 </tbody>
-                {{--<tfoot class="bg-base-100 dark:bg-gray-800">
-                    <tr>
-                        <th class="py-2 px-4 text-center">No.</th>
-                        <th class="py-2 px-4 text-left">Descripción</th>
-                        <th class="py-2 px-4 text-center">Imagen</th>
-                        <th class="py-2 px-4 text-center">Acción</th>
-                    </tr>
-                </tfoot>--}}
             </table>
         </div>
     @else

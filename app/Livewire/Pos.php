@@ -443,5 +443,4 @@ class Pos extends Component
         $this->dispatch('printSale', $url);*/
     }
 
-
 }

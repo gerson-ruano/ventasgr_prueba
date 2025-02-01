@@ -34,9 +34,8 @@ class ApiIntegration extends Component
         } else {
             throw new \Exception('El servicio ApiAuthService no está disponible.');
         }
-
         try {
-            $this->documentos = $this->show();
+            $this->documentos = $this->index();
         } catch (\Exception $e) {
             $this->dispatch('noty-api-error', [
                 'type' => 'ERROR',
@@ -118,6 +117,9 @@ class ApiIntegration extends Component
         $this->isModalOpen = false;
         $this->currentModal = '';
         $this->document_number = '';
+        $this->observation = '';
+        $this->reference_code = '';
+        $this->payment_method_code = '';
         $this->factura = [];
         $this->customer = [];
         $this->items = [];
@@ -135,6 +137,38 @@ class ApiIntegration extends Component
         $this->openModal($modal);
     }
 
+    public function index($page = 1)
+    {
+        $this->apiAuthService = app(ApiAuthService::class);
+        if (!$this->apiAuthService) {
+            session()->flash('error', 'El servicio de autenticación no está disponible...');
+            return;
+        }
+
+        $token = $this->apiAuthService->getAccessToken();
+        if ($token) {
+
+            $params = [
+                'page' => $page,
+            ];
+
+            if (!empty($this->searchTerm)) {
+                $params['filter'] = $this->searchTerm;
+            }
+
+            $url = $this->baseUrl . 'bills?';
+            $response = Http::withToken($token)->get($url, $params);
+            if ($response->successful()) {
+                $data = $response->json();
+                $this->datos = $data['data']['data'] ?? [];
+                $this->pagination = $data['data']['pagination']['links'] ?? [];
+            } else {
+                $this->dispatch('noty-api-error', type: 'ERROR', name: 'al visualizar las facturas', details: $response->body());
+            }
+        } else {
+            session()->flash('error', 'Token no válido.');
+        }
+    }
 
     public function store()
     {
@@ -190,8 +224,8 @@ class ApiIntegration extends Component
                 ];
 
                 //dd($datosFactura);
+
                 $url = $this->baseUrl . 'bills/validate';
-                //dd($url);
                 $response = Http::withToken($token)->post($url, $datosFactura);
                 if ($response->successful()) {
                     $this->dispatch('noty-done', type: 'success', message: 'Documento creado con éxito');
@@ -206,39 +240,6 @@ class ApiIntegration extends Component
         }
     }
 
-
-    public function show($page = 1)
-    {
-        $this->apiAuthService = app(ApiAuthService::class);
-        if (!$this->apiAuthService) {
-            session()->flash('error', 'El servicio de autenticación no está disponible...');
-            return;
-        }
-
-        $token = $this->apiAuthService->getAccessToken();
-        if ($token) {
-
-            $params = [
-                'page' => $page,
-            ];
-
-            if (!empty($this->searchTerm)) {
-                $params['filter'] = $this->searchTerm;
-            }
-
-            $url = $this->baseUrl . 'bills?';
-            $response = Http::withToken($token)->get($url, $params);
-            if ($response->successful()) {
-                $data = $response->json();
-                $this->datos = $data['data']['data'] ?? [];
-                $this->pagination = $data['data']['pagination']['links'] ?? [];
-            } else {
-                $this->dispatch('noty-api-error', type: 'ERROR', name: 'al visualizar las facturas', details: $response->body());
-            }
-        } else {
-            session()->flash('error', 'Token no válido.');
-        }
-    }
 
     public function validates($number, $modal = 'view')
     {
@@ -255,7 +256,7 @@ class ApiIntegration extends Component
         }
         $token = $this->apiAuthService->getAccessToken();
         if ($token) {
-            $url = $this->baseUrl . "send/{$documentNumber}";
+            $url = $this->baseUrl . "bills/send/{$documentNumber}";
             $response = Http::withToken($token)->post($url);
             if ($response->successful()) {
                 $this->dispatch('noty-done', type: 'success', message: 'Validacion creada con éxito');
@@ -268,7 +269,7 @@ class ApiIntegration extends Component
         }
     }
 
-    public function bill($number, $modal = 'view')
+    public function show($number, $modal = 'view')
     {
         $documentNumber = $number;
         if (empty($documentNumber)) {
@@ -289,9 +290,9 @@ class ApiIntegration extends Component
                 $factura = $response->json();
                 if (!empty($factura['data'])) {
                     $this->factura = $factura['data'];
+                    $this->dispatch('showNotification', 'Factura encontrada con exito', 'success');
                     $this->isModalOpen = true;
                     $this->openModal($modal);
-                    $this->dispatch('showNotification', 'Factura encontrada con exito', 'success');
                     return $this->factura;
                 } else {
                     $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: 'No se encontraron datos para este documento.');
@@ -311,13 +312,11 @@ class ApiIntegration extends Component
 
         if (isset($datos['data']['data'])) {
             foreach ($datos['data']['data'] as $item) {
-                //dd($item);
 
                 try {
                     $fecha = \Carbon\Carbon::createFromFormat('d-m-Y h:i:s A', $item['created_at']);
                     $createdAt = $fecha->format('Y-m-d H:i:s');
                 } catch (\Exception $e) {
-                    // Si hay un error en el formato de fecha, asigna un valor por defecto o vacío
                     $createdAt = 'No validado en DIAN';
                 }
                 $referenceCode = isset($item['reference_code']) && !empty($item['reference_code'])

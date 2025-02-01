@@ -55,7 +55,7 @@
                 @if($efectivo == 0 || is_null($efectivo))
                     <h6 class="text-red-500 mb-0">INGRESAR! EFECTIVO</h6>
                 @else
-                    <h6>Efectivo: Q {{number_format($efectivo, 2)}}</h6>
+                    <h6>Ingresado: Q {{number_format($efectivo, 2)}}</h6>
                 @endif
                 @if($totalPrice > 0)
                     <h6 class="">Total: Q {{ number_format($totalPrice, 2) }}</h6>
@@ -68,7 +68,7 @@
                         <h6 class="text-red-400 mb-0">Falta Q {{ number_format(-$change, 2) }}</h6>
                     @endif
                     <h6 class="">Productos: {{ $totalProduct }}</h6>
-                    <h6 class="">Artículos: {{ $itemsQuantity }}</h6>
+                    <h6 class="">Cantidad: {{ $itemsQuantity }}</h6>
                 @else
                     <h6 class="text-muted">No hay productos en la venta</h6>
                 @endif

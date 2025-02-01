@@ -1,21 +1,13 @@
-<div class="text-center mt-4">
+<div class="text-center mt-1">
     <div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 mr-2 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
         <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
-            <button wire:click="show" class="btn btn-accent">
+            <button wire:click="index" class="btn btn-info">
                 <i class="fas fa-exchange-alt mr-1"></i>Actualizar
             </button>
-            @include('livewire.components.button_add', ['color' => 'success' ,'model' => 'crear', 'icon' => 'plus', 'title' => "agregar factura"])
+            @include('livewire.components.button_add', ['color' => 'success' ,'model' => 'crear', 'icon' => 'plus', 'title' => "Agregar factura"])
             {{--}}@include('livewire.components.button_add', ['color' => 'primary' ,'model' => 'validar', 'icon' => 'check-double', 'title' => "buscar factura"])--}}
             {{--}}@include('livewire.components.button_add', ['color' => 'info' ,'model' => 'buscar', 'icon' => 'search', 'title' => "Buscar factura"])--}}
-
         </div>
-        {{--}}<div class="flex justify-between items-center mb-4">
-            <input
-                type="text"
-                wire:model.debounce.500ms="searchTerm"
-                placeholder="Buscar..."
-                class="input input-bordered input-accent w-full max-w-xs"
-            />--}}
     </div>
     <div class="align flex-row border overflow-x-auto bg-base-200 rounded-lg shadow-lg mx-auto ml:mb-1 ml:ml-2 lg:ml-2 lg:mr-2">
         @if ($datos)
@@ -26,11 +18,9 @@
                         <th class="text-lg font-medium py-3 px-4 text-center">#</th>
                         <th class="text-lg font-medium py-3 px-4 text-center">ID</th>
                         <th class="text-lg font-medium py-3 px-4 text-center">Documento</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">Cliente</th>
                         <th class="text-lg font-medium py-3 px-4 text-left">Codigo de Referencia</th>
+                        <th class="text-lg font-medium py-3 px-4 text-left">Cliente</th>
                         <th class="text-lg font-medium py-3 px-4 text-left">Identificación</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">Forma de pago</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
                         <th class="text-lg font-medium py-3 px-4 text-left">Fecha de Validación</th>
                         <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
                         <th class="text-lg font-medium py-3 px-4 text-center">Acción</th>
@@ -38,21 +28,18 @@
                     </thead>
                     <tbody>
                     @forelse ($datos as $key => $item)
-                        {{--dd($datos)--}}
                         <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                             <td class="py-2 px-4 text-center">{{ $key+1 }}</td>
                             <td class="py-2 px-4 text-center">{{ $item['id'] }}</td>
                             <td class="py-2 px-4 text-center">{{ $item['number'] }}</td>
-                            <td class="py-2 px-4 text-center">{{ $item['api_client_name'] }}</td>
                             <td class="py-2 px-4 text-left">
                                     <span
                                         class="badge {{ $item['reference_code'] == 'sin codigo' ? 'badge-warning' : 'badge-white'}} text-uppercase">
                                         {{ $item['reference_code'] }}
                                     </span>
                             </td>
+                            <td class="py-2 px-4 text-left">{{ $item['api_client_name'] }}</td>
                             <td class="py-2 px-4 text-left">{{ $item['identification'] }}</td>
-                            <td class="py-2 px-4 text-center">{{ $item['payment_form']['name'] }}</td>
-                            <td class="py-2 px-4 text-center">{{ $item['total'] }}</td>
                             <td class="py-2 px-4 text-left">
                                     <span
                                         class="badge {{ $item['created_at'] == null ? 'badge-warning'  : 'badge-white'}} text-uppercase">
@@ -75,14 +62,13 @@
                                         @endif
                                     </button>
                                     <button class="btn btn-sm btn-info" title="Detalles"
-                                            wire:click="bill('{{ $item['number'] }}')"><i
+                                            wire:click="show('{{ $item['number'] }}')"><i
                                             class="fas fa-indent mr-1"></i>
                                     </button>
                                 </div>
                             </td>
 
                         </tr>
-                        {{--}}@endforeach--}}
                     @empty
                         <tr>
                             <td colspan="11" class="py-4 px-4 text-center">No se encontraron resultados...</td>
@@ -90,18 +76,16 @@
                     @endforelse
                     </tbody>
                 </table>
-                {{-- Paginación --}}
-                <div class="flex justify-center items-center mt-4">
+                <div class="flex justify-center items-center mt-4 mb-2">
                     @foreach ($pagination as $link)
                         @if (isset($link['page']))
                             @if ($link['active'])
                                 <span class="btn btn-sm btn-info mx-1">
-                                        {{ $loop->last ? 'Última Pagina' : $link['label'] }}
+                                        {{ $loop->last ? 'Última' : $link['label'] }}
                                     </span>
                             @else
-                                <button wire:click="show({{ $link['page'] }})" class="btn btn-sm btn-outline mx-1">
-                                    {{-- Cambiar nombre de la última página --}}
-                                    {{ $loop->last ? 'Última Pagina' : $link['label'] }}
+                                <button wire:click="index({{ $link['page'] }})" class="btn btn-sm btn-outline btn-info mx-1">
+                                    {{ $loop->last ? 'Última' : $link['label'] }}
                                 </button>
                             @endif
                         @elseif ($link['label'] === '...')
@@ -109,8 +93,6 @@
                         @endif
                     @endforeach
                 </div>
-
-                {{-- Fin de Paginación --}}
                 @include('livewire.api.form')
                 @endif
             </div>

@@ -2,16 +2,15 @@
     <div class="fixed inset-0 flex items-center justify-center z-50 bg-gray-600 bg-opacity-50">
         <div
             class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-2/3 max-h-full overflow-y-auto">
-
-            <h4 class="text-lg font-semibold mb-4 text-center">
-                <i class="fas fa-file-invoice mr-1"></i>{{ $selected_id ? 'Editar Factura' : 'Factura Encontrada' }}
-                <strong>No</strong> {{ $factura['bill']['id'] }}
-            </h4>
-            <form wire:submit.prevent="{{ $selected_id ? 'update' : 'bill' }}">
+            <h1 class="text-lg font-semibold mb-4 text-center">
+                <i class="fas fa-file-invoice fa-lg mr-2"></i>{{ $selected_id ? 'Editar Factura' : 'Factura' }}
+                <strong>No</strong> {{ $factura['bill']['id'] }} {{ $factura['bill']['status'] == 0 ? 'Sin Validar' : '' }}
+            </h1>
+            <form wire:submit.prevent="{{ $selected_id ? 'update' : 'show' }}">
                 @if (!empty($factura))
+                    {{--dd($factura)--}}
                     <div class="mt-6 border-t pt-4 mt-1">
                         <div class="flex flex-col w-full lg:flex-row lg:space-y-0 mt-1">
-                            <!--div class="divider lg:divider-horizontal"></div-->
                             <div class="lg:w-3/4 text-left bordered ">
                                 <p><strong>Cliente:</strong> {{ $factura['customer']['names'] ?? 'N/A' }}</p>
                                 <p>
@@ -27,6 +26,7 @@
                                 <p>
                                     <strong>Municipio:</strong> {{ $factura['customer']['municipality']['name'] ?? 'N/A' }}
                                 </p><br>
+
                                 <!-- ITEMS -->
                                 {{--}}<p>
                                     <strong>Factura:</strong> {{ $factura['items'][0]['code_reference'] ?? 'Sin Codigo' }}
@@ -36,7 +36,6 @@
                                 <p><strong>Descuento Rate:</strong> {{ $factura['items'][0]['discount_rate'] ?? 'N/A' }}
                                 </p>
                                 <p><strong>Descuento:</strong> {{ $factura['items'][0]['discount'] ?? 'N/A' }}</p>--}}
-
                                 <p><strong>Observación:</strong> {{ $factura['bill']['observation'] ?? 'N/A' }}</p>
                                 <p><strong>Forma de
                                         Pago:</strong> {{ $factura['bill']['payment_form']['name'] ?? 'N/A' }}</p>
@@ -47,12 +46,12 @@
                             <div class="lg:w-3/4 text-left">
                                     <!-- BILL -->
                                 <div class="flex items-center space-x-1">
-                                    <p class="font-bold"><strong>codigo QR:</strong></p>
+                                    <p class="font-bold"><strong>codigo QR</strong></p>
                                     <img src="{{ $factura['bill']['qr_image'] ?? 'N/A' }}" alt="QR Code"
                                          style="width: 150px; height: 120px;" class="ml-0">
                                 </div><br>
                                 <div class="flex items-center space-x-2">
-                                    <p><strong>CUFE Link:</strong></p>
+                                    <p><strong>DIAN Link:</strong></p>
                                     <a class="font-bold text-blue-500" href="{{ $factura['bill']['qr'] ?? 'N/A' }}"
                                        target="_blank">{{ substr($factura['bill']['qr'], 0, 30) }}...</a>
                                 </div>
@@ -74,30 +73,25 @@
                                 <p><strong>Descuento:</strong> {{ $factura['bill']['discount'] ?? 'N/A' }}</p>
                                 <p><strong>Impuesto:</strong> {{ $factura['bill']['tax_amount'] ?? 'N/A' }}</p>
                                 <p><strong>Total:</strong> {{ $factura['bill']['total'] ?? 'N/A' }}</p>--}}
-
                             </div>
                         </div>
-
                     </div>
                 @endif
-                <div wire:loading wire:target="{{ $selected_id ? 'update' : 'bill' }}" class="text-center mt-4">
+                <div wire:loading wire:target="{{ $selected_id ? 'update' : 'show' }}" class="text-center mt-4">
                     <span class="text-gray-500">Procesando...</span>
                 </div>
-
             </form>
             <div class="flex justify-center">
-                <h3 class="text-lg font-bold text-blue-500 mt-4">Resultados de la Búsqueda</h3>
+                <h3 class="text-lg font-bold text-blue-500 mt-4"></h3>
                 <button type="button" class="btn btn-outline ml-auto mr-2" wire:click="closeModal">Cerrar</button>
             </div>
 
         </div>
-
         @if (session('message'))
             <div class="alert alert-success mt-2">
                 {{ session('message') }}
             </div>
         @endif
-
         @if (session('error'))
             <div class="alert alert-danger mt-2">
                 {{ session('error') }}

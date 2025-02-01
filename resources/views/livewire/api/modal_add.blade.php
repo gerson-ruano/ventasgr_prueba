@@ -7,6 +7,7 @@
             </h4>
             <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
                     <!-- Datos de FACTURA -->
                     <div class="mb-4">
                         <label for="category_reference_code" class="block text-sm font-medium text-gray-700">Codigo
@@ -16,7 +17,6 @@
                                wire:model.debounce.500ms="reference_code"/>
                         @error('reference_code') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
-
                     <div class="mb-4">
                         <label for="category_observation"
                                class="block text-sm font-medium text-gray-700">Descripcion</label>
@@ -27,16 +27,19 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="category_payment" class="block text-sm font-medium text-gray-700">Tipo de
-                            Pago</label>
-                        <input id="category_payment" type="number" placeholder="1- contado - 2 Credito"
-                               class="input input-bordered input-info mt-1 w-full"
-                               wire:model.debounce.500ms="payment_method_code"/>
-                        @error('payment_method_code') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                        <label for="category_payment" class="block text-sm font-medium text-gray-700">Tipo de Pago</label>
+                        <select id="category_payment" wire:model="payment_method_code"
+                                class="select select-bordered select-info mt-1 w-full">
+                            <option value="0">Seleccionar</option>
+                            <option value="1">Crédito</option>
+                            <option value="2">Contado</option>
+                        </select>
+                        @error('payment_method_code')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
                     </div>
 
                     <!-- Datos de CUSTOMERS -->
-
                     <div class="mb-4">
                         <label for="category_identification" class="block text-sm font-medium text-gray-700">No. de
                             Identificación</label>
@@ -78,12 +81,12 @@
                         @error('customer.phone') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
 
-                    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
-                        <div class="mt-0 mb-0 mr-2 ml-2 flex flex-col items-center">
+                    <div class="mb-4">
+
                             <label for="municipality_id"
-                                   class="text-center block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Municipio</label>
+                                   class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Municipio</label>
                             <select wire:model.live="customer.municipality_id" id="customer.municipality_id"
-                                    class="select select select-info w-full max-w-xs">
+                                    class="select select-bordered select-info mt-1 w-full">
                                 <option value="0" selected>Seleccionar</option>
                                 @if($municipalitys)
                                     @foreach ($municipalitys as $valor)
@@ -93,11 +96,10 @@
                             </select>
                             @error('customer.municipality_id') <span
                                 class="text-red-500 text-sm">{{ $message }}</span>@enderror
-                        </div>
+
                     </div>
 
                     <!-- Datos de ITEMS -->
-
                     <div class="mb-4">
                         <label for="category_code_reference" class="block text-sm font-medium text-gray-700">Cod. Ref
                             Prod.</label>
@@ -132,9 +134,7 @@
                         @error('items.0.price') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
 
-
                 </div>
-
                 <div class="flex justify-center mt-4">
                     <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
                     <button type="submit" class="btn {{ $selected_id ? 'btn-info' : 'btn-success' }}"
@@ -152,7 +152,6 @@
                 {{ session('message') }}
             </div>
         @endif
-
         @if (session('error'))
             <div class="alert alert-danger mt-2">
                 {{ session('error') }}

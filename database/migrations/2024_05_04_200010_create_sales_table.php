@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('mod_id',20)->nullable();
             $table->enum('status',['PAID','PENDING','CANCELLED'])->default('PAID');
             $table->unsignedBigInteger('user_id');
+            $table->decimal('taxes', 10, 2)->default(0);
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
