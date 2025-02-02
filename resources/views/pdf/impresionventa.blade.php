@@ -37,9 +37,10 @@
     <table cellpadding="0" cellspacing="0" width="100%" class="table-items">
         <thead>
         <tr>
-            <th align="center">No.</th>
-            <th align="center">Cantidad</th>
+            <th align="center">#</th>
             <th align="center">Producto</th>
+            <th align="center">Cantidad</th>
+            <th>Precio Unitario</th>
             <th align="center">Precio</th>
             <th align="center">Imagen</th>
         </tr>
@@ -48,8 +49,9 @@
         @foreach($cart as $item)
             <tr>
                 <td align="center">{{ $loop->iteration }}</td>
-                <td align="center">{{$item->qty}}</td>
                 <td align="center">{{ $item->name }}</td>
+                <td align="center">{{$item->qty}}</td>
+                <td>Q. {{ number_format($item->price, 2) }}</td>
                 <td align="center">{{ $item->subtotal }}</td>
                 <td align="center">
                     @php
@@ -69,10 +71,12 @@
         <tfoot>
         <tr>
             <td align="center"><span><b>TOTALES:</b></span></td>
-            <td align="center" class="text-center"><strong>{{ $cart->sum('qty') }}</strong></td>
             <td colspan="1"></td>
+            <td align="center" class="text-center"><strong>{{ $cart->sum('qty') }}</strong></td>
+            <td><strong>Q. {{ number_format($cart->sum('price'), 2) }}</strong></td>
             <td align="center"><strong>Q. {{ number_format($cart->sum(function ($item) { return $item->price * $item->qty; }), 2) }}</strong></td>
             <td colspan="1"></td>
+
         </tr>
         </tfoot>
     </table>
@@ -83,8 +87,8 @@
         <tr>
             <th>#</th>
             <th>Producto</th>
-            <th>Precio Unitario</th>
             <th>Cantidad</th>
+            <th>Precio Unitario</th>
             <th>Total</th>
         </tr>
         </thead>
@@ -93,8 +97,8 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->product->name }}</td>
-                <td>Q. {{ number_format($d->price, 2) }}</td>
                 <td>{{ number_format($d->quantity, 2) }}</td>
+                <td>Q. {{ number_format($d->price, 2) }}</td>
                 <td>Q. {{ number_format($d->price * $d->quantity, 2) }}</td>
             </tr>
         @endforeach
@@ -116,18 +120,22 @@
 <table class="table-items">
     <thead>
     <tr>
+        <th>Subtotal</th>
         <th>Efectivo</th>
         <th>Cambio</th>
         <th>Descuento</th>
+        <th>Impuestos</th>
         <th>Colaborador</th>
-        <th>Ingreso</th>
+        <th>Fecha Ingreso</th>
     </tr>
     </thead>
     <tbody>
     <tr>
+        <td>Q. {{ number_format(($efectivo - $change) - $discount - $totalTaxes, 2) }}</td>
         <td>Q. {{ number_format($efectivo, 2) }}</td>
         <td>Q. {{ number_format($change, 2) }}</td>
-        <td>Q. {{ number_format($descuento, 2) }}</td>
+        <td>Q. {{ number_format($discount, 2) }}</td>
+        <td>Q. {{ number_format($totalTaxes, 2) }}</td>
         <td>{{ $usuario->name }}</td>
         <td>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</td>
     </tr>

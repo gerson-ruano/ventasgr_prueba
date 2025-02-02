@@ -67,4 +67,22 @@
             }, 3000);
         }
     });*/
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('search-input');
+
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                const barcode = event.target.value.trim();
+                ///console.log('Código obtenido:', barcode);
+
+                // Emit the event to Livewire
+                window.Livewire.dispatch('scan-code', {
+                    barcode
+                });
+                // Clear the input after sending the code
+                event.target.value = '';
+            }
+        });
+    });
 </script>

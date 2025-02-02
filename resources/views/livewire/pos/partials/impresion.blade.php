@@ -31,7 +31,7 @@
                     @endif
                 </div>
                 <!-- Sección de Pago -->
-                <div class="d-flex align-items-center mb-1">
+                <div class="d-flex align-items-center mb-2">
 
                     @if($tipoPago != 0)
                         <div class="flex items-center space-x-2">
@@ -51,7 +51,7 @@
         @include('livewire.components.empresa_header', ['empresa' => $empresa])
 
         <div class="text-xs leading-tight grid grid-cols-2 sm:grid-cols-3 mt-2 lg:grid-cols-1 py-0">
-            <div class="text-right">
+            <div class="text-right mb-1">
                 @if($efectivo == 0 || is_null($efectivo))
                     <h6 class="text-red-500 mb-0">INGRESAR! EFECTIVO</h6>
                 @else
@@ -73,6 +73,11 @@
                     <h6 class="text-muted">No hay productos en la venta</h6>
                 @endif
             </div>
+            <h6 class="">IVA: 12.00 %</h6>
+            <h6 class="">IVA incluido: Q.{{ number_format($totalTaxes, 2) }}</h6>
+            <h6 class="">Descuento: Q. {{ number_format($discount, 2) }}</h6>
+            <h6 class="">Subtotal: Q. {{ number_format(($totalPrice - $discount - $totalTaxes), 2) }}</h6>
+            <h6 class="">Total: Q {{ number_format($totalPrice, 2) }}</h6>
         </div>
 
         <div
@@ -83,7 +88,7 @@
                     @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>
                 Detalles Venta
             </button>--}}
-            <a href="#" class="btn btn-primary w-full sm:w-auto mb-1" onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo,'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber]) }}')"
+            <a href="#" class="btn btn-primary w-full sm:w-auto mb-1" onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo,'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount]) }}')"
                @if ($tipoPago==0 || $efectivo < $totalPrice)
                 disabled
             @endif><i class="fas fa-print"></i>

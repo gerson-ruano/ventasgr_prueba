@@ -20,6 +20,8 @@ class Pos extends Component
     public $valores = [];
     public $quantityInputs = [];
     public $efectivo = 0.00;
+    public $discount = 0.00;
+    public $totalTaxes = 0.00;
     public $revisionVenta = false;
     public $nextSaleNumber;
     public $empresa;
@@ -27,10 +29,8 @@ class Pos extends Component
 
     public function mount()
     {
-
-        //$this->efectivo = number_format($this->efectivo, 2);
         $this->efectivo = 0000.00;
-        $this->change = 0;
+        $this->change = 0.00;
         $this->tipoPago = null;
         $this->updateTotalPrice();
         $this->itemsQuantity = Cart::count(); //cantidad de articulos en el carrito
@@ -44,6 +44,7 @@ class Pos extends Component
 
     public function render()
     {
+        $this->updateTaxes();
         return view('livewire.pos.components', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::content(),
@@ -128,9 +129,37 @@ class Pos extends Component
         if (!$empresa) {
             abort(404, 'No se encontró ninguna compañía');
         }
-
         return $empresa;
     }
+
+    public function calculateGlobalTax()
+    {
+        $totalQuantity = 0;
+        $totalSale = 0;
+
+        foreach (Cart::content() as $item) {
+            $totalQuantity += $item->qty; // Contar la cantidad total de productos
+            $totalSale += $item->price * $item->qty; // Calcular el total de la venta
+        }
+
+        $generalTaxRate = 0.12; // Impuesto general del 12% (puedes cambiarlo)
+        $totalTaxes = $totalSale * $generalTaxRate; // Calcular el total de impuestos
+
+        return [
+            'totalTaxes' => round($totalTaxes, 2), //number_format($totalTaxes, 2
+            'generalTaxRate' => $generalTaxRate * 100, // Guardar el porcentaje para mostrar
+            'totalQuantity' => $totalQuantity, // Cantidad total de productos
+        ];
+    }
+
+
+
+    public function updateTaxes()
+    {
+        $taxData = $this->calculateGlobalTax();
+        $this->totalTaxes = $taxData['totalTaxes'];
+    }
+
 
     protected
         $listeners = [
@@ -138,6 +167,8 @@ class Pos extends Component
         'deleteRow' => 'removeItem',
         'deleteAllConfirmed' => 'deleteAllConfirmedCart',
         'clearChange' => 'clearChange',
+        'cartUpdated' => 'updateTaxes',
+        'printSaleAfterDelay' => 'printSale'
         //'closeModal' => 'closeModal'
     ];
 
@@ -166,6 +197,7 @@ class Pos extends Component
         $this->updateCartSummary();
         $this->updateTotalPrice();
         $this->dispatch('showNotification', 'Producto ' . $product->name . ' agregado exitosamente', 'success');
+        $this->dispatch('cartUpdated');
 
     }
 
@@ -182,6 +214,8 @@ class Pos extends Component
 
         // Calcula el cambio
         $this->change = (float)$this->efectivo - (float)$this->totalPrice;
+
+        $this->dispatch('cartUpdated');
 
     }
 
@@ -300,6 +334,7 @@ class Pos extends Component
                 $this->updateTotalPrice();
 
                 // Mostrar notificación de éxito
+                $this->dispatch('cartUpdated');
                 $this->dispatch('showNotification', 'Producto eliminado del carrito', 'error');
             } catch (\Exception $e) {
                 // Manejar cualquier excepción que pueda ocurrir
@@ -340,7 +375,8 @@ class Pos extends Component
 
     public function saveSale()
     {
-
+        $taxData = $this->calculateGlobalTax();
+        //dd($taxData);
         if ($this->totalPrice <= 0) {
             $this->dispatch('showNotification', 'Agregar Productos a la venta', 'dark');
             return;
@@ -351,6 +387,16 @@ class Pos extends Component
         }
         if ($this->totalPrice > $this->efectivo) {
             $this->dispatch('showNotification', 'El efectivo debe ser MAYOR o IGUAL al total', 'warning');
+            return;
+        }
+        if ($this->discount < 0) {
+            $this->dispatch('showNotification', 'El DESCUENTO debe verificarse', 'warning');
+            return;
+        }
+        if (isset($taxData)) {
+            $this->totalTaxes = $taxData['totalTaxes'];
+        } else {
+            $this->dispatch('showNotification', 'No existe ningun IMPUESTO en la venta', 'warning');
             return;
         }
         if (isset($this->tipoPago) && !empty($this->tipoPago)) {
@@ -380,6 +426,7 @@ class Pos extends Component
                 'status' => $tipoPagoSeleccionado,
                 'change' => $this->change,
                 'seller' => $vendedorAgregado,
+                'taxes' => $taxData['totalTaxes'],
                 'user_id' => Auth()->user()->id
             ]);
 
@@ -392,6 +439,7 @@ class Pos extends Component
                         'quantity' => $item->qty,
                         'product_id' => $item->id,
                         'sale_id' => $sale->id,
+                        'discount' => $this->discount,
                     ]);
 
                     $product = Product::find($item->id);
@@ -430,17 +478,43 @@ class Pos extends Component
         }
         $this->saveSale();
 
-        /*$nextSaleNumber = $this->nextSaleNumber;
+        $this->nextSaleNumber = Sale::latest('id')->first()->id ?? null;
+
+        $this->dispatch('printSaleAfterDelay');
+    }
+
+    public function printSale()
+    {
+        // Intentamos obtener el número de la venta nuevamente
+        $nextSaleNumber = $this->nextSaleNumber;
         $sale = Sale::with('details')->find($nextSaleNumber);
+        //$taxData = $this->calculateGlobalTax();
+
+        // Si la venta aún no está lista, intentamos de nuevo después de un momento
+        if (!$sale) {
+            sleep(2); // Esperar 2 segundos
+            $sale = Sale::where('id', $nextSaleNumber)->with('details')->first();
+        }
+
+        // Si aún no se encuentra, mostramos un mensaje de error
+        if (!$sale) {
+            $this->dispatch('showNotification', 'La venta no se encontró. Intente nuevamente.', 'error');
+            return;
+        }
         //dd($sale);
 
+        // Generar la URL del reporte
         $url = route('report.venta', [
             'change' => $sale->change,
             'efectivo' => $sale->cash,
             'seller' => getNameSeller($sale->seller),
             'nextSaleNumber' => $sale->id,
+            'totalTaxes' => $sale->taxes,
+            'discount' => $sale->details->first()->discount,
         ]);
-        $this->dispatch('printSale', $url);*/
+
+        // Enviamos la URL al frontend para imprimir
+        $this->dispatch('printSale', $url);
     }
 
 }

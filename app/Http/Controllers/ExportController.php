@@ -107,7 +107,7 @@ class ExportController extends Controller
     }
 
     // IMPRESION DE NUEVA VENTA
-    public function reportVenta($change, $efectivo, $seller, $getNextSaleNumber, $descuento = null)
+    public function reportVenta($change, $efectivo, $seller, $getNextSaleNumber, $totalTaxes, $discount )
     {
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
@@ -134,17 +134,19 @@ class ExportController extends Controller
             'statusMessage' => $statusMessage,
             'change' => $change,
             'efectivo' => $efectivo,
-            'descuento' => $descuento,
+            'discount' => $discount,
+            'totalTaxes' => $totalTaxes,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
         return $pdf->stream("Venta_{$getNextSaleNumber}_{$this->currentDate}.pdf");
     }
 
-    public function reportDetails($seller, $getNextSaleNumber, $descuento = null)
+    // IMPRESION DE VENTA - DETALLES
+    public function reportDetails($seller, $getNextSaleNumber)
     {
-
         $sale = Sale::with('details', 'seller')->find($getNextSaleNumber);
+        //dd($sale);
 
         if (!$sale) {
             return response()->json(['error' => 'Venta no encontrada'], 404);
@@ -167,18 +169,19 @@ class ExportController extends Controller
             'sale' => $sale,
             'statusMessage' => $statusMessage,
             'empresa' => $empresa,
-            'descuento' => $descuento,
+            //'discount' => $discount,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
         return $pdf->stream("VentaDetails{$getNextSaleNumber}_{$this->currentDate}.pdf");
     }
 
-    // REPORTE DE CIERRE DE VENTA
-    public function reportBox($seller, $getNextSaleNumber, $descuento = null)
+    // REPORTE DE CIERRE DE VENTA - DETALLES
+    public function reportBox($seller, $getNextSaleNumber)
     {
 
         $sale = Sale::with('details','seller')->find($getNextSaleNumber);
+        //dd($sale);
 
         if (!$sale) {
             return response()->json(['error' => 'Venta no encontrada'], 404);
@@ -199,7 +202,6 @@ class ExportController extends Controller
             'usuario' => $usuario,
             'sale' => $sale,
             'empresa' => $empresa,
-            'descuento' => $descuento,
         ]);
 
         // Devolver el PDF como una respuesta de streaming

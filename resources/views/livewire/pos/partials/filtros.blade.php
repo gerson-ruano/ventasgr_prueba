@@ -29,5 +29,28 @@
 
     </div>
 
+    <div class="flex flex-row space-x-2 w-full mb-2">
+        <div class="w-1/2">
+            @include('livewire.components.select_filtro', [
+                'default' => 'Elegir',
+                'val_default' => 0,
+                'title' => 'Tipo de Pago',
+                'model' => 'tipoPago',
+                'valores' => ''
+            ])
+        </div>
+
+        <div class="w-1/2">
+            @include('livewire.components.select_filtro', [
+                'default' => 'Cliente',
+                'val_default' => 0,
+                'title' => 'Vendedor o Cliente',
+                'model' => 'vendedorSeleccionado',
+                'valores' => $vendedores,
+            ])
+        </div>
+
+    </div>
+
 
 </div>
