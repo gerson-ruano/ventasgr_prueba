@@ -6,6 +6,6 @@ if (!function_exists('getNameSeller')) {
     function getNameSeller($seller)
     {
         $vendedor = User::find($seller);
-        return $vendedor ? $vendedor->name : 'Consumidor Final';
+        return $vendedor ? $vendedor->name : 'Cliente';
     }
 }

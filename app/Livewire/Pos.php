@@ -15,9 +15,10 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Pos extends Component
 {
-    public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado;
+    public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado, $cliente;
     public $vendedores = [];
     public $valores = [];
+    public $pagos = [];
     public $quantityInputs = [];
     public $efectivo = 0.00;
     public $discount = 0.00;
@@ -36,15 +37,18 @@ class Pos extends Component
         $this->itemsQuantity = Cart::count(); //cantidad de articulos en el carrito
         $this->vendedores = $this->ListaVendedores();
         $this->valores = $this->ListaPagos();
+        $this->pagos = $this->ListaTipoPagos();
         $this->updateQuantityProducts();
         $this->getNextSaleNumber();
         $this->empresa = $this->companyVentas();
+
 
     }
 
     public function render()
     {
         $this->updateTaxes();
+        $this->cliente;
         return view('livewire.pos.components', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::content(),
@@ -58,6 +62,18 @@ class Pos extends Component
         $reportTypes = [
             (object)['id' => '1', 'name' => 'PAGADO'],
             (object)['id' => '2', 'name' => 'PENDIENTE'],
+            //(object)['id' => '3', 'name' => 'ANULADO'],
+        ];
+        return $reportTypes;
+    }
+
+    public function ListaTipoPagos()
+    {
+        $reportTypes = [
+            (object)['id' => '1', 'name' => 'Efectivo'],
+            (object)['id' => '2', 'name' => 'Transferencia'],
+            (object)['id' => '3', 'name' => 'Deposito'],
+            (object)['id' => '4', 'name' => 'TarjetaCredito'],
             //(object)['id' => '3', 'name' => 'ANULADO'],
         ];
         return $reportTypes;
@@ -477,9 +493,7 @@ class Pos extends Component
             return;
         }
         $this->saveSale();
-
         $this->nextSaleNumber = Sale::latest('id')->first()->id ?? null;
-
         $this->dispatch('printSaleAfterDelay');
     }
 

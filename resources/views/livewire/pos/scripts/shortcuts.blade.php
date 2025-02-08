@@ -74,9 +74,9 @@
         input.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 const barcode = event.target.value.trim();
-                ///console.log('Código obtenido:', barcode);
+                //console.log('Código obtenido:', barcode);
 
-                // Emit the event to Livewire
+                 //Emit the event to Livewire
                 window.Livewire.dispatch('scan-code', {
                     barcode
                 });

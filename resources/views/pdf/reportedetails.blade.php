@@ -39,7 +39,7 @@
                         {{ $statusMessage }}
                     </span>
                 </span>
-                <span style="font-size: 14px">Cliente: <strong>{{$seller_name}}</strong></span>
+                <span style="font-size: 14px">para: <strong>{{$seller_name}}</strong></span>
             </td>
 
         </tr>

@@ -27,7 +27,7 @@
                 {{ $statusMessage }}
             </span>
             </span>
-                <span style="font-size: 14px;">Cliente: <strong>{{$seller}}</strong></span>
+                <span style="font-size: 14px;">para: <strong>{{$seller}}</strong></span>
             </td>
     </table>
 </section>
@@ -106,8 +106,8 @@
         <tfoot>
         <tr>
             <td colspan="2"><strong>Totales:</strong></td>
-            <td><strong>Q. {{ number_format($details->sum('price'), 2) }}</strong></td>
             <td><strong>{{ number_format($details->sum('quantity'), 2) }}</strong></td>
+            <td><strong>Q. {{ number_format($details->sum('price'), 2) }}</strong></td>
             <td>
                 <strong>Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</strong>
             </td>

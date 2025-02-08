@@ -30,9 +30,16 @@
                         <label for="category_payment" class="block text-sm font-medium text-gray-700">Tipo de Pago</label>
                         <select id="category_payment" wire:model="payment_method_code"
                                 class="select select-bordered select-info mt-1 w-full">
-                            <option value="0">Seleccionar</option>
-                            <option value="1">Crédito</option>
-                            <option value="2">Contado</option>
+                            <option value="">Seleccionar</option>
+                            <option value="10">Efectivo</option>
+                            <option value="42">Consignación</option>
+                            <option value="20">Cheque</option>
+                            <option value="47">Transferencia</option>
+                            <option value="71">Bonos</option>
+                            <option value="72">Vales</option>
+                            <option value="1">Pago no definido</option>
+                            <option value="49">Tarjeta de Debito</option>
+                            <option value="48">Tarjeta de Credito</option>
                         </select>
                         @error('payment_method_code')
                         <span class="text-red-500 text-sm">{{ $message }}</span>

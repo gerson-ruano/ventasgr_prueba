@@ -25,8 +25,16 @@
                         </div>
                     @else
                         <div class="flex items-center space-x-2">
-                            <h6>Nombre:</h6>
-                            <h6 class="text-blue-500 mb-0">C/F</h6>
+                            @if(empty($cliente))
+                                <div class="flex items-center space-x-2">
+                                    <h6>Nombre:</h6>
+                                    <h6 class="text-red-500 ">INGRESE NOMBRE</h6>
+                                </div>
+                            @else
+                                <h6>Nombre:</h6>
+                                {{--<h6 class="text-blue-500 mb-0">C/F</h6>--}}
+                                <h6 class="font-bold text-black-500">{{$cliente}}</h6>
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -82,16 +90,18 @@
 
         <div
             class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:place-items-center sm:justify-center items-center mt-4 mb-2">
-            <button wire:click="saveSaleAndPrint" class="btn btn-info d-print-none mb-1 w-full sm:w-auto"><i class="fas fa-cart-plus"></i>Finalizar Venta
+            <button wire:click="saveSaleAndPrint" class="btn btn-info d-print-none mb-1 w-full sm:w-auto"><i
+                    class="fas fa-cart-plus"></i>Finalizar Venta
             </button>
             {{--<button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1 w-full sm:w-auto"
                     @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>
                 Detalles Venta
             </button>--}}
-            <a href="#" class="btn btn-primary w-full sm:w-auto mb-1" onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo,'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount]) }}')"
+            <a href="#" class="btn btn-primary w-full sm:w-auto mb-1"
+               onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo,'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount]) }}')"
                @if ($tipoPago==0 || $efectivo < $totalPrice)
-                disabled
-            @endif><i class="fas fa-print"></i>
+                   disabled
+                @endif><i class="fas fa-print"></i>
                 Detalles de venta
             </a>
         </div>
