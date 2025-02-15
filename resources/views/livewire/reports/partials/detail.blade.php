@@ -15,14 +15,14 @@
                 <h1 class="font-bold text-lg text-center">REPORTES DE VENTAS</h1>
                 <tr>
                     <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Venta</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Usuario</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cliente/Vendedor</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Fecha y Hora</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Acciones</th>
-                    <!--th class="text-lg font-medium py-3 px-4 text-center">Editar</th-->
                 </tr>
                 </thead>
                 <tbody>
@@ -34,9 +34,8 @@
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                         <td class="py-2 px-4 text-center">
                             {{ ($data->currentPage() - 1) * $data->perPage() + $index + 1 }}</td>
-                        <td class="py-2 px-4 text-center">Q. {{number_format($item->total,2)}}</td>
                         <td class="py-2 px-4 text-center">
-                            <h6>{{ $item->items }}</h6>
+                            <h6>{{ $item->id }}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                              <span class="badge
@@ -47,6 +46,10 @@
                                  text-uppercase">
                                 {{ $statusTranslations[$item->status] ?? $item->status }}
                             </span>
+                        </td>
+                        <td class="py-2 px-4 text-center">Q. {{number_format($item->total,2)}}</td>
+                        <td class="py-2 px-4 text-center">
+                            <h6>{{ $item->items }}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{ $item->user }}</h6>

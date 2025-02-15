@@ -10,8 +10,11 @@ class Sale extends Model
     use HasFactory;
 
     protected $table = 'sales';
-    protected $fillable = ['total', 'items','cash','change','status','user_id','seller','taxes'];
+    protected $fillable = ['total', 'items','cash','change','status','user_id','seller','taxes','customer_data'];
 
+    protected $casts = [
+        'customer_data' => 'array',
+    ];
     public function details()
     {
         return $this->hasMany(SaleDetail::class, 'sale_id'); // Relación 1 a muchos

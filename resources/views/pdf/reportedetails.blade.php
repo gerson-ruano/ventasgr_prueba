@@ -39,7 +39,30 @@
                         {{ $statusMessage }}
                     </span>
                 </span>
-                <span style="font-size: 14px">para: <strong>{{$seller_name}}</strong></span>
+                @if($seller_name == 'Cliente')
+                    <span style="font-size: 14px">Para:<strong>{{$seller_name}}</strong></span>
+                    @if(!empty($customer))
+                        <div class="p-2 bg-gray-100 rounded text-center">
+                            <div class="flex justify-between">
+                                <span style="font-size: 14px;">Nombre: <strong>{{ $customer['name'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">NIT: <strong>{{ $customer['nit'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Dirección: <strong>{{ $customer['address'] ?? 'N/A' }}</strong></span>
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    <span style="font-size: 14px">Vendedor: <strong>{{$seller_name}}</strong></span>
+                @endif
             </td>
 
         </tr>

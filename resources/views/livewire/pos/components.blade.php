@@ -16,11 +16,12 @@
 
         @include('livewire.pos.partials.total')
 
+        @include('livewire.pos.partials.form')
+
         {{--<div
             class="grid flex-grow h-32 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-2 lg:ml-0 lg:mr-2">
             Contenido de la quinta columna
         </div>--}}
-
     </div>
 </div>
 

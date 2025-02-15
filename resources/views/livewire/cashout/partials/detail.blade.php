@@ -8,6 +8,7 @@
 
                 <tr>
                     <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Venta</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cliente/Vendedor</th>
@@ -21,6 +22,9 @@
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                         <td class="py-2 px-4 text-center">
                             {{ ($sales->currentPage() - 1) * $sales->perPage() + $index + 1 }}</td>
+                        <td class="py-2 px-4 text-center">
+                            <h6>{{ $item->id }}</h6>
+                        </td>
                         <td class="py-2 px-4 text-center">Q. {{number_format($item->total,2)}}</td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{ $item->items }}</h6>

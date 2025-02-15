@@ -5,105 +5,137 @@
 @endphp
 
 @if($itemsQuantity > 0)
-    <!-- Impresion Section -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2 flex-grow h-auto sm:w-30 card
-        bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-base-300 rounded-box p-4 m-2">
+        <!-- Información de la Venta -->
+        <div class="flex flex-col space-y-2">
+            <!-- Información de la Empresa -->
+            @include('livewire.components.empresa_header', ['empresa' => $empresa])
+            <!-- Button de agregar CLIENTE -->
+            @if($vendedorSeleccionado == 0)
+                <div class="flex flex-row flex-wrap justify-end items-center gap-2 mr-2">
+                    @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'openModal', 'icon' => 'plus', 'title' => 'Cliente'])
 
-        <div class="flex items-center space-x-2 text-xs leading-tight py-4">
-            <label id="salenumber" name="salenumber" class="font-medium">Venta No.</label>
-            <h5 class="text-md font-bold">{{ $nextSaleNumber }}</h5>
-        </div>
-
-        <div class="text-xs leading-tight card simple-title-task ui-sortable-handle">
-            <div class="flex items-center justify-center space-x-1">
-                <!-- Sección de Vendedor -->
-                <div class="d-flex align-items-center mb-1 mr-2">
-                    @if($vendedorSeleccionado != 0)
-                        <div class="flex items-center space-x-2">
-                            <label id="namevendedor" name="namevendedor" class="font-medium">Nombre:</label>
-                            <h6 class="font-bold"> {{getNameSeller($vendedorSeleccionado)}}</h6>
-                        </div>
-                    @else
-                        <div class="flex items-center space-x-2">
-                            @if(empty($cliente))
-                                <div class="flex items-center space-x-2">
-                                    <h6>Nombre:</h6>
-                                    <h6 class="text-red-500 ">INGRESE NOMBRE</h6>
-                                </div>
-                            @else
-                                <h6>Nombre:</h6>
-                                {{--<h6 class="text-blue-500 mb-0">C/F</h6>--}}
-                                <h6 class="font-bold text-black-500">{{$cliente}}</h6>
-                            @endif
-                        </div>
+                    @if(!empty($customer_data))
+                        @include('livewire.components.button_add', ['color' => 'error' ,'model' => 'deleteCustomer', 'icon' => 'trash', 'title' => 'Cliente'])
                     @endif
                 </div>
-                <!-- Sección de Pago -->
-                <div class="d-flex align-items-center mb-2">
+            @endif
+            <div class="p-2 bg-white rounded shadow">
+                <div class="flex items-center justify-between">
+                    <span class="font-medium">No. Venta:</span>
+                    {{--}}<h3 class="text-lg font-bold">{{ $nextSaleNumber }}</h3>--}}
+                    <h6 class="font-bold {{ $nextSaleNumber == 0 ? 'text-red-500' : 'text-black' }}">
+                        {{ $nextSaleNumber == 0 ? 'INGRESAR ESTADO PAGO!!' : $nextSaleNumber }}
+                    </h6>
+                </div>
+            </div>
 
-                    @if($tipoPago != 0)
-                        <div class="flex items-center space-x-2">
-                            <label id="namepago" name="namepago" class="font-medium">Pago:</label>
-                            <h6 class="font-bold"> {{$this->obtenerTipoPago($tipoPago)}}</h6>
-                        </div>
-                    @else
-                        <div class="flex items-center space-x-2">
-                            <h6>Pago:</h6>
-                            <h6 class="text-red-500 mb-0">INGRESAR PAGO!!</h6>
-                        </div>
-                    @endif
+            <!-- Estado de Pago -->
+            <div class="p-2 bg-white rounded shadow">
+                <div class="flex items-center justify-between">
+                    <span class="font-medium">Estado de Pago:</span>
+                    <h6 class="font-bold {{ $tipoPago == 0 ? 'text-red-500' : 'text-black' }}">
+                        {{ $tipoPago == 0 ? 'INGRESE ESTADO DE PAGO!!' : $this->obtenerTipoPago($tipoPago) }}
+                    </h6>
+                </div>
+            </div>
+
+            <!-- Información del Cliente o Vendedor -->
+            <div class="p-2 bg-white rounded shadow">
+                @if($vendedorSeleccionado != 0)
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Vendedor:</span>
+                        <h6 class="font-bold">{{ getNameSeller($vendedorSeleccionado) }}</h6>
+                    </div>
+                @else
+                    <div class="flex items-center justify-between">
+                        <span class="font-medium">Cliente:</span>
+                        {{-- $customer_data['name'] ?? 'INGRESE CLIENTE' --}}
+                        <h6 class="font-bold {{ $customer_data['name'] ?? 'text-red-500' }}">
+                            {{ $customer_data['name'] ?? 'INGRESE CLIENTE!!' }}
+                        </h6>
+                    </div>
+                @endif
+            </div>
+
+            @if(!empty($customer_data))
+                <div class="p-2 bg-gray-100 rounded text-center">
+                    <div class="flex justify-between">
+                        <strong>Metodo de Pago:</strong>
+                        <p>{{ $this->obtenerMetodoPago($customer_data['method_page'])}}
+                    </div>
+                    <div class="flex justify-between">
+                        <strong>NIT:</strong>
+                        <p>{{ $customer_data['nit'] ?? 'N/A' }}
+                    </div>
+                    <div class="flex justify-between">
+                        <strong>Dirección:</strong>
+                        <p>{{ $customer_data['address'] ?? 'N/A' }}
+                    </div>
+                </div>
+            @endif
+
+        </div>
+
+        <!-- Información Financiera -->
+        <div class="p-2 bg-white rounded shadow space-y-1">
+            <div class="flex justify-between">
+                <span>Ingresado:</span>
+                <span class="{{ $efectivo == 0 ? 'text-red-500' : '' }}">
+                    Q {{ number_format($efectivo, 2) }}
+                </span>
+            </div>
+            <div class="flex justify-between">
+                <span>Total:</span>
+                <span>Q {{ number_format($totalPrice, 2) }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Cambio:</span>
+                <span class="{{ $change < 0 ? 'text-red-400' : '' }}">
+                    {{ $change == 0 ? 'SIN CAMBIO' : 'Q ' . number_format(abs($change), 2) }}
+                </span>
+            </div>
+            <div class="flex justify-between">
+                <span>Productos:</span>
+                <span>{{ $totalProduct }}</span>
+            </div>
+            <div class="flex justify-between">
+                <span>Cantidad:</span>
+                <span>{{ $itemsQuantity }}</span>
+            </div>
+            <div class="border-t mt-1 pt-1">
+                <div class="flex justify-between">
+                    <span>IVA (12%):</span>
+                    <span>Q {{ number_format($totalTaxes, 2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Descuento:</span>
+                    <span>Q {{ number_format($discount, 2) }}</span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Subtotal:</span>
+                    <span>Q {{ number_format($totalPrice - $discount - $totalTaxes, 2) }}</span>
+                </div>
+                <div class="flex justify-between font-bold">
+                    <span>Total:</span>
+                    <span>Q {{ number_format($totalPrice, 2) }}</span>
                 </div>
             </div>
         </div>
 
-        @include('livewire.components.empresa_header', ['empresa' => $empresa])
-
-        <div class="text-xs leading-tight grid grid-cols-2 sm:grid-cols-3 mt-2 lg:grid-cols-1 py-0">
-            <div class="text-right mb-1">
-                @if($efectivo == 0 || is_null($efectivo))
-                    <h6 class="text-red-500 mb-0">INGRESAR! EFECTIVO</h6>
-                @else
-                    <h6>Ingresado: Q {{number_format($efectivo, 2)}}</h6>
-                @endif
-                @if($totalPrice > 0)
-                    <h6 class="">Total: Q {{ number_format($totalPrice, 2) }}</h6>
-                    <input type="hidden" id="hiddenTotal" value="{{$totalPrice}}">
-                    @if($change > 0)
-                        <h6 class="">Cambio: Q {{ number_format($change, 2) }}</h6>
-                    @elseif($change == 0)
-                        <h6 class="">SIN CAMBIO</h6>
-                    @else
-                        <h6 class="text-red-400 mb-0">Falta Q {{ number_format(-$change, 2) }}</h6>
-                    @endif
-                    <h6 class="">Productos: {{ $totalProduct }}</h6>
-                    <h6 class="">Cantidad: {{ $itemsQuantity }}</h6>
-                @else
-                    <h6 class="text-muted">No hay productos en la venta</h6>
-                @endif
-            </div>
-            <h6 class="">IVA: 12.00 %</h6>
-            <h6 class="">IVA incluido: Q.{{ number_format($totalTaxes, 2) }}</h6>
-            <h6 class="">Descuento: Q. {{ number_format($discount, 2) }}</h6>
-            <h6 class="">Subtotal: Q. {{ number_format(($totalPrice - $discount - $totalTaxes), 2) }}</h6>
-            <h6 class="">Total: Q {{ number_format($totalPrice, 2) }}</h6>
-        </div>
-
-        <div
-            class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:place-items-center sm:justify-center items-center mt-4 mb-2">
-            <button wire:click="saveSaleAndPrint" class="btn btn-info d-print-none mb-1 w-full sm:w-auto"><i
-                    class="fas fa-cart-plus"></i>Finalizar Venta
+        <!-- Botones de Acción -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full mt-4">
+            <button wire:click="saveSaleAndPrint"
+                    class="btn btn-info w-full sm:w-auto">
+                <i class="fas fa-cart-plus"></i> Finalizar Venta
             </button>
-            {{--<button wire:click="revisarVenta" class="btn btn-accent d-print-none mb-1 w-full sm:w-auto"
-                    @if ($tipoPago==0 || $efectivo < $totalPrice) disabled @endif>
-                Detalles Venta
-            </button>--}}
-            <a href="#" class="btn btn-primary w-full sm:w-auto mb-1"
-               onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo,'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount]) }}')"
-               @if ($tipoPago==0 || $efectivo < $totalPrice)
-                   disabled
-                @endif><i class="fas fa-print"></i>
-                Detalles de venta
+            <a href="#"
+               class="btn btn-primary w-full sm:w-auto"
+               onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo, 'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount, 'customer_data' => urlencode(json_encode($customer_data))]) }}')"
+               @if ($tipoPago == 0 || $efectivo < $totalPrice) disabled @endif>
+                <i class="fas fa-print"></i> Detalles de Venta
             </a>
         </div>
     </div>
 @endif
+

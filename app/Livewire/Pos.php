@@ -15,7 +15,9 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 
 class Pos extends Component
 {
-    public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado, $cliente;
+    public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado;
+    public $customer_name, $customer_nit, $customer_method_page, $customer_address;
+    public $customer_data = [];
     public $vendedores = [];
     public $valores = [];
     public $pagos = [];
@@ -26,6 +28,7 @@ class Pos extends Component
     public $revisionVenta = false;
     public $nextSaleNumber;
     public $empresa;
+    public $isModalOpen = false;
 
 
     public function mount()
@@ -37,24 +40,97 @@ class Pos extends Component
         $this->itemsQuantity = Cart::count(); //cantidad de articulos en el carrito
         $this->vendedores = $this->ListaVendedores();
         $this->valores = $this->ListaPagos();
-        $this->pagos = $this->ListaTipoPagos();
+        $this->pagos = $this->MetodosPagos();
         $this->updateQuantityProducts();
         $this->getNextSaleNumber();
         $this->empresa = $this->companyVentas();
-
-
     }
+
+    protected $rules = [
+        'customer_name' => 'required|min:2',
+        'customer_nit' => 'nullable|min:8',
+        'customer_method_page' => 'required',
+        'customer_address' => 'nullable|max:50',
+    ];
+
+    protected $messages = [
+        'customer_name.required' => 'Nombre del cliente es requerido',
+        'customer_name.min' => 'Debe tener al menos 2 caracteres',
+        'customer_method_page.required' => 'Metodo de pago es requerido',
+        'customer_nit.min' => 'NIT debe tener al menos 8 numeros',
+        'customer_address.max' => 'El campo direcciòn debe tener como maximo 50 caracteres',
+    ];
+
 
     public function render()
     {
         $this->updateTaxes();
-        $this->cliente;
         return view('livewire.pos.components', [
             'denominations' => Denomination::orderBy('value', 'desc')->get(),
             'cart' => Cart::content(),
         ])
             ->extends('layouts.app')
             ->section('content');
+    }
+
+    public function openModal()
+    {
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal()
+    {
+        $this->isModalOpen = false;
+        $this->resetValidation();
+    }
+
+    public function saveCustomer()
+    {
+        $this->validate();
+
+        // Guardar en el array temporal
+        $this->customer_data = [
+            'name' => $this->customer_name,
+            'nit' => $this->customer_nit,
+            'method_page' => $this->customer_method_page,
+            'address' => $this->customer_address,
+        ];
+        $this->isModalOpen = false;
+        $this->dispatch('showNotification', 'Cliente ' . $this->customer_name . ' agregado exitosamente', 'success');
+    }
+
+    public function updateCustomer()
+    {
+        $this->validate();
+
+        if ($this->customer_data) {
+            if (!empty($this->customer_name)) {
+                $this->customer_data['name'] = $this->customer_name;
+            }
+            if (!empty($this->customer_nit)) {
+                $this->customer_data['nit'] = $this->customer_nit;
+            }
+            if (!empty($this->customer_method_page)) {
+                $this->customer_data['method_page'] = $this->customer_method_page;
+            }
+            if (!empty($this->customer_address)) {
+                $this->customer_data['address'] = $this->customer_address;
+            }
+        }
+
+        $this->isModalOpen = false;
+        $this->dispatch('showNotification', 'Cliente ' . $this->customer_name . ' actualizado exitosamente', 'success');
+    }
+
+    public function deleteCustomer()
+    {
+        $this->customer_data = [];
+        $this->customer_name = '';
+        $this->customer_nit = '';
+        $this->customer_method_page = '';
+        $this->customer_address = '';
+
+        //$this->dispatch('showNotification', 'Cliente ' . $this->customer_name . ' eliminado exitosamente', 'error');
     }
 
     public function ListaPagos()
@@ -67,7 +143,7 @@ class Pos extends Component
         return $reportTypes;
     }
 
-    public function ListaTipoPagos()
+    public function MetodosPagos()
     {
         $reportTypes = [
             (object)['id' => '1', 'name' => 'Efectivo'],
@@ -100,6 +176,16 @@ class Pos extends Component
         }
 
         return 'Tipo de pago no encontrado';
+    }
+
+    public function obtenerMetodoPago($tipoPagoId)
+    {
+        foreach ($this->MetodosPagos() as $tipoPago) {
+            if ($tipoPago->id == $tipoPagoId) {
+                return $tipoPago->name;
+            }
+        }
+        return 'N/A';
     }
 
     public function ListaVendedores()
@@ -169,7 +255,6 @@ class Pos extends Component
     }
 
 
-
     public function updateTaxes()
     {
         $taxData = $this->calculateGlobalTax();
@@ -185,7 +270,6 @@ class Pos extends Component
         'clearChange' => 'clearChange',
         'cartUpdated' => 'updateTaxes',
         'printSaleAfterDelay' => 'printSale'
-        //'closeModal' => 'closeModal'
     ];
 
     public function scanCode($barcode, $cant = 1)
@@ -425,6 +509,8 @@ class Pos extends Component
             $vendedorAgregado = $this->vendedorSeleccionado;
             if ($vendedorAgregado == 0) {
                 $vendedorAgregado = '0';
+            } elseif ($vendedorAgregado >= 1) {
+                $this->resetUI();
             }
         } else {
             $vendedorAgregado = '0';
@@ -443,6 +529,12 @@ class Pos extends Component
                 'change' => $this->change,
                 'seller' => $vendedorAgregado,
                 'taxes' => $taxData['totalTaxes'],
+                'customer_data' => [
+                    'name' => $this->customer_name,
+                    'nit' => $this->customer_nit,
+                    'method_page' => $this->customer_method_page,
+                    'address' => $this->customer_address,
+                ],
                 'user_id' => Auth()->user()->id
             ]);
 
@@ -492,7 +584,9 @@ class Pos extends Component
             $this->dispatch('showNotification', 'La venta no se puede finalizar', 'warning');
             return;
         }
+
         $this->saveSale();
+        $this->resetUI();
         $this->nextSaleNumber = Sale::latest('id')->first()->id ?? null;
         $this->dispatch('printSaleAfterDelay');
     }
@@ -503,6 +597,7 @@ class Pos extends Component
         $nextSaleNumber = $this->nextSaleNumber;
         $sale = Sale::with('details')->find($nextSaleNumber);
         //$taxData = $this->calculateGlobalTax();
+        //dd($sale);
 
         // Si la venta aún no está lista, intentamos de nuevo después de un momento
         if (!$sale) {
@@ -525,10 +620,24 @@ class Pos extends Component
             'nextSaleNumber' => $sale->id,
             'totalTaxes' => $sale->taxes,
             'discount' => $sale->details->first()->discount,
+            'customer_data' => urlencode(json_encode($sale->customer_data))
         ]);
 
         // Enviamos la URL al frontend para imprimir
         $this->dispatch('printSale', $url);
+    }
+
+    public function resetUI()
+    {
+        $this->customer_name = '';
+        $this->customer_nit = '';
+        $this->customer_method_page = '';
+        $this->customer_address = '';
+    }
+
+    public function updatedVendedorSeleccionado($value)
+    {
+        $this->deleteCustomer();
     }
 
 }

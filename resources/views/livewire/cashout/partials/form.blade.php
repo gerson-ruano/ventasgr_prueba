@@ -18,6 +18,7 @@
                             <th class="text-lg font-medium py-3 px-4 text-center">Producto</th>
                             <th class="text-lg font-medium py-3 px-4 text-center">Precio</th>
                             <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
+                            <th class="text-lg font-medium py-3 px-4 text-center">Descuento</th>
                             <th class="text-lg font-medium py-3 px-4 text-center">Importe</th>
                         </tr>
                         </thead>
@@ -31,10 +32,13 @@
                                 <td class="py-2 px-4 text-center">
                                     {{ $d->product }}</td>
                                 <td class="py-2 px-4 text-center">
-                                    <h6>Q. {{number_format($d->price,2)}}</h6>
+                                    <h6>Q. {{number_format(($d->price) - $d->discount,2)}}</h6>
                                 </td>
                                 <td class="py-2 px-4 text-center">
                                     <h6>{{number_format($d->quantity,2)}}</h6>
+                                </td>
+                                <td class="py-2 px-4 text-center">
+                                    <h6>{{number_format($d->discount,2)}}</h6>
                                 </td>
                                 <td class="py-2 px-4 text-center">
                                     <h6>{{number_format($d->price * $d->quantity,2)}}</h6>
@@ -53,10 +57,14 @@
                             <td colspan="3">
                                 <h5 class="text-center">TOTALES</h5>
                             </td>
+
                             <td>
                                 @if($details)
-                                    <h6 class="">{{$details->sum('quantity')}}</h6>
+                                    <h6>{{$details->sum('quantity')}}</h6>
                                 @endif
+                            </td>
+                            <td colspan="1">
+                                <h5 class="text-center"></h5>
                             </td>
                             @if($details)
                                 @php $mytotal = 0; @endphp
@@ -77,8 +85,9 @@
 
             <form wire:submit="{{ $userid ? 'update' : 'store' }}">
                 <div class="flex justify-end mt-4">
-                    <a href="#" class="btn btn-primary mr-1" onclick="openPdfWindow('{{ route('report.box', ['seller' => getNameSeller($item->seller), 'nextSaleNumber' => $saleId]) }}')"
-                       >Imprimir
+                    <a href="#" class="btn btn-primary mr-1"
+                       onclick="openPdfWindow('{{ route('report.box', ['seller' => getNameSeller($item->seller), 'nextSaleNumber' => $saleId]) }}')"
+                    >Imprimir
                     </a>
                     <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>
                     {{--}}<button type="submit" class="btn {{ $selected_id ? 'btn-info' : 'btn-success' }}">

@@ -27,8 +27,38 @@
                 {{ $statusMessage }}
             </span>
             </span>
-                <span style="font-size: 14px;">para: <strong>{{$seller}}</strong></span>
+                @if($seller == 'Cliente')
+                    <span style="font-size: 14px">Para:<strong>{{$seller}}</strong></span>
+                    @if(!empty($customer))
+                        <div class="p-2 bg-gray-100 rounded text-center">
+                            <div class="flex justify-between">
+                                <span style="font-size: 14px;">Nombre: <strong>{{ $customer['name'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">NIT: <strong>{{ $customer['nit'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Dirección: <strong>{{ $customer['address'] ?? 'N/A' }}</strong></span>
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    <span style="font-size: 14px">Vendedor: <strong>{{$seller}}</strong></span>
+                @endif
             </td>
+
+
+        {{--}}@if($seller)
+            <span style="font-size: 14px;">para: <strong>{{$seller}}</strong></span>
+        @else
+            <span style="font-size: 14px;">para: <strong>HOLA</strong></span>
+        @endif--}}
     </table>
 </section>
 
@@ -60,9 +90,11 @@
                     @endphp
 
                     @if (is_file(public_path($imagePath)))
-                        <img src="{{ asset($imagePath) }}" alt="Imagen del producto" height="20" width="20" class="rounded">
+                        <img src="{{ asset($imagePath) }}" alt="Imagen del producto" height="20" width="20"
+                             class="rounded">
                     @else
-                        <img src="{{ asset($defaultImagePath) }}" alt="Imagen por defecto" height="20" width="20" class="rounded">
+                        <img src="{{ asset($defaultImagePath) }}" alt="Imagen por defecto" height="20" width="20"
+                             class="rounded">
                     @endif
                 </td>
             </tr>
@@ -74,7 +106,9 @@
             <td colspan="1"></td>
             <td align="center" class="text-center"><strong>{{ $cart->sum('qty') }}</strong></td>
             <td><strong>Q. {{ number_format($cart->sum('price'), 2) }}</strong></td>
-            <td align="center"><strong>Q. {{ number_format($cart->sum(function ($item) { return $item->price * $item->qty; }), 2) }}</strong></td>
+            <td align="center">
+                <strong>Q. {{ number_format($cart->sum(function ($item) { return $item->price * $item->qty; }), 2) }}</strong>
+            </td>
             <td colspan="1"></td>
 
         </tr>

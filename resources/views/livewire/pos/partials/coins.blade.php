@@ -4,12 +4,15 @@
     <div
         class="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-3 xl:grid-cols-4 gap-1 flex-grow card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-2 lg:ml-0 lg:mr-2">
         @foreach ($denominations as $d)
-        <div class="mt-2 mb-2 mr-2 ml-2">
-            <button wire:click.prevent="ACash({{ $d->value }})" class="btn btn-info btn-block text-xs">
-                {{ $d->value == 0 ? 'Q Exacto' : 'Q ' . number_format($d->value, 2, '.', '') }}
-            </button>
-        </div>
+            @if ($d->value > 0)
+                <div class="mt-2 mb-2 mr-2 ml-2">
+                    <button wire:click.prevent="ACash({{ $d->value }})" class="btn btn-info btn-block text-xs">
+                        Q {{ number_format($d->value, 2, '.', '') }}
+                    </button>
+                </div>
+            @endif
         @endforeach
+
         <!-- Botón Exacto Independiente -->
         <div class="mt-2 mb-2 mr-2 ml-2">
             <button wire:click.prevent="ACash(0)"

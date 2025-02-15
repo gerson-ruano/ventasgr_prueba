@@ -34,8 +34,8 @@
                             <td class="py-2 px-4 text-center">{{ $item['number'] }}</td>
                             <td class="py-2 px-4 text-left">
                                     <span
-                                        class="badge {{ $item['reference_code'] == 'sin codigo' ? 'badge-warning' : 'badge-white'}} text-uppercase">
-                                        {{ $item['reference_code'] }}
+                                        class="badge {{ $item['reference_code'] == null ? 'badge-warning'  : 'badge-white'}} text-uppercase">
+                                        {{ $item['reference_code'] == null ? 'Sin codigo de referencia' : $item['reference_code'] }}
                                     </span>
                             </td>
                             <td class="py-2 px-4 text-left">{{ $item['api_client_name'] }}</td>

@@ -30,7 +30,31 @@
                 <!--span style="font-size: 16px"><strong>VENTA</strong></span><br-->
                 <span style="font-size: 16px"><strong>VENTA #{{$getNextSaleNumber}}</strong></span><br>
                 <!--span style="font-size: 16px">Fecha de Consulta: <strong>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</strong></span-->
-                <span style="font-size: 14px">Cliente: <strong>{{$seller_name}}</strong></span>
+                @if($seller_name == 'Cliente')
+                    <span style="font-size: 14px">Para:<strong>{{$seller_name}}</strong></span>
+                    @if(!empty($customer))
+                        <div class="p-2 bg-gray-100 rounded text-center">
+                            <div class="flex justify-between">
+                                <span style="font-size: 14px;">Nombre: <strong>{{ $customer['name'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">NIT: <strong>{{ $customer['nit'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Dirección: <strong>{{ $customer['address'] ?? 'N/A' }}</strong></span>
+                            </div>
+                        </div>
+                    @endif
+                @else
+                    <span style="font-size: 14px">Vendedor: <strong>{{$seller_name}}</strong></span>
+                @endif
+
             </td>
         </tr>
     </table>
@@ -85,7 +109,8 @@
     </thead>
     <tbody>
     <tr>
-        <td>Q. {{ number_format(($sale->cash - $sale->change) - $sale->details->first()->discount - $sale->taxes, 2) }}</td>
+        <td>
+            Q. {{ number_format(($sale->cash - $sale->change) - $sale->details->first()->discount - $sale->taxes, 2) }}</td>
         <td>Q. {{ number_format($sale->cash, 2) }}</td>
         <td>Q. {{ number_format($sale->change, 2) }}</td>
         <td>Q. {{ number_format($sale->taxes, 2) }}</td>

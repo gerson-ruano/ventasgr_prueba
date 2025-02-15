@@ -16,6 +16,7 @@
                     <th class="text-lg font-medium py-3 px-4 text-center">Producto</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Precio</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
+                    <th class="text-lg font-medium py-3 px-4 text-center">Descuento</th>
                     <th class="text-lg font-medium py-3 px-4 text-center">Importe</th>
                 </tr>
                 </thead>
@@ -29,10 +30,13 @@
                         <td class="py-2 px-4 text-center">
                             {{ $d->product }}</td>
                         <td class="py-2 px-4 text-center">
-                            <h6>Q. {{number_format($d->price,2)}}</h6>
+                            <h6>Q. {{number_format(($d->price) - $d->discount, 2)}}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{number_format($d->quantity,2)}}</h6>
+                        </td>
+                        <td class="py-2 px-4 text-center">
+                            <h6>{{number_format($d->discount,2)}}</h6>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <h6>{{number_format($d->price * $d->quantity,2)}}</h6>
@@ -62,6 +66,9 @@
                     </td>
                     <td>
                         <h5 class="text-center">{{$countDetails}}</h5>
+                    </td>
+                    <td colspan="">
+                        <h5 class="text-center"></h5>
                     </td>
                     <td>
                         <h5 class="text-center">Q. {{number_format($sumDetails,2)}}</h5>

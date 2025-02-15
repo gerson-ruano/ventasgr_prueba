@@ -57,7 +57,7 @@ Route::middleware(['auth','checkStatus'])->group(function () {
         //REPORTE GENERAL DE CIERRE DE CAJA PDF
         Route::get('report/box/{userid}/{f1}/{f2}', [ExportController::class, 'reportBoxGeneral'])->name('report.boxgeneral');
         //IMPRESION VENTA PDF
-        Route::get('report/venta/{change}/{efectivo}/{seller}/{nextSaleNumber}/{totalTaxes}/{discount}', [ExportController::class, 'reportVenta'])->name('report.venta');
+        Route::get('report/venta/{change}/{efectivo}/{seller}/{nextSaleNumber}/{totalTaxes}/{discount}/{customer_data}', [ExportController::class, 'reportVenta'])->name('report.venta');
 
         //REPORTES EXCEL
         //Reporte general de ventas

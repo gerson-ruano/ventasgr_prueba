@@ -19,9 +19,11 @@ use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 //use Hardevine\Cart\Facades\Cart;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Traits\PagoTrait;
 
 class ExportController extends Controller
 {
+    use PagoTrait;
     public $currentDate;
 
     public function __construct()
@@ -107,7 +109,7 @@ class ExportController extends Controller
     }
 
     // IMPRESION DE NUEVA VENTA
-    public function reportVenta($change, $efectivo, $seller, $getNextSaleNumber, $totalTaxes, $discount )
+    public function reportVenta($change, $efectivo, $seller, $getNextSaleNumber, $totalTaxes, $discount, $customer_data )
     {
 
         $cart = Cart::content(); // Obtén los datos que deseas mostrar en el reporte
@@ -115,6 +117,7 @@ class ExportController extends Controller
         $sale = Sale::with('details')->find($getNextSaleNumber);
         $empresa = $this->companyVentas();
         $usuario = $this->currentUser();
+        $customerData = json_decode(urldecode(request('customer_data')), true);
 
         if (!$sale) {
             // Si la venta no existe aun, asignamos un valor predeterminado para evitar null
@@ -122,6 +125,8 @@ class ExportController extends Controller
                 'details' => [], // Definir detalles como un array vacío si no hay detalles
             ];
         }
+
+       $metodoPago = $this->obtenerMetodoPago($customerData['method_page'] ?? null);
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.impresionventa', [
@@ -136,6 +141,8 @@ class ExportController extends Controller
             'efectivo' => $efectivo,
             'discount' => $discount,
             'totalTaxes' => $totalTaxes,
+            'customer' => $customerData,
+            'metodoPago' => $metodoPago,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
@@ -157,7 +164,8 @@ class ExportController extends Controller
         $usuario = $this->currentUser();
 
         $seller_name = getNameSeller($sale->seller); //Obtiene del HELPER los VENDEDORES
-        //dd($sale->seller);
+        $metodoPago = $this->obtenerMetodoPago($sale['customer_data']['method_page'] ?? null);
+        //dd($metodoPago);
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.reportedetails', [
@@ -169,7 +177,8 @@ class ExportController extends Controller
             'sale' => $sale,
             'statusMessage' => $statusMessage,
             'empresa' => $empresa,
-            //'discount' => $discount,
+            'customer' => $sale->customer_data,
+            'metodoPago' => $metodoPago,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
@@ -192,6 +201,7 @@ class ExportController extends Controller
 
         //$seller_name = $this->obtenerNombreVendedor($sale->seller);
         $seller_name = getNameSeller($sale->seller);
+        $metodoPago = $this->obtenerMetodoPago($sale['customer_data']['method_page'] ?? null);
 
         // Generar el PDF con la vista y los datos
         $pdf = $this->generatePdf('pdf.reportebox', [
@@ -202,6 +212,8 @@ class ExportController extends Controller
             'usuario' => $usuario,
             'sale' => $sale,
             'empresa' => $empresa,
+            'customer' => $sale->customer_data,
+            'metodoPago' => $metodoPago,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
