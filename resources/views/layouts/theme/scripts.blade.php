@@ -1,6 +1,7 @@
 <livewire:components.notification/>
 @livewireScripts
 <script>
+
     document.addEventListener('DOMContentLoaded', function () {
         // Escuchar el evento `Eliminar` con confirmación
         window.Confirm = function (id, entityName, name, products = 0, exist = 0,) {
@@ -319,7 +320,7 @@
             var left = (screen.width - width) / 2;
             var top = (screen.height - height) / 2;
 
-            setTimeout(function() {
+            setTimeout(function () {
                 //window.open(url, '_blank'); // Abrir en una nueva pestaña
                 window.open(url, 'PDF', 'width=' + width + ', height=' + height + ', top=' + top + ', left=' + left + ', resizable=yes, scrollbars=yes');
             }, 2000); // 2000 milisegundos de retraso

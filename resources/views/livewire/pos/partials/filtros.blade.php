@@ -25,7 +25,7 @@
             @include('livewire.components.select_filtro', [
                 'default' => 'Cliente',
                 'val_default' => 0,
-                'title' => 'Vendedor',
+                'title' => 'Vendedor/Cliente',
                 'model' => 'vendedorSeleccionado',
                 'valores' => $vendedores,
             ])

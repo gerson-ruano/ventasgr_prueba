@@ -119,7 +119,7 @@ class Pos extends Component
         }
 
         $this->isModalOpen = false;
-        $this->dispatch('showNotification', 'Cliente ' . $this->customer_name . ' actualizado exitosamente', 'success');
+        $this->dispatch('showNotification', 'Cliente ' . $this->customer_name . ' actualizado exitosamente', 'info');
     }
 
     public function deleteCustomer()
@@ -596,7 +596,6 @@ class Pos extends Component
         // Intentamos obtener el número de la venta nuevamente
         $nextSaleNumber = $this->nextSaleNumber;
         $sale = Sale::with('details')->find($nextSaleNumber);
-        //$taxData = $this->calculateGlobalTax();
         //dd($sale);
 
         // Si la venta aún no está lista, intentamos de nuevo después de un momento

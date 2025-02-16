@@ -12,11 +12,12 @@
             @include('livewire.components.empresa_header', ['empresa' => $empresa])
             <!-- Button de agregar CLIENTE -->
             @if($vendedorSeleccionado == 0)
-                <div class="flex flex-row flex-wrap justify-end items-center gap-2 mr-2">
-                    @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'openModal', 'icon' => 'plus', 'title' => 'Cliente'])
-
+                <div class="flex flex-row flex-wrap justify-center items-center gap-2 mr-2">
                     @if(!empty($customer_data))
+                        @include('livewire.components.button_add', ['color' => 'info' ,'model' => 'openModal', 'icon' => 'edit', 'title' => 'Cliente'])
                         @include('livewire.components.button_add', ['color' => 'error' ,'model' => 'deleteCustomer', 'icon' => 'trash', 'title' => 'Cliente'])
+                    @else
+                        @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'openModal', 'icon' => 'plus', 'title' => 'Cliente'])
                     @endif
                 </div>
             @endif

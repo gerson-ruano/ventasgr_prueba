@@ -16,4 +16,5 @@ import "flatpickr/dist/themes/material_blue.css";
 //window.Chart = Chart;
 import './chart.js';
 
+import onScan from "onscan.js";
 
