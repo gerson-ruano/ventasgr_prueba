@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('seller',30)->nullable();
             $table->string('mod_id',20)->nullable();
             $table->enum('status',['PAID','PENDING','CANCELLED'])->default('PAID');
+            $table->decimal('taxes', 10, 2)->default(0);
+            $table->json('customer_data')->nullable();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

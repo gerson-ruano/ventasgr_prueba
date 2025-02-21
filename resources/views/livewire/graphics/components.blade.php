@@ -13,7 +13,7 @@
                     </div>
                     <div class="ml-4">
                         <h2 class="text-xs font-bold">Activo</h2>
-                        <p class="text-sm">{{ number_format($totalMoney[1], 2) }} Q</p>
+                        <p class="text-sm">{{ number_format($totalMoney[1] ?? 0, 2) }} Q</p>
                     </div>
                 </div>
             </div>

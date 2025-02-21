@@ -144,6 +144,10 @@
             createChart('chartStock', chartConfigs.stock(chartData));
         }
 
+        if (chartData.totalStock) {
+            createChart('chartReport', chartConfigs.stock(chartData));
+        }
+
         // ... (crear resto de gráficas)
     };
 
