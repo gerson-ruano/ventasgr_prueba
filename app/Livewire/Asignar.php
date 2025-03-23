@@ -43,7 +43,7 @@ class Asignar extends Component
             'cierre' => 'Cierre de Caja',
             'reports' => 'Reportes',
             'grafics' => 'Estadistica',
-            'assign' => 'Asigar',
+            'assign' => 'Asignar',
             'pos' => 'Ventas',
             // Agrega más módulos según necesites
         ];

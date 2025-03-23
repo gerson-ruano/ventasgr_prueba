@@ -5,8 +5,7 @@ use Illuminate\Support\Facades\Session;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
+new #[Layout('layouts.guest')] class extends Component {
     public LoginForm $form;
 
     /**
@@ -26,31 +25,50 @@ new #[Layout('layouts.guest')] class extends Component
 
 <div>
     @if(session('error'))
-        <div class="alert flex items-center alert-danger justify-center bg-white border border-gray-300 rounded-lg shadow-lg p-4">
+        <div
+            class="alert flex items-center alert-danger justify-center bg-white border border-gray-300 rounded-lg shadow-lg p-4">
             {{ session('error') }}
         </div>
     @endif
-    <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form wire:submit="login">
+    <!-- Session Status -->
+    <x-auth-session-status class="mb-4" :status="session('status')"/>
+
+
+    <h2 class="text-3xl font-bold text-blue-500 text-center mb-6">Iniciar Sesión</h2>
+
+    <form wire:submit="login" class="space-y-4 ">
+
+        <!--x-application-logo class="absolute w-6 h-6 text-gray-400 dark:text-gray-500 top-3 left-3"/-->
+
         <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model.live="form.email" id="email" class="block mt-1 w-full" type="email" name="email" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+        <div class="relative">
+            <x-input-label for="email" :value="__('Email')"/>
+
+            <div class="relative">
+                <x-text-input wire:model.live="form.email" id="email"
+                              class="mt-1 input input-info w-full pl-10"
+                              type="email"
+                              name="email" required autofocus autocomplete="username"/>
+
+                <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+
+            </div>
+
+            <x-input-error :messages="$errors->get('form.email')" class="mt-2"/>
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('Password')"/>
 
-            <x-text-input wire:model.live="form.password" id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <x-text-input wire:model.live="form.password" id="password"
+                          class="mt-1 input input-info w-full"
+                          type="password"
+                          name="password"
+                          required autocomplete="current-password"/>
 
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('form.password')" class="mt-2"/>
         </div>
 
         <!-- Remember Me -->
@@ -68,16 +86,19 @@ new #[Layout('layouts.guest')] class extends Component
                 </a>
             @endif--}}
 
-            <x-primary-button class="mt-3">
+            <x-primary-button
+                class="mb-2 mt-3 py-3 bg-blue-600 hover:bg-blue-500 rounded-lg shadow-md text-lg font-semibold transition-all duration-300 transform hover:scale-105">
                 {{ __('Login') }}
             </x-primary-button>
         </div>
         <a
-                href="{{ route('register') }}"
-                class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
-            >
-                Register
-            </a>
+            href="{{ route('register') }}"
+            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+        >
+            {{ __('Registrarse') }}
+        </a>
+
     </form>
+
 </div>
 
