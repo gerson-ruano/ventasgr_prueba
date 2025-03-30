@@ -18,6 +18,7 @@
                             'valores' => $pagos,
                         ])
                     </div>
+
                     <div class="w-1/2">
                         <label for="customer_name"
                                class="block text-sm font-medium text-gray-700 text-center">Nombre</label>
@@ -28,23 +29,34 @@
                     </div>
 
                 </div>
+
                 <div class="flex flex-row space-x-2 w-full mb-2 items-center">
                     <div class="w-full sm:w-1/2 text-center">
                         <label for="customer_nit" class="block text-sm font-medium text-gray-700">Nit</label>
                         <input id="customer_nit" type="number" placeholder="Ingrese NIT"
-                               class="input input-bordered input-info mt-1 sm:max-w-xs text-center"
+                               class="input input-bordered input-info  mt-1 sm:max-w-xs text-center"
                                wire:model.debounce.500ms="customer_nit">
                         @error('customer_nit') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
-
                     <div class="w-full sm:w-1/2 text-center sm:mt-0">
-                        <label for="customer_address" class="block text-sm font-medium text-gray-700">Direcciòn</label>
+                        <label for="customer_address" class="block text-sm font-medium text-gray-700">Dirección</label>
                         <input id="customer_address" type="text" placeholder="Direcciòn del cliente"
                                class="input input-bordered input-info mt-1 sm:max-w-xs text-center"
                                wire:model.debounce.500ms="customer_address">
                         @error('customer_address') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
                 </div>
+                @if ($customer_method_page > 1 && $customer_method_page < 4 )
+                    <div class="w-full sm:w-1/2 text-center sm:mt-0">
+                        <label for="ref_page" class="block text-sm font-medium text-gray-700">Referencia de
+                            Pago</label>
+                        <input id="ref_page" type="text" placeholder="referencia de pago"
+                               class="input input-bordered input-info  mt-1 sm:max-w-xs"
+                               wire:model="customer_ref_page">
+                        @error('customer_ref_page') <span
+                            class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    </div>
+                @endif
 
                 <div class="flex justify-center mt-4">
                     <button type="button" class="btn btn-outline mr-2" wire:click="closeModal">Cancelar</button>

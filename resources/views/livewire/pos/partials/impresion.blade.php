@@ -66,6 +66,10 @@
                         <p>{{ $this->obtenerMetodoPago($customer_data['method_page'])}}
                     </div>
                     <div class="flex justify-between">
+                        <strong>Ref. de Pago:</strong>
+                        <p>{{ $customer_data['ref_page'] ?? 'N/A'}}
+                    </div>
+                    <div class="flex justify-between">
                         <strong>NIT:</strong>
                         <p>{{ $customer_data['nit'] ?? 'N/A' }}
                     </div>

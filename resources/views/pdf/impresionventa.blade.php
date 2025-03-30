@@ -36,15 +36,19 @@
                             </div>
                             <div class="flex justify-between">
                                 <span
-                                    style="font-size: 14px;">Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span
                                     style="font-size: 14px;">NIT: <strong>{{ $customer['nit'] ?? 'N/A' }}</strong></span>
                             </div>
                             <div class="flex justify-between">
                                 <span
                                     style="font-size: 14px;">Dirección: <strong>{{ $customer['address'] ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span
+                                    style="font-size: 14px;">Ref. de Pago: <strong>{{ $customer['ref_page'] ?? 'N/A' }}</strong></span>
                             </div>
                         </div>
                     @endif

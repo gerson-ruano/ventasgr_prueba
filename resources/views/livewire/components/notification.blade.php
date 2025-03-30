@@ -15,18 +15,18 @@
         'alert-error': '{{ $type }}' === 'error',
         'alert-warning': '{{ $type }}' === 'warning',
         'alert-info': '{{ $type }}' === 'info',
-        'alert-neutral': '{{ $type }}' === 'dark'
+        'alert-dark bg-gray-800 text-white border border-gray-700': '{{ $type }}' === 'dark'
     }">
 
             <div class="flex items-center gap-2">
                 @if ($type === 'success')
-                    <i class="fas fa-check-circle fa-lg text-green-500"></i>
+                    <i class="fas fa-check-circle fa-lg text-gray-500"></i>
                 @elseif ($type === 'error')
-                    <i class="fas fa-times-circle fa-lg text-red-500"></i>
+                    <i class="fas fa-times-circle fa-lg text-gray-500"></i>
                 @elseif ($type === 'warning')
-                    <i class="fas fa-exclamation-triangle fa-lg text-yellow-500"></i>
+                    <i class="fas fa-exclamation-triangle fa-lg text-gray-500"></i>
                 @elseif ($type === 'info')
-                    <i class="fas fa-info-circle fa-lg text-blue-500"></i>
+                    <i class="fas fa-info-circle fa-lg text-gray-500"></i>
                 @elseif ($type === 'dark')
                     <i class="fas fa-exclamation-circle fa-lg text-gray-500"></i>
                 @endif

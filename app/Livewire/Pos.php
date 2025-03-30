@@ -16,7 +16,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 class Pos extends Component
 {
     public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado;
-    public $customer_name, $customer_nit, $customer_method_page, $customer_address;
+    public $customer_name, $customer_nit, $customer_method_page, $customer_ref_page, $customer_address;
     public $customer_data = [];
     public $vendedores = [];
     public $valores = [];
@@ -50,7 +50,8 @@ class Pos extends Component
         'customer_name' => 'required|min:2',
         'customer_nit' => 'nullable|min:8',
         'customer_method_page' => 'required',
-        'customer_address' => 'nullable|max:50',
+        'customer_ref_page' => 'nullable|max:50',
+        'customer_address' => 'nullable|max:30',
     ];
 
     protected $messages = [
@@ -58,6 +59,7 @@ class Pos extends Component
         'customer_name.min' => 'Debe tener al menos 2 caracteres',
         'customer_method_page.required' => 'Metodo de pago es requerido',
         'customer_nit.min' => 'NIT debe tener al menos 8 numeros',
+        'customer_ref_page.max' => 'El campo referencia de pago debe tener como maximo 30 caracteres',
         'customer_address.max' => 'El campo direcciòn debe tener como maximo 50 caracteres',
     ];
 
@@ -93,6 +95,7 @@ class Pos extends Component
             'name' => $this->customer_name,
             'nit' => $this->customer_nit,
             'method_page' => $this->customer_method_page,
+            'ref_page' => $this->customer_ref_page,
             'address' => $this->customer_address,
         ];
         $this->isModalOpen = false;
@@ -113,6 +116,9 @@ class Pos extends Component
             if (!empty($this->customer_method_page)) {
                 $this->customer_data['method_page'] = $this->customer_method_page;
             }
+            if (!empty($this->customer_ref_page)) {
+                $this->customer_data['ref_page'] = $this->customer_ref_page;
+            }
             if (!empty($this->customer_address)) {
                 $this->customer_data['address'] = $this->customer_address;
             }
@@ -128,6 +134,7 @@ class Pos extends Component
         $this->customer_name = '';
         $this->customer_nit = '';
         $this->customer_method_page = '';
+        $this->customer_ref_page = '';
         $this->customer_address = '';
 
         //$this->dispatch('showNotification', 'Cliente ' . $this->customer_name . ' eliminado exitosamente', 'error');
@@ -149,7 +156,7 @@ class Pos extends Component
             (object)['id' => '1', 'name' => 'Efectivo'],
             (object)['id' => '2', 'name' => 'Transferencia'],
             (object)['id' => '3', 'name' => 'Deposito'],
-            (object)['id' => '4', 'name' => 'TarjetaCredito'],
+            (object)['id' => '4', 'name' => 'Tarjeta Credito'],
             //(object)['id' => '3', 'name' => 'ANULADO'],
         ];
         return $reportTypes;
@@ -533,6 +540,7 @@ class Pos extends Component
                     'name' => $this->customer_name,
                     'nit' => $this->customer_nit,
                     'method_page' => $this->customer_method_page,
+                    'ref_page' => $this->customer_ref_page,
                     'address' => $this->customer_address,
                 ],
                 'user_id' => Auth()->user()->id
@@ -631,6 +639,7 @@ class Pos extends Component
         $this->customer_name = '';
         $this->customer_nit = '';
         $this->customer_method_page = '';
+        $this->customer_ref_page = '';
         $this->customer_address = '';
     }
 

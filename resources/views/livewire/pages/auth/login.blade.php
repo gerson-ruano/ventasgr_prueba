@@ -35,7 +35,7 @@ new #[Layout('layouts.guest')] class extends Component {
     <x-auth-session-status class="mb-4" :status="session('status')"/>
 
 
-    <h2 class="text-3xl font-bold text-blue-500 text-center mb-6">Iniciar Sesión</h2>
+    <h2 class="text-4xl font-bold text-gray-600 text-center mb-6">{{ __('Login') }}</h2>
 
     <form wire:submit="login" class="space-y-4 ">
 
@@ -45,15 +45,15 @@ new #[Layout('layouts.guest')] class extends Component {
         <div class="relative">
             <x-input-label for="email" :value="__('Email')"/>
 
-            <div class="relative">
+            <!--div class="relative"-->
                 <x-text-input wire:model.live="form.email" id="email"
-                              class="mt-1 input input-info w-full pl-10"
+                              class="mt-1 input input-info w-full"
                               type="email"
                               name="email" required autofocus autocomplete="username"/>
 
-                <i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                <!--i class="fa-solid fa-envelope absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i-->
 
-            </div>
+            <!--/div-->
 
             <x-input-error :messages="$errors->get('form.email')" class="mt-2"/>
         </div>
@@ -93,7 +93,9 @@ new #[Layout('layouts.guest')] class extends Component {
         </div>
         <a
             href="{{ route('register') }}"
-            class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
+            class="rounded-md px-3 py-2 text-blue-500 font-bold ring-1 ring-transparent transition
+           hover:text-blue-700 focus:outline-none focus-visible:ring-[#FF2D20]
+           dark:text-blue-400 dark:hover:text-blue-300 dark:focus-visible:ring-white"
         >
             {{ __('Registrarse') }}
         </a>
