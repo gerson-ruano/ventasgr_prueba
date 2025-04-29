@@ -35,7 +35,7 @@ new #[Layout('layouts.guest')] class extends Component {
     <x-auth-session-status class="mb-4" :status="session('status')"/>
 
 
-    <h2 class="text-4xl font-bold text-gray-600 text-center mb-6">{{ __('Login') }}</h2>
+    <h2 class="text-4xl font-bold text-gray-600 text-center mb-6">{{ __('Ventas GR') }}</h2>
 
     <form wire:submit="login" class="space-y-4 ">
 
@@ -95,7 +95,7 @@ new #[Layout('layouts.guest')] class extends Component {
             href="{{ route('register') }}"
             class="rounded-md px-3 py-2 text-blue-500 font-bold ring-1 ring-transparent transition
            hover:text-blue-700 focus:outline-none focus-visible:ring-[#FF2D20]
-           dark:text-blue-400 dark:hover:text-blue-300 dark:focus-visible:ring-white"
+           dark:text-blue-400 dark:hover:text-blue-300 dark:focus-visible:ring-white underline"
         >
             {{ __('Registrarse') }}
         </a>

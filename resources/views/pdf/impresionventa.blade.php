@@ -19,50 +19,52 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2" style="padding: 10px; text-align: center;">
-        <span style="font-size: 16px; display: flex; align-items: center;">
-            <strong>VENTA # {{$getNextSaleNumber}}</strong>
-            <span
-                class="status-message {{ trim($statusMessage) === '"en proceso.."' ? 'text-blue' : (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' : (trim($statusMessage) === '"anulada"' ? 'text-gray' : 'text-green')) }}">
-                {{ $statusMessage }}
-            </span>
-            </span>
+            <td colspan="2" align="center">
+                <div class="flex items-center space-x-2" style="font-size: 16px;">
+                    <strong>VENTA # {{ $getNextSaleNumber }}</strong>
+                    <span class="status-message
+        {{ trim($statusMessage) === '"en proceso.."' ? 'text-blue' :
+            (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' :
+            (trim($statusMessage) === '"anulada"' ? 'text-gray' : 'text-green')) }}">
+        {{ $statusMessage }}
+    </span>
+                </div>
                 @if($seller == 'Cliente')
-                    <span style="font-size: 14px">Para:<strong>{{$seller}}</strong></span>
-                    @if(!empty($customer))
-                        <div class="p-2 bg-gray-100 rounded text-center">
-                            <div class="flex justify-between">
-                                <span style="font-size: 14px;">Nombre: <strong>{{ $customer['name'] ?? 'N/A' }}</strong></span>
+                    <div class="mt-2" style="font-size: 14px;">
+                        <span>Para: <strong>{{ $seller }}</strong></span>
+                        @if(!empty($customer))
+                            <div class="customer-info">
+                                <div class="customer-columns">
+                                    <div class="customer-column">
+                                        <div class="customer-row">
+                                            <span>Nombre: <strong>{{ $customer['name'] ?? 'N/A' }}</strong></span>
+                                        </div>
+                                        <div class="customer-row">
+                                            <span>NIT: <strong>{{ $customer['nit'] ?? 'N/A' }}</strong></span>
+                                        </div>
+                                        <div class="customer-row">
+                                            <span>Dirección: <strong>{{ $customer['address'] ?? 'N/A' }}</strong></span>
+                                        </div>
+                                    </div>
+                                    <div class="customer-column">
+                                        <div class="customer-row">
+                                            <span>Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
+                                        </div>
+                                        <div class="customer-row">
+                                            <span>Ref. de Pago: <strong>{{ $customer['ref_page'] ?? 'N/A' }}</strong></span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="flex justify-between">
-                                <span
-                                    style="font-size: 14px;">NIT: <strong>{{ $customer['nit'] ?? 'N/A' }}</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span
-                                    style="font-size: 14px;">Dirección: <strong>{{ $customer['address'] ?? 'N/A' }}</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span
-                                    style="font-size: 14px;">Método de Pago: <strong>{{ $metodoPago ?? 'N/A' }}</strong></span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span
-                                    style="font-size: 14px;">Ref. de Pago: <strong>{{ $customer['ref_page'] ?? 'N/A' }}</strong></span>
-                            </div>
-                        </div>
-                    @endif
+                        @endif
+                    </div>
                 @else
-                    <span style="font-size: 14px">Vendedor: <strong>{{$seller}}</strong></span>
+                    <div class="mt-2" style="font-size: 14px;">
+                        <span>Vendedor: <strong>{{ $seller }}</strong></span>
+                    </div>
                 @endif
             </td>
 
-
-        {{--}}@if($seller)
-            <span style="font-size: 14px;">para: <strong>{{$seller}}</strong></span>
-        @else
-            <span style="font-size: 14px;">para: <strong>HOLA</strong></span>
-        @endif--}}
     </table>
 </section>
 

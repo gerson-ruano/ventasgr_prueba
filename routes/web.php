@@ -19,9 +19,9 @@ use App\Livewire\ApiIntegration;
 
 Route::view('/', 'welcome');
 
-Route::view('dashboard', 'dashboard')
+/*Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+    ->name('dashboard');*/
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);

@@ -18,19 +18,23 @@ class ApiAuthService
             }
             return $this->authenticate();
         } catch (\Exception $e) {
-            throw $e;
+            //throw $e;
+            return response()->json(['error' => 'Servicio no disponible. Intente más tarde.'], 503);
         }
     }
+
     public function authenticate()
     {
         try {
-            $response = Http::asForm()->post(config('factus.url'), [
-                'grant_type' => 'password',
-                'client_id' => config('factus.client_id'),
-                'client_secret' => config('factus.client_secret'),
-                'username' => config('factus.username'),
-                'password' => config('factus.password'),
-            ]);
+            $response = Http::asForm()
+                ->timeout(10)
+                ->post(config('factus.url'), [
+                    'grant_type' => 'password',
+                    'client_id' => config('factus.client_id'),
+                    'client_secret' => config('factus.client_secret'),
+                    'username' => config('factus.username'),
+                    'password' => config('factus.password'),
+                ]);
 
             if ($response->successful()) {
                 $data = $response->json();
@@ -42,12 +46,18 @@ class ApiAuthService
                 Cache::put('refresh_token', $this->refreshToken, now()->addDays(1));
 
                 return $this->accessToken;
+            } elseif ($response->serverError()) {
+                throw new \Exception('Error del servidor en la API.');
+            } elseif ($response->clientError()) {
+                throw new \Exception('Error de cliente: ' . $response->body());
             }
 
-            throw new \Exception('Error de autenticación: ' . $response->body());
+            throw new \Exception('Respuesta inesperada: ' . $response->body());
+        } catch (\Illuminate\Http\Client\RequestException $e) {
+            return response()->json(['error' => 'No se pudo conectar con el servicio API.'], 503);
         } catch (\Exception $e) {
-            throw new \Exception('Excepción en la autenticación: ' . $e->getMessage());
+            return response()->json(['error' => 'Error en la autenticación: ' . $e->getMessage()], 500);
         }
-
     }
 }
+

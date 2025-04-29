@@ -25,5 +25,11 @@ class Sale extends Model
         return $this->belongsTo(User::class, 'seller', 'id'); // Ajusta los nombres de las columnas si son diferentes
     }
 
+    public const STATUS_VALUES = [
+        'PAID' => 'PAGADO',
+        'PENDING' => 'PENDIENTE',
+        'CANCELLED' => 'ANULADO',
+    ];
+
 }
 

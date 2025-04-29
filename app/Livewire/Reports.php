@@ -155,7 +155,7 @@ class Reports extends Component
         }
     }
 
-    public function tipoPago()
+    /*public function tipoPago()
     {
         // Definir un mapeo de los estados en inglés a su traducción en español
         $statusTranslations = [
@@ -174,7 +174,18 @@ class Reports extends Component
         });
 
         return $statuses->toArray();
+    }*/
+
+    public function tipoPago()
+    {
+        return collect(Sale::STATUS_VALUES)->map(function ($name, $id) {
+            return (object)[
+                'id' => $id,
+                'name' => $name,
+            ];
+        })->values()->toArray();
     }
+
 
     public function tipoReporte()
     {
