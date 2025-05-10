@@ -16,20 +16,25 @@
             <table class="table-auto w-full">
                 <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
-                    <th class="py-2 px-4 text-center">No.</th>
-                    <th class="py-2 px-4 text-left">Usuario</th>
-                    <th class="py-2 px-4 text-left">Telefono</th>
-                    <th class="py-2 px-4 text-left">Correo Electronico</th>
-                    <th class="py-2 px-4 text-left">Estado</th>
-                    <th class="py-2 px-4 text-left">Perfil</th>
-                    <th class="py-2 px-4 text-center">Imagen</th>
-                    <th class="py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Usuario</th>
+                    <th class="title_table">Telefono</th>
+                    <th class="title_table">Correo Electronico</th>
+                    <th class="title_table">Perfil</th>
+                    <th class="title_table">Estado</th>
+                    <th class="title_table">Tema</th>
+                    <th class="title_table">Acción</th>
                 </thead>
                 <tbody>
                 @foreach($users as $index => $user)
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
                         <td class="py-2 px-4 text-center">
                             {{ ($users->currentPage() - 1) * $users->perPage() + $index + 1 }}</td>
+                        <td class="py-2 px-4 text-center">
+                            <img src="{{ $user->imagen }}" alt="Imagen de {{ $user->name }}"
+                                 class="rounded-lg h-12 w-12 object-cover mx-auto">
+                        </td>
                         <td class="py-2 px-4 text-left">{{ $user->name }}</td>
                         <td class="py-2 px-4 text-left">@if($user->phone > 0)
                                 <h6>{{ $user->phone }}</h6>
@@ -38,13 +43,17 @@
                             @endif
                         </td>
                         <td class="py-2 px-4 text-left">{{ $user->email }}</td>
+                        <td class="py-2 px-4 text-left"><B>{{ $user->profile }}<B></td>
                         <td class="py-2 px-4 text-left"><span
                                 class="badge {{ $user->status == 'Active' ? 'badge-success' : 'badge-warning'}} text-uppercase">{{ $user->status }}</span>
                         </td>
-                        <td class="py-2 px-4 text-left"><B>{{ $user->profile }}<B></td>
-                        <td class="py-2 px-4 text-center">
-                            <img src="{{ $user->imagen }}" alt="Imagen de {{ $user->name }}"
-                                 class="rounded-lg h-12 w-12 object-cover mx-auto">
+                        <td class="py-2 px-4 text-left">
+                            <span class="badge text-uppercase px-2 py-1 rounded text-sm font-semibold
+                                {{ $user->tema == 1
+                                    ? 'bg-gray-300 text-black border border-gray-700 dark:text-gray-800'
+                                    : 'bg-gray-800 text-white border border-gray-500' }}">
+                                {{ $user->tema == 1 ? 'LIGHT' : 'DARK' }}
+                            </span>
                         </td>
                         <td class="py-2 px-4 text-center">
                             <div class="flex flex-col sm:flex-row items-center justify-center">
@@ -64,14 +73,15 @@
                 </tbody>
                 <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>
-                    <th class="py-2 px-4 text-center">No.</th>
-                    <th class="py-2 px-4 text-left">Usuario</th>
-                    <th class="py-2 px-4 text-left">Telefono</th>
-                    <th class="py-2 px-4 text-left">Correo Electronico</th>
-                    <th class="py-2 px-4 text-left">Estado</th>
-                    <th class="py-2 px-4 text-left">Perfil</th>
-                    <th class="py-2 px-4 text-center">Imagen</th>
-                    <th class="py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Usuario</th>
+                    <th class="title_table">Telefono</th>
+                    <th class="title_table">Correo Electronico</th>
+                    <th class="title_table">Perfil</th>
+                    <th class="title_table">Estado</th>
+                    <th class="title_table">Tema</th>
+                    <th class="title_table">Acción</th>
                 </tr>
                 </tfoot>
             </table>

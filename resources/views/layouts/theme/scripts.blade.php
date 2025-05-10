@@ -261,7 +261,7 @@
             });
         });
 
-        //Notificaciones informativas SUPERIOR DERECHO
+        //Notificaciones informativas INFERIOR DERECHO
         let hideNotificationTimeout;
         Livewire.on('notification-auto-hide', event => {
             if (hideNotificationTimeout) {
@@ -329,6 +329,28 @@
             Livewire.dispatch('ShowNotification');
             //alert('No se pudo generar la URL de impresión.');
         }
+    });
+
+    // Manejar el evento de cambio de TEMA
+    document.getElementById('themeToggle').addEventListener('change', function () {
+        const html = document.documentElement;
+        const isDark = this.checked;
+        const newTheme = isDark ? 'dark' : 'light';
+
+        html.setAttribute('data-theme', newTheme);
+
+        // Actualiza en la base de datos
+        fetch("{{ route('user.update-theme') }}", {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ tema: isDark ? 0 : 1 })  // dark=0, light=1
+        }).then(() => {
+            console.log('Tema actualizado en base de datos');
+        });
     });
 
 </script>

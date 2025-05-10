@@ -2,7 +2,7 @@
     <label for="{{ $model }}_select"
            class="text-center block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{{ $title }}</label>
     <select wire:model.live="{{ $model }}" id="{{ $model }}_select"
-            class="select select select-info w-full max-w-xs">
+            class="select select select-info w-full">
         <option value="{{$val_default}}" selected>{{$default}}</option>
         @if($valores)
             @foreach ($valores as $valor)

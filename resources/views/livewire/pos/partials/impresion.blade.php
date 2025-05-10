@@ -21,12 +21,13 @@
                     @endif
                 </div>
             @endif
+            <!-- Numero de venta -->
             <div class="p-2 bg-white rounded shadow">
                 <div class="flex items-center justify-between">
                     <span class="font-medium">No. Venta:</span>
                     {{--}}<h3 class="text-lg font-bold">{{ $nextSaleNumber }}</h3>--}}
                     <h6 class="font-bold {{ $nextSaleNumber == 0 ? 'text-red-500' : 'text-black' }}">
-                        {{ $nextSaleNumber == 0 ? 'INGRESAR ESTADO PAGO!!' : $nextSaleNumber }}
+                        {{ $nextSaleNumber == 0 ? 'INGRESAR NUMERO DE VENTA!!' : $nextSaleNumber }}
                     </h6>
                 </div>
             </div>
@@ -59,6 +60,7 @@
                 @endif
             </div>
 
+            <!-- Datos de la venta -->
             @if(!empty($customer_data))
                 <div class="p-2 bg-gray-100 rounded text-center">
                     <div class="flex justify-between">

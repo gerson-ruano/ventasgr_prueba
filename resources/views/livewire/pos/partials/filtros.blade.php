@@ -3,7 +3,7 @@
     <div class="flex flex-row flex-wrap items-center gap-2 w-full mb-2 mt-1">
         <!-- Caja de búsqueda -->
         <div class="flex-grow">
-            <livewire:components.searchbox :placeholder="'Ingrese Código Producto'"/>
+            <livewire:components.searchbox :placeholder="'Ingrese Código Producto'" :emitOnEnter="'scan-code'"/>
         </div>
     </div>
 

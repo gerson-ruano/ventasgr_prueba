@@ -1,10 +1,20 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.fondo-app {
-    background: #667db6;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6);  /* Chrome 10-25, Safari 5.1-6 */
+@layer base {
+    .fondo-app {
+    background: #667db6; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #667db6, #0082c8, #0082c8, #667db6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
 
+}
+
+@layer components {
+
+    .title_table {
+        @apply text-sm text-center font-medium py-3 px-4 text-center text-gray-500 bg-gray-50 border-b border-gray-200 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700;
+    }
 }

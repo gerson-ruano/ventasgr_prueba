@@ -27,6 +27,9 @@ Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
 
+// Actualizar Tema de Usuario
+Route::middleware('auth')->post('/user/update-theme', [Users::class, 'updateTheme'])->name('user.update-theme');
+
 Route::middleware(['auth','checkStatus'])->group(function () {
     Route::view('profile', 'profile')
         ->middleware(['auth'])
@@ -65,6 +68,9 @@ Route::middleware(['auth','checkStatus'])->group(function () {
         //Reporte general de cierre de caja
         Route::get('report-excel/{userid}/{f1}/{f2}', [ExportController::class, 'reportBoxExcel']);
         //Route::get('report-excel', [ExportController::class,'reportExcel']);
+
+
+
     });
 
     Route::middleware(['role:Admin|Employee|Seller'])->group(function () {

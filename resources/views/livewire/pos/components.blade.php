@@ -8,7 +8,7 @@
         </div>
     </div>
 
-    <!--div class="divider lg:divider-horizontal"></div-->
+    {{--<div class="divider lg:divider-horizontal"></div>--}}
     <div class="lg:w-1/4">
         @include('livewire.pos.partials.filtros')
 
@@ -25,9 +25,7 @@
     </div>
 </div>
 
-
 {{--<partials> src="{{ asset('js/keypress.js') }}"</partials>--}}
 @include('livewire.pos.scripts.shortcuts')
-{{--@include('livewire.pos.scripts.events')--}}
 @include('livewire.pos.scripts.general')
-{{--@include('livewire.pos.scripts.scan')--}}
+{{--}}@include('livewire.pos.scripts.scan')--}}

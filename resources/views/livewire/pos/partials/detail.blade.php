@@ -9,13 +9,13 @@
             <table class="table table-xs">
                 <thead class="bg-base-200 dark:bg-gray-800">
                 <tr>
-                    <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Imagen</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Descripcion</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Precio</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Importe</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Accion</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Descripcion</th>
+                    <th class="title_table">Precio</th>
+                    <th class="title_table">Cantidad</th>
+                    <th class="title_table">Importe</th>
+                    <th class="title_table">Accion</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -54,14 +54,14 @@
                                 Q.{{number_format($item->price * $item->qty,2)}}
                             </h6>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="text-center">
                             <div class="flex flex-row items-center justify-center space-x-2">
                                 <button wire:click.prevent="increaseQty({{$item->id}})"
-                                        class="btn btn-sm btn-outline btn-success btn-i">
+                                        class="btn btn-sm btn-outline btn-success rounded-lg">
                                     <i class="fas fa-plus-square"></i>
                                 </button>
                                 <button wire:click.prevent="decreaseQty({{$item->id}})"
-                                        class="btn btn-sm btn-outline btn-default">
+                                        class="btn btn-sm btn-outline">
                                     <i class="fas fa-minus-square"></i>
                                 </button>
                                 <button class="btn btn-sm btn-outline btn-error"

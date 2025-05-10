@@ -281,10 +281,18 @@ class Pos extends Component
 
     public function scanCode($barcode, $cant = 1)
     {
+        // Si $barcode viene como array (porque dispatch manda un objeto JS)
+        if (is_array($barcode) && isset($barcode['barcode'])) {
+            $barcode = trim($barcode['barcode']);
+        } else {
+            $barcode = trim($barcode);
+        }
+
         $product = Product::where('barcode', $barcode)->first();
 
         if (!$product) {
             $this->dispatch('showNotification', 'El producto con código ' . $barcode . ' no existe o aún no está registrado', 'dark');
+            $this->search = '';
             return;
         }
 

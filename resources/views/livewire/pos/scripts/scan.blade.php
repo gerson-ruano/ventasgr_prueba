@@ -1,22 +1,23 @@
-{{--}}
-    try {
-        onScan.attachTo(document, {
-        suffixKeyCodes: [13],
-        onScan: function(barcode){
-            console.log(barcode)
-            Livewire.dispatch('scan-code', barcode)
-        },
-        onScanError: function(e){
-            console.log(e)
-        }
-    })
-        console.log(' Scanner Ready¡')
-
-    } catch (e) {
-        console.log('Error de lectura: ', e)
-    }--}}
 <script>
-    document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener('DOMContentLoaded', function () {
+        const input = document.getElementById('search-input');
+
+        input.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                const barcode = event.target.value.trim();
+                //console.log('Código obtenido:', barcode);
+
+                //Emit the event to Livewire
+                window.Livewire.dispatch('scan-code', {
+                    barcode
+                });
+                // Clear the input after sending the code
+                event.target.value = '';
+            }
+        });
+    });
+
+    /*document.addEventListener("DOMContentLoaded", () => {
         console.log("🔄 DOM cargado. Iniciando escáner...");
         iniciarEscaner();
     });
@@ -49,7 +50,7 @@
         });
 
         console.log("✅ Scanner Ready desde Vite!");
-    }
+    }*/
 </script>
 
 

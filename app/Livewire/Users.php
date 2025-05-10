@@ -10,6 +10,7 @@ use App\Models\Sale;
 use Spatie\Permission\Models\Role;
 use Livewire\Attributes\On;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 
 
 class Users extends Component
@@ -284,6 +285,22 @@ class Users extends Component
         } catch (\Illuminate\Auth\Access\AuthorizationException $exception) {
             $this->dispatch('noty-permission', type: 'USUARIO', name: 'PERMISOS', permission: 'ELIMINAR');
         }
+    }
+
+    public function updateTheme(Request $request)
+    {
+        $request->validate([
+            'tema' => 'required|in:0,1',
+        ]);
+
+        $user = auth()->user();
+        $user->tema = $request->tema;
+        $user->save();
+
+        //\Log::info('Tema actualizado a: ' . $request->tema);
+
+        return response()->json(['success' => true]);
+
     }
 
     protected $listeners = [

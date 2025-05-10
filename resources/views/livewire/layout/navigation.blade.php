@@ -75,7 +75,7 @@ $routeExists = false;
                             {{-- Verificar si la ruta existe --}}
                             @if (request()->routeIs($route))
                                 <x-nav-link :href="route($route)" :active="true" wire:navigate
-                                            class="font-medium {{ $labelColor }} dark:text-white">
+                                            class="font-medium !text-blue-600 dark:text-white">
                                     {{ $label }}
                                 </x-nav-link>
                             @else
