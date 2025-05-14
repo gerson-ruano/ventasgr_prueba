@@ -15,23 +15,23 @@
             <table class="table-auto w-full">
                 <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
-                    <th class="text-lg font-medium py-2 px-4 text-center">No.</th>
-                    <th class="text-lg font-medium py-2 px-4 text-left">Descripcion</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Imagen</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Descripcion</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Acción</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($categories as $index => $category)
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             {{ ($categories->currentPage() - 1) * $categories->perPage() + $index + 1 }}</td>
-                        <td class="py-2 px-4 text-left">{{ $category->name }}</td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">{{ $category->name }}</td>
+                        <td class="row_table">
                             <img src="{{ $category->imagen }}" alt="Imagen de {{ $category->name }}"
                                  class="rounded-lg h-12 w-12 object-cover mx-auto">
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <div class="flex flex-col sm:flex-row items-center justify-center">
                                 <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
                                         wire:click="edit({{ $category->id }})" title="Editar">
@@ -50,10 +50,10 @@
                 </tbody>
                 <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>
-                    <th class="py-2 px-4 text-center">No.</th>
-                    <th class="py-2 px-4 text-left">Descripción</th>
-                    <th class="py-2 px-4 text-center">Imagen</th>
-                    <th class="py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Descripción</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Acción</th>
                 </tr>
                 </tfoot>
             </table>

@@ -25,10 +25,10 @@
 
                 @foreach($cart as $item)
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             {{ $index}}
                         </td>
-                        <td class="px-4 text-center">
+                        <td class="row_table">
                             @php
                                 $imagePath = 'storage/products/' . $item->options->image;
                                 $defaultImagePath = 'img/noimg.jpg';
@@ -42,19 +42,19 @@
                                      class="rounded-lg h-12 w-12 object-cover mx-auto">
                             @endif
                         </td>
-                        <td class="py-2 px-4 text-center">{{ $item->name }}</td>
-                        <td class="py-2 px-4 text-center">{{number_format($item->price,2)}}</td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">{{ $item->name }}</td>
+                        <td class="row_table">{{number_format($item->price,2)}}</td>
+                        <td class="row_table">
                             <input type="number" id="r{{$item->id}}" wire:model="quantityInputs.{{$item->id}}"
                                    wire:change="updateQty({{$item->id}}, $event.target.value)"
                                    class="form-input text-center text-sm bg-blue-100 border border-blue-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"/>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <h6>
                                 Q.{{number_format($item->price * $item->qty,2)}}
                             </h6>
                         </td>
-                        <td class="text-center">
+                        <td class="row_table">
                             <div class="flex flex-row items-center justify-center space-x-2">
                                 <button wire:click.prevent="increaseQty({{$item->id}})"
                                         class="btn btn-sm btn-outline btn-success rounded-lg">

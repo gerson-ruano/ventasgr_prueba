@@ -16,35 +16,35 @@
         <table class="table-auto w-full">
             <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
-                    <th class="py-2 px-4 text-center">No.</th>
-                    <th class="py-2 px-4 text-left">Barcode</th>
-                    <th class="py-2 px-4 text-left">Descripción</th>
-                    <th class="py-2 px-4 text-left">Categoria</th>
-                    <th class="py-2 px-4 text-left">Precio</th>
-                    <th class="py-2 px-4 text-left">Stock</th>
-                    <th class="py-2 px-4 text-center">Inv Minimo</th>
-                    <th class="py-2 px-4 text-center">Imagen</th>
-                    <th class="py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Barcode</th>
+                    <th class="title_table">Descripción</th>
+                    <th class="title_table">Categoria</th>
+                    <th class="title_table">Precio</th>
+                    <th class="title_table">Stock</th>
+                    <th class="title_table">Inv Minimo</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Acción</th>
             </thead>
             <tbody>
                 @foreach($products as $index => $product)
                 <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                    <td class="py-2 px-4 text-center">
+                    <td class="row_table">
                         {{ ($products->currentPage() - 1) * $products->perPage() + $index + 1 }}</td>
-                    <td class="py-2 px-4 text-left">{{ $product->barcode }}</td>
-                    <td class="py-2 px-4 text-left">{{ $product->name }}</td>
-                    <td class="py-2 px-4 text-left">{{ $product->category->name }}</td>
-                    <td class="py-2 px-4 text-left">{{ $product->price }}</td>
+                    <td class="row_table">{{ $product->barcode }}</td>
+                    <td class="row_table">{{ $product->name }}</td>
+                    <td class="row_table">{{ $product->category->name }}</td>
+                    <td class="row_table">{{ $product->price }}</td>
                     {{--}}<td class="py-2 px-4 text-left">{{ $product->stock }}</td>--}}
-                    <td class="py-2 px-4 text-left"><span
+                    <td class="row_table"><span
                             class="badge {{ $product->stock >= $product->alerts ? 'badge-success' : 'badge-warning'}} text-uppercase">{{ $product->stock }}</span>
                     </td>
-                    <td class="py-2 px-4 text-center">{{ $product->alerts }}</td>
-                    <td class="py-2 px-4 text-center">
+                    <td class="row_table">{{ $product->alerts }}</td>
+                    <td class="row_table">
                         <img src="{{ $product->imagen }}" alt="Imagen de {{ $product->name }}"
                             class="rounded-lg h-12 w-12 object-cover mx-auto">
                     </td>
-                    <td class="py-2 px-4 text-center">
+                    <td class="row_table">
                         <div class="flex flex-col sm:flex-row items-center justify-center">
                             <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
                                 wire:click="edit({{ $product->id }})" title="Editar">
@@ -62,15 +62,15 @@
             </tbody>
             <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>
-                    <th class="py-2 px-4 text-center">No.</th>
-                    <th class="py-2 px-4 text-left">Barcode</th>
-                    <th class="py-2 px-4 text-left">Descripción</th>
-                    <th class="py-2 px-4 text-left">Categoria</th>
-                    <th class="py-2 px-4 text-left">Precio</th>
-                    <th class="py-2 px-4 text-left">Stock</th>
-                    <th class="py-2 px-4 text-center">Inv Minimo</th>
-                    <th class="py-2 px-4 text-center">Imagen</th>
-                    <th class="py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table text-left">Barcode</th>
+                    <th class="title_table text-left">Descripción</th>
+                    <th class="title_table text-left">Categoria</th>
+                    <th class="title_table text-left">Precio</th>
+                    <th class="title_table text-left">Stock</th>
+                    <th class="title_table text-center">Inv Minimo</th>
+                    <th class="title_table text-center">Imagen</th>
+                    <th class="title_table text-center">Acción</th>
                 </tr>
             </tfoot>
         </table>

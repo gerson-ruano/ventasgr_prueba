@@ -1,19 +1,17 @@
 <!DOCTYPE html>
-{{--}}<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">--}}
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="{{ auth()->user()->tema == 1 ? 'light' : 'dark' }}">
-
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-theme="{{ auth()->user()->tema == 1 ? 'light' : 'dark' }}"
+      class="{{ auth()->user()->tema == 1 ? 'light' : 'dark' }}">
 
 <head>
     @include('layouts.theme.styles')
 </head>
 
-<body class="fondo-app font-sans antialiased">
-
-{{--<div class="min-h-screen bg-gray-100 dark:bg-gray-900">--}}
-<div>
+<body class="fondo-app font-sans antialiased min-h-screen flex flex-col">
 
     <!-- Menu Modulos -->
     @include('layouts.theme.menu-modulos')
+
+<div class="flex-grow flex flex-col>
 
     <!-- Page Heading -->
     @if (View::hasSection('header'))
@@ -25,7 +23,7 @@
     @endif
 
     <!-- Page Content -->
-    <main style="min-height: 81.5vh;">
+    <main class="flex-grow">
         {{--$slot--}}
         @yield('content')
     </main>

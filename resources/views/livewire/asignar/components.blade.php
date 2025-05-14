@@ -34,10 +34,10 @@
             <table class="table-auto w-full">
                 <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
-                    <th class="text-lg font-medium py-2 px-4 text-center">No.</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Módulo</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Permiso</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Asignar</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Módulo</th>
+                    <th class="title_table">Permiso</th>
+                    <th class="title_table">Asignar</th>
                     {{--}}<th class="text-lg font-medium py-2 px-4 text-center">Roles con el Permiso</th>--}}
                 </tr>
                 </thead>
@@ -48,18 +48,18 @@
                         $isChecked = $permiso->checked ?? false;
                     @endphp
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             {{ ($permisos->currentPage() - 1) * $permisos->perPage() + $index + 1 }}
                         </td>
-                        <td class="text-center">
+                        <td class="row_table">
                             <span class="badge {{ $isChecked ? 'badge-info' : 'badge-' }}">
                                 {{ ucfirst($modulo) }}
                             </span>
                         </td>
-                        <td class="text-center">
+                        <td class="row_table">
                             <span class="label-text ml-1">{{ explode('.', $permiso->name)[1] ?? '' }}</span>
                         </td>
-                        <td class="text-center">
+                        <td class="row_table">
                             <div class="flex justify-center items-center">
                                 <label class="cursor-pointer label">
                                     <input type="checkbox" class="checkbox checkbox-info"

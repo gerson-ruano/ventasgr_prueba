@@ -137,7 +137,7 @@
                 <i class="fas fa-cart-plus"></i> Finalizar Venta
             </button>
             <a href="#"
-               class="btn btn-primary w-full sm:w-auto"
+               class="btn btn-primary w-full sm:w-auto label-text"
                onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo, 'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount, 'customer_data' => urlencode(json_encode($customer_data))]) }}')"
                @if ($tipoPago == 0 || $efectivo < $totalPrice) disabled @endif>
                 <i class="fas fa-print"></i> Detalles de Venta

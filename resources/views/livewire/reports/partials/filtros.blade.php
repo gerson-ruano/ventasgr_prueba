@@ -2,7 +2,7 @@
     class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 flex-grow h-auto sm:h-30 card bg-base-300 rounded-box place-items-center mb-1 ml-1 lg:mb-1 lg:ml-1 lg:mr-0">
 
     {{--Filtro de USUARIOS--}}
-    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
+    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3">
         @include('livewire.components.select_filtro', [
                     'default' => 'Todos',
                     'val_default' => 0,
@@ -12,7 +12,14 @@
                 ])
     </div>
     {{--Filtro de TIPO DE REPORTE--}}
-    <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 mt-1 w-full">
+    <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 mt-1 w-full md:w-2/3">
+        {{--@include('livewire.components.select_filtro', [
+                    'default' => 'Elegir',
+                    'val_default' => 0,
+                    'title' => 'Tipo de Reporte',
+                    'model' => 'reportType',
+                    'valores' => $valoresReporte
+                ])--}}
         @include('livewire.components.select_filtro', [
                             'default' => 'Elegir',
                             'val_default' => 0,
@@ -22,7 +29,7 @@
                         ])
     </div>
     {{--Filtro de TIPO DE PAGO--}}
-    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
+    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3">
         @include('livewire.components.select_filtro', [
                     'default' => 'Todos',
                     'val_default' => 0,
@@ -35,7 +42,7 @@
     <!-- Fecha Desde Selector -->
     <div class="flex flex-col items-stretch w-full md:w-1/3">
         <div class="w-full">
-            <h6 class="text-lg font-medium text-gray-700 text-center">Fecha desde</h6>
+            <h6 class="label-text text-lg font-medium text-center">Fecha desde</h6>
             <div class="form-control">
                 <input type="text" wire:model="dateFrom" class="input input-bordered flatpickr"
                        placeholder="Click para elegir" @if ($reportType == 0) disabled @endif>
@@ -46,7 +53,7 @@
     <!-- Fecha Hasta Selector -->
     <div class="flex flex-col items-stretch w-full md:w-1/3">
         <div class="w-full">
-            <h6 class="text-lg font-medium text-gray-700 text-center">Fecha hasta</h6>
+            <h6 class="label-text text-lg font-medium text-center">Fecha hasta</h6>
             <div class="form-control">
                 <input type="text" wire:model="dateTo" class="input input-bordered flatpickr"
                        placeholder="Click para elegir"

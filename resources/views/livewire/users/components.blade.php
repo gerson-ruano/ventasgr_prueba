@@ -29,25 +29,25 @@
                 <tbody>
                 @foreach($users as $index => $user)
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             {{ ($users->currentPage() - 1) * $users->perPage() + $index + 1 }}</td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <img src="{{ $user->imagen }}" alt="Imagen de {{ $user->name }}"
                                  class="rounded-lg h-12 w-12 object-cover mx-auto">
                         </td>
-                        <td class="py-2 px-4 text-left">{{ $user->name }}</td>
-                        <td class="py-2 px-4 text-left">@if($user->phone > 0)
+                        <td class="row_table">{{ $user->name }}</td>
+                        <td class="row_table">@if($user->phone > 0)
                                 <h6>{{ $user->phone }}</h6>
                             @else
                                 <h6>Sin numero</h6>
                             @endif
                         </td>
-                        <td class="py-2 px-4 text-left">{{ $user->email }}</td>
-                        <td class="py-2 px-4 text-left"><B>{{ $user->profile }}<B></td>
-                        <td class="py-2 px-4 text-left"><span
+                        <td class="row_table">{{ $user->email }}</td>
+                        <td class="row_table"><B>{{ $user->profile }}<B></td>
+                        <td class="row_table"><span
                                 class="badge {{ $user->status == 'Active' ? 'badge-success' : 'badge-warning'}} text-uppercase">{{ $user->status }}</span>
                         </td>
-                        <td class="py-2 px-4 text-left">
+                        <td class="row_table">
                             <span class="badge text-uppercase px-2 py-1 rounded text-sm font-semibold
                                 {{ $user->tema == 1
                                     ? 'bg-gray-300 text-black border border-gray-700 dark:text-gray-800'
@@ -55,7 +55,7 @@
                                 {{ $user->tema == 1 ? 'LIGHT' : 'DARK' }}
                             </span>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <div class="flex flex-col sm:flex-row items-center justify-center">
                                 <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
                                         wire:click="edit({{ $user->id }})" title="Editar">

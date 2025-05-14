@@ -18,3 +18,15 @@
 @livewireStyles
 
 {{--<partials src="//unpkg.com/alpinejs" defer></partials>--}}
+
+<script>
+    // Opcional: para evitar flicker al cambiar el tema
+    const tema = "{{ auth()->user()->tema }}";
+    if (tema == 0) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
+    } else {
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
+    }
+</script>

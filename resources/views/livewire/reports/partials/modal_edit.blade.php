@@ -7,7 +7,7 @@
 
         <form wire:submit="{{ $selected_id ? 'update' : 'store' }}">
 
-            <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
+            <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full ">
 
                 @include('livewire.components.select_filtro', [
                             'default' => 'Elegir',

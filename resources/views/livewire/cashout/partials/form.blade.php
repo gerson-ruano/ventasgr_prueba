@@ -2,7 +2,7 @@
     <div class="fixed inset-0 flex items-center justify-center z-50">
         <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
         <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-5xl mx-4">
-            <h2 class="text-lg font-semibold mb-4 text-center">
+            <h2 class="label-text text-lg font-semibold mb-4 text-center">
                 {{-- $saleId ? '#Detalle de la Venta' : 'Nueva Categoría' --}}
                 <b>Detalle de la Venta #{{$saleId}}</b>
             </h2>
@@ -14,33 +14,33 @@
                     <table class="table table-xs">
                         <thead class="bg-base-200 dark:bg-gray-800">
                         <tr>
-                            <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Producto</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Precio</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Descuento</th>
-                            <th class="text-lg font-medium py-3 px-4 text-center">Importe</th>
+                            <th class="title_table">No.</th>
+                            <th class="title_table">Producto</th>
+                            <th class="title_table">Precio</th>
+                            <th class="title_table">Cantidad</th>
+                            <th class="title_table">Descuento</th>
+                            <th class="title_table">Importe</th>
                         </tr>
                         </thead>
                         <tbody>
                         {{--($details)--}}
                         @foreach($details as $d)
                             <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                                <td class="py-2 px-4 text-center">
+                                <td class="row_table">
                                     {{ $loop->iteration }}</td>
                                 </td>
-                                <td class="py-2 px-4 text-center">
+                                <td class="row_table">
                                     {{ $d->product }}</td>
-                                <td class="py-2 px-4 text-center">
+                                <td class="row_table">
                                     <h6>Q. {{number_format(($d->price) - $d->discount,2)}}</h6>
                                 </td>
-                                <td class="py-2 px-4 text-center">
+                                <td class="row_table">
                                     <h6>{{number_format($d->quantity,2)}}</h6>
                                 </td>
-                                <td class="py-2 px-4 text-center">
+                                <td class="row_table">
                                     <h6>{{number_format($d->discount,2)}}</h6>
                                 </td>
-                                <td class="py-2 px-4 text-center">
+                                <td class="row_table">
                                     <h6>{{number_format($d->price * $d->quantity,2)}}</h6>
                                 </td>
                             </tr>

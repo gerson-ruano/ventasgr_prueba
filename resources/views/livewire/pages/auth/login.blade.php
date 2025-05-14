@@ -43,6 +43,9 @@ new #[Layout('layouts.guest')] class extends Component {
 
         <!-- Email Address -->
         <div class="relative">
+
+
+
             <x-input-label for="email" :value="__('Email')"/>
 
             <!--div class="relative"-->
@@ -56,6 +59,7 @@ new #[Layout('layouts.guest')] class extends Component {
             <!--/div-->
 
             <x-input-error :messages="$errors->get('form.email')" class="mt-2"/>
+
         </div>
 
         <!-- Password -->

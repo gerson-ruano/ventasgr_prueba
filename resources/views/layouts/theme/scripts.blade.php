@@ -339,6 +339,12 @@
 
         html.setAttribute('data-theme', newTheme);
 
+        if (isDark) {
+            html.classList.add('dark');
+        } else {
+            html.classList.remove('dark');
+        }
+
         // Actualiza en la base de datos
         fetch("{{ route('user.update-theme') }}", {
             method: 'POST',

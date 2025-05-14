@@ -1,8 +1,9 @@
 @if($isModalOpen)
     <div class="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto">
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50"></div>
-        <div class="bg-white p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3">
-            <h2 class="text-lg font-semibold mb-4 text-center">
+        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 dark:bg-gray-800 dark:bg-opacity-60"></div>
+
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3">
+            <h2 class="text-lg font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">
                 {{ $selected_id ? 'Editar Usuario' : 'Nuevo  Usuario' }}
             </h2>
 

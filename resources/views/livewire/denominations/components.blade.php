@@ -16,25 +16,25 @@
             <table class="table-auto w-full">
                 <thead class="bg-base-300 dark:bg-gray-800">
                 <tr>
-                    <th class="text-lg font-medium py-2 px-4 text-center">No.</th>
-                    <th class="text-lg font-medium py-2 px-4 text-left">Tipo</th>
-                    <th class="text-lg font-medium py-2 px-4 text-left">Valor</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Imagen</th>
-                    <th class="text-lg font-medium py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Tipo</th>
+                    <th class="title_table">Valor</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Acción</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($coins as $index => $coin)
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             {{ ($coins->currentPage() - 1) * $coins->perPage() + $index + 1 }}</td>
-                        <td class="py-2 px-4 text-left">{{ $coin->type }}</td>
-                        <td class="py-2 px-4 text-left">Q {{ number_format($coin->value, 2) }}</td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">{{ $coin->type }}</td>
+                        <td class="row_table">Q {{ number_format($coin->value, 2) }}</td>
+                        <td class="row_table">
                             <img src="{{ $coin->imagen }}" alt="Imagen de {{ $coin->name }}"
                                  class="rounded-lg h-12 w-12 object-cover mx-auto">
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <div class="flex flex-col sm:flex-row items-center justify-center">
                                 <button class="btn btn-sm btn-info mr-0 sm:mr-2 mb-2 sm:mb-0"
                                         wire:click="edit({{ $coin->id }})" title="Editar">
@@ -52,11 +52,11 @@
                 </tbody>
                 <tfoot class="bg-base-100 dark:bg-gray-800">
                 <tr>
-                    <th class="py-2 px-4 text-center">No.</th>
-                    <th class="py-2 px-4 text-left">Tipo</th>
-                    <th class="py-2 px-4 text-left">Valor</th>
-                    <th class="py-2 px-4 text-center">Imagen</th>
-                    <th class="py-2 px-4 text-center">Acción</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Tipo</th>
+                    <th class="title_table">Valor</th>
+                    <th class="title_table">Imagen</th>
+                    <th class="title_table">Acción</th>
                 </tr>
                 </tfoot>
             </table>

@@ -14,15 +14,15 @@
                 <thead class="bg-base-200 dark:bg-gray-800">
                 <h1 class="font-bold text-lg text-center">REPORTES DE VENTAS</h1>
                 <tr>
-                    <th class="text-lg font-medium py-3 px-4 text-center">No.</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Venta</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Total</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Cantidad</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Usuario</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Cliente/Vendedor</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Fecha y Hora</th>
-                    <th class="text-lg font-medium py-3 px-4 text-center">Acciones</th>
+                    <th class="title_table">No.</th>
+                    <th class="title_table">Venta</th>
+                    <th class="title_table">Estado</th>
+                    <th class="title_table">Total</th>
+                    <th class="title_table">Cantidad</th>
+                    <th class="title_table">Usuario</th>
+                    <th class="title_table">Cliente/Vendedor</th>
+                    <th class="title_table">Fecha y Hora</th>
+                    <th class="title_table">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,12 +32,12 @@
                 @foreach($data as $index => $item)
                     {{--dd($item)--}}
                     <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             {{ ($data->currentPage() - 1) * $data->perPage() + $index + 1 }}</td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <h6>{{ $item->id }}</h6>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                              <span class="badge
                                  {{ $item->status === 'PAID' ? 'badge-success' : '' }}
                                  {{ $item->status === 'CANCELLED' ? 'badge-warning' : '' }}
@@ -47,20 +47,20 @@
                                 {{ $statusTranslations[$item->status] ?? $item->status }}
                             </span>
                         </td>
-                        <td class="py-2 px-4 text-center">Q. {{number_format($item->total,2)}}</td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">Q. {{number_format($item->total,2)}}</td>
+                        <td class="row_table">
                             <h6>{{ $item->items }}</h6>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <h6>{{ $item->user }}</h6>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <h6>{{getNameSeller($item->seller)}}</h6>
                         </td>
-                        <td class="py-2 px-4 text-center">
+                        <td class="row_table">
                             <h6>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y H:i:s') }}</h6>
                         </td>
-                        <td class="py-2 px-4 text-center align-middle">
+                        <td class="row_table align-middle">
                             <div class="flex flex-row items-center justify-center space-x-2">
                                 <button wire:click.prevent="getDetails({{ $item->id }})" title="Detalles"
                                         class="btn btn-sm btn-outline btn-accent">

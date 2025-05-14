@@ -2,7 +2,7 @@
     class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 flex-grow h-auto sm:h-30 card bg-base-300 rounded-box place-items-center mb-1 ml-1 lg:mb-1 lg:ml-1 lg:mr-0">
 
 
-    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full">
+    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3 mb-2">
 
         @include('livewire.components.select_filtro', [
                     'default' => 'Elegir',
@@ -17,7 +17,7 @@
     <!-- Fecha Desde Selector -->
     <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3 mb-2">
         <div class="w-full">
-            <h6 class="text-lg font-medium text-gray-700 text-center">Fecha desde</h6>
+            <h6 class="label-text text-lg font-medium text-center">Fecha desde</h6>
             <div class="form-control">
                 <input type="text" wire:model="fromDate" class="input input-bordered text-center flatpickr"
                        @if(empty($userid))
@@ -37,7 +37,7 @@
     <!-- Fecha Hasta Selector -->
     <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3 mb-2">
         <div class="w-full">
-            <h6 class="text-lg font-medium text-gray-700 text-center">Fecha hasta</h6>
+            <h6 class="label-text text-lg font-medium text-center">Fecha hasta</h6>
             <div class="form-control">
                 <input type="text" wire:model="toDate" class="input input-bordered text-center flatpickr"
                        @if(empty($fromDate))
