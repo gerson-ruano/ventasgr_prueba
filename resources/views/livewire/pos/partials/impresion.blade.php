@@ -9,7 +9,7 @@
         <!-- Información de la Venta -->
         <div class="flex flex-col space-y-2">
             <!-- Información de la Empresa -->
-            @include('livewire.components.empresa_header', ['empresa' => $empresa])
+            {{--}}@include('livewire.components.empresa_header', ['empresa' => $empresa])--}}
             <!-- Button de agregar CLIENTE -->
             @if($vendedorSeleccionado == 0)
                 <div class="flex flex-row flex-wrap justify-center items-center gap-2 mr-2">
@@ -24,7 +24,7 @@
             <!-- Numero de venta -->
             <div class="p-2 bg-white rounded shadow">
                 <div class="flex items-center justify-between">
-                    <span class="font-medium">No. Venta:</span>
+                    <span class="font-medium">Venta No:</span>
                     {{--}}<h3 class="text-lg font-bold">{{ $nextSaleNumber }}</h3>--}}
                     <h6 class="font-bold {{ $nextSaleNumber == 0 ? 'text-red-500' : 'text-black' }}">
                         {{ $nextSaleNumber == 0 ? 'INGRESAR NUMERO DE VENTA!!' : $nextSaleNumber }}
@@ -132,17 +132,24 @@
 
         <!-- Botones de Acción -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full mt-4">
-            <button wire:click="saveSaleAndPrint"
-                    class="btn btn-info w-full sm:w-auto">
-                <i class="fas fa-cart-plus"></i> Finalizar Venta
+            <button wire:click="saveSaleAndPrint" class="btn btn-info w-full sm:w-auto">
+        <span class="flex items-center justify-center space-x-2">
+            <i class="fas fa-cart-plus"></i>
+            <span>Finalizar Venta</span>
+        </span>
             </button>
+
             <a href="#"
-               class="btn btn-primary w-full sm:w-auto label-text"
+               class="btn btn-print w-full sm:w-auto label-text"
                onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo, 'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount, 'customer_data' => urlencode(json_encode($customer_data))]) }}')"
                @if ($tipoPago == 0 || $efectivo < $totalPrice) disabled @endif>
-                <i class="fas fa-print"></i> Detalles de Venta
+        <span class="flex items-center justify-center space-x-2">
+            <i class="fas fa-print"></i>
+            <span>Detalles de Venta</span>
+        </span>
             </a>
         </div>
+
     </div>
 @endif
 

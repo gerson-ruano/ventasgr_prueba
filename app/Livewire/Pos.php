@@ -496,14 +496,7 @@ class Pos extends Component
             $this->dispatch('showNotification', 'Agregar Productos a la venta', 'dark');
             return;
         }
-        if ($this->efectivo <= 0) {
-            $this->dispatch('showNotification', 'Debes ingresar el EFECTIVO ', 'warning');
-            return;
-        }
-        if ($this->totalPrice > $this->efectivo) {
-            $this->dispatch('showNotification', 'El efectivo debe ser MAYOR o IGUAL al total', 'warning');
-            return;
-        }
+
         if ($this->discount < 0) {
             $this->dispatch('showNotification', 'El DESCUENTO debe verificarse', 'warning');
             return;
@@ -520,6 +513,7 @@ class Pos extends Component
             $this->dispatch('showNotification', 'Debe seleccionar el TIPO DE PAGO que utilizará', 'warning');
             return;
         }
+
         if (isset($this->vendedorSeleccionado)) {
             $vendedorAgregado = $this->vendedorSeleccionado;
             if ($vendedorAgregado == 0) {
@@ -556,7 +550,6 @@ class Pos extends Component
 
             if ($sale) {
                 $items = Cart::content();
-                //dd($items);
                 foreach ($items as $item) {
                     SaleDetail::create([
                         'price' => $item->price,
@@ -596,8 +589,16 @@ class Pos extends Component
 
     public function saveSaleAndPrint()
     {
-        if ($this->tipoPago == 0 || $this->efectivo < $this->totalPrice) {
-            $this->dispatch('showNotification', 'La venta no se puede finalizar', 'warning');
+        if ($this->efectivo <= 0) {
+            $this->dispatch('showNotification', 'Debes ingresar el EFECTIVO ', 'warning');
+            return;
+        }
+        if ($this->totalPrice > $this->efectivo) {
+            $this->dispatch('showNotification', 'El efectivo debe ser MAYOR o IGUAL al total', 'warning');
+            return;
+        }
+        if ($this->tipoPago == 0 || $this->tipoPago == null) {
+            $this->dispatch('showNotification', 'Debe seleccionar el TIPO DE PAGO que utilizará', 'warning');
             return;
         }
 

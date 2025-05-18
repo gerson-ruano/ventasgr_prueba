@@ -11,7 +11,7 @@
     <!-- Menu Modulos -->
     @include('layouts.theme.menu-modulos')
 
-<div class="flex-grow flex flex-col>
+<div class="flex-grow flex flex-col">
 
     <!-- Page Heading -->
     @if (View::hasSection('header'))
