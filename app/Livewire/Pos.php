@@ -598,7 +598,7 @@ class Pos extends Component
             return;
         }
         if ($this->tipoPago == 0 || $this->tipoPago == null) {
-            $this->dispatch('showNotification', 'Debe seleccionar el TIPO DE PAGO que utilizará', 'warning');
+            $this->dispatch('showNotification', 'Debe seleccionar el ESTADO DE PAGO de la VENTA', 'warning');
             return;
         }
 

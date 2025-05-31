@@ -24,7 +24,7 @@
             <!-- Numero de venta -->
             <div class="p-2 bg-white rounded shadow">
                 <div class="flex items-center justify-between">
-                    <span class="font-medium">Venta No:</span>
+                    <span class="text-label">Venta No:</span>
                     {{--}}<h3 class="text-lg font-bold">{{ $nextSaleNumber }}</h3>--}}
                     <h6 class="font-bold {{ $nextSaleNumber == 0 ? 'text-red-500' : 'text-black' }}">
                         {{ $nextSaleNumber == 0 ? 'INGRESAR NUMERO DE VENTA!!' : $nextSaleNumber }}
@@ -35,8 +35,8 @@
             <!-- Estado de Pago -->
             <div class="p-2 bg-white rounded shadow">
                 <div class="flex items-center justify-between">
-                    <span class="font-medium">Estado de Pago:</span>
-                    <h6 class="font-bold {{ $tipoPago == 0 ? 'text-red-500' : 'text-black' }}">
+                    <span class="text-label">Estado de Pago:</span>
+                    <h6 class="text-label {{ $tipoPago == 0 ? 'text-red-500' : 'text-black' }}">
                         {{ $tipoPago == 0 ? 'INGRESE ESTADO DE PAGO!!' : $this->obtenerTipoPago($tipoPago) }}
                     </h6>
                 </div>
@@ -47,13 +47,13 @@
                 @if($vendedorSeleccionado != 0)
                     <div class="flex items-center justify-between">
                         <span class="font-medium">Vendedor:</span>
-                        <h6 class="font-bold">{{ getNameSeller($vendedorSeleccionado) }}</h6>
+                        <h6 class="text-label">{{ getNameSeller($vendedorSeleccionado) }}</h6>
                     </div>
                 @else
                     <div class="flex items-center justify-between">
-                        <span class="font-medium">Cliente:</span>
+                        <span class="text-label">Cliente:</span>
                         {{-- $customer_data['name'] ?? 'INGRESE CLIENTE' --}}
-                        <h6 class="font-bold {{ $customer_data['name'] ?? 'text-red-500' }}">
+                        <h6 class="text-label {{ $customer_data['name'] ?? 'text-red-500' }}">
                             {{ $customer_data['name'] ?? 'INGRESE CLIENTE!!' }}
                         </h6>
                     </div>
@@ -62,7 +62,7 @@
 
             <!-- Datos de la venta -->
             @if(!empty($customer_data))
-                <div class="p-2 bg-gray-100 rounded text-center">
+                <div class="p-2 bg-gray-100 rounded text-center text-label">
                     <div class="flex justify-between">
                         <strong>Metodo de Pago:</strong>
                         <p>{{ $this->obtenerMetodoPago($customer_data['method_page'])}}
@@ -85,7 +85,7 @@
         </div>
 
         <!-- Información Financiera -->
-        <div class="p-2 bg-white rounded shadow space-y-1">
+        <div class="p-2 bg-white rounded shadow space-y-1 text-label">
             <div class="flex justify-between">
                 <span>Ingresado:</span>
                 <span class="{{ $efectivo == 0 ? 'text-red-500' : '' }}">
@@ -132,7 +132,7 @@
 
         <!-- Botones de Acción -->
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full mt-4">
-            <button wire:click="saveSaleAndPrint" class="btn btn-info w-full sm:w-auto">
+            <button wire:click="saveSaleAndPrint" class="btn btn-accent w-full sm:w-auto">
         <span class="flex items-center justify-center space-x-2">
             <i class="fas fa-cart-plus"></i>
             <span>Finalizar Venta</span>
@@ -140,7 +140,7 @@
             </button>
 
             <a href="#"
-               class="btn btn-print w-full sm:w-auto label-text"
+               class="btn btn-primary w-full sm:w-auto border dark:border-gray-500 hover:border-gray-500"
                onclick="openPdfWindow('{{ route('report.venta', ['change' => $change, 'efectivo'=> $efectivo, 'seller' => getNameSeller($vendedorSeleccionado), 'nextSaleNumber' => $nextSaleNumber, 'totalTaxes' => $totalTaxes, 'discount' => $discount, 'customer_data' => urlencode(json_encode($customer_data))]) }}')"
                @if ($tipoPago == 0 || $efectivo < $totalPrice) disabled @endif>
         <span class="flex items-center justify-center space-x-2">

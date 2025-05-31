@@ -1,10 +1,11 @@
+
 @if($isModalOpen)
     <div class="fixed inset-0 flex items-center justify-center z-50 overflow-y-auto">
         {{-- Fondo opaco --}}
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 dark:bg-black dark:bg-opacity-70"></div>
+        <div class="fixed inset-0 bg-slate-600 bg-opacity-50 dark:bg-black dark:bg-opacity-70"></div>
 
         {{-- Contenedor del modal --}}
-        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3">
+        <div class="bg-white dark:bg-gray-600 p-8 rounded-lg shadow-lg z-10 w-full max-w-4xl mx-4 sm:w-11/12 md:w-3/4 lg:w-1/2 xl:w-1/3">
             <h2 class="text-lg font-semibold mb-4 text-center text-gray-800 dark:text-gray-100">
                 {{ $customer_data ? 'Editar Cliente' : 'Nuevo Cliente' }}
             </h2>
@@ -13,7 +14,7 @@
 
                 {{-- Fila 1 --}}
                 <div class="flex flex-col sm:flex-row sm:space-x-2 w-full mb-2 items-center">
-                    <div class="w-full sm:w-1/2 mb-2 sm:mb-0">
+                    <div class="w-full sm:w-1/2 mb-2 sm:mb-0 text-label">
                         @include('livewire.components.select_filtro', [
                             'default' => 'Seleccionar',
                             'val_default' => 0,
@@ -64,14 +65,12 @@
 
                 {{-- Botones --}}
                 <div class="flex justify-center mt-4 flex-wrap gap-2">
-                    <button type="button" class="btn btn-outline dark:border-gray-500 dark:text-gray-200" wire:click="closeModal">Cancelar</button>
+                    <button type="button" class="btn btn-default dark:border-gray-500 dark:text-gray-200" wire:click="closeModal">Cancelar</button>
                     <button type="submit" class="btn {{ $customer_data ? 'btn-info' : 'btn-success' }}">
                         {{ $customer_data ? 'Actualizar' : 'Guardar' }}
                     </button>
                 </div>
-
             </form>
         </div>
     </div>
 @endif
-

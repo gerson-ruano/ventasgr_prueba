@@ -24,6 +24,7 @@ class ApiIntegration extends Component
     public $factura = [];
     public $municipalitys = [];
     public $searchTerm = '';
+    public $step = 1;
 
 
     public function mount(ApiAuthService $apiAuthService)
@@ -342,5 +343,15 @@ class ApiIntegration extends Component
     public function resetUI()
     {
         $this->resetErrorBag();
+    }
+
+    public function nextStep()
+    {
+        $this->step++;
+    }
+
+    public function previousStep()
+    {
+        $this->step--;
     }
 }
