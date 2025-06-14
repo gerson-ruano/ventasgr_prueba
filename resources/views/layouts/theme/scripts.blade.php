@@ -146,7 +146,7 @@
                 Swal.fire({
                     icon: "error",
                     width: '900px',
-                    title: `${data.type} "${data.name}" =>>> "${data.details}"`,
+                    title: `${data.type} "${data.name}" => "${data.details}"`,
                     showCancelButton: true,
                     cancelButtonText: 'Cancelar',
                     confirmButtonText: 'Intentar nuevamente',

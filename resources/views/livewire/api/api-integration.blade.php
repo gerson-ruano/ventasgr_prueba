@@ -1,13 +1,36 @@
 <div class="text-center mt-1">
     <div class="grid flex-grow card bg-base-300 rounded-box place-items-center mb-1 mr-2 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
         <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
+            <div class="flex flex-col items-stretch ml-2 w-full md:w-2/3">
+                <select id="category_index" wire:model.debounce.500ms="searchField"
+                        class="select select select-info w-full">
+                    <option value="">Seleccionar</option>
+                    <option value="prefix">Prefijo</option>
+                    <option value="number">No. Documento</option>
+                    <option value="reference_code">Cod. Referencia</option>
+                    <option value="names">Nombre Cliente</option>
+                    <option value="identification">Identificación</option>
+                </select>
+                @error('index')
+                <span class="text-red-500 text-sm">{{ $message }}</span>
+                @enderror
+            </div>
+            <input
+                type="text"
+                wire:model.debounce.500ms="searchTerm"
+                wire:keydown.enter="index"
+                class="input input-bordered w-full max-w-xs mt-0 ml-2 mr-2"
+                placeholder="prefix, cliente, número, identificación o referencia">
             <button wire:click="index" class="btn btn-info">
                 <i class="fas fa-exchange-alt mr-1"></i>Actualizar
             </button>
-            @include('livewire.components.button_add', ['color' => 'success' ,'model' => 'crear', 'icon' => 'plus', 'title' => "Agregar factura"])
+        <div class="btn-group ml-2">
+        @include('livewire.components.button_add', ['color' => 'success' ,'model' => 'crear', 'icon' => 'plus', 'title' => "Agregar factura"])
+        </div>
             {{--}}@include('livewire.components.button_add', ['color' => 'primary' ,'model' => 'validar', 'icon' => 'check-double', 'title' => "buscar factura"])--}}
             {{--}}@include('livewire.components.button_add', ['color' => 'info' ,'model' => 'buscar', 'icon' => 'search', 'title' => "Buscar factura"])--}}
         </div>
+
     </div>
     <div class="align flex-row border overflow-x-auto bg-base-200 rounded-lg shadow-lg mx-auto ml:mb-1 ml:ml-2 lg:ml-2 lg:mr-2">
         @if ($datos)

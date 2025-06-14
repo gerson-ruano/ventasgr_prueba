@@ -25,7 +25,7 @@ class ApiIntegration extends Component
     public $municipalitys = [];
     public $searchTerm = '';
     public $step = 1;
-
+    public $searchField = '';
 
     public function mount(ApiAuthService $apiAuthService)
     {
@@ -149,12 +149,10 @@ class ApiIntegration extends Component
         $token = $this->apiAuthService->getAccessToken();
         if ($token) {
 
-            $params = [
-                'page' => $page,
-            ];
+            $params = ['page' => $page];
 
-            if (!empty($this->searchTerm)) {
-                $params['filter'] = $this->searchTerm;
+            if (!empty($this->searchTerm) && !empty($this->searchField)) {
+                $params["filter[{$this->searchField}]"] = $this->searchTerm;
             }
 
             $url = $this->baseUrl . 'bills?';
@@ -164,7 +162,7 @@ class ApiIntegration extends Component
                 $this->datos = $data['data']['data'] ?? [];
                 $this->pagination = $data['data']['pagination']['links'] ?? [];
             } else {
-                $this->dispatch('noty-api-error', type: 'ERROR', name: 'al visualizar las facturas', details: $response->body());
+                $this->dispatch('noty-api-error', type: 'ERROR', name: 'al visualizar las facturas', details: json_decode($response->body(), true)['message'] ?? 'Error desconocido');
             }
         } else {
             session()->flash('error', 'Token no válido.');
@@ -231,7 +229,7 @@ class ApiIntegration extends Component
                 if ($response->successful()) {
                     $this->dispatch('noty-done', type: 'success', message: 'Documento creado con éxito');
                 } else {
-                    $this->dispatch('noty-api-error', type: 'ERROR', name: 'al crear la factura', details: $response->body());
+                    $this->dispatch('noty-api-error', type: 'ERROR', name: 'al crear la factura', details: json_decode($response->body(), true)['message'] ?? 'Error desconocido');
                 }
             } else {
                 session()->flash('error', 'Token no válido.');
@@ -263,7 +261,7 @@ class ApiIntegration extends Component
                 $this->dispatch('noty-done', type: 'success', message: 'Validacion creada con éxito');
                 return $response->json();
             } else {
-                $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: $response->body());
+                $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: json_decode($response->body(), true)['message'] ?? 'Error desconocido');
             }
         } else {
             session()->flash('error', 'Token no válido.');
@@ -299,7 +297,7 @@ class ApiIntegration extends Component
                     $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: 'No se encontraron datos para este documento.');
                 }
             } else {
-                $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: $response->body());
+                $this->dispatch('noty-api-error', type: 'ERROR', name: 'validación de factura', details: json_decode($response->body(), true)['message'] ?? 'Error desconocido');
             }
         } else {
             session()->flash('error', 'Token no válido.');
@@ -308,7 +306,6 @@ class ApiIntegration extends Component
 
     private function formatearDatos($datos)
     {
-
         $formateados = [];
 
         if (isset($datos['data']['data'])) {
@@ -345,8 +342,34 @@ class ApiIntegration extends Component
         $this->resetErrorBag();
     }
 
+    public function validateOnlyStep1()
+    {
+        $this->validate([
+            'reference_code' => 'required|string|max:255',
+            'payment_method_code' => 'required|integer',
+        ], $this->messages);
+    }
+
+    public function validateOnlyStep2()
+    {
+        $this->validate([
+            'customer.identification' => 'required|string|max:255',
+            'customer.address' => 'required|string|max:255',
+            'customer.municipality_id' => 'required|string|max:255',
+            'customer.email' => 'nullable|email|max:255',
+            'customer.names' => 'required|string|max:20',
+        ], $this->messages);
+    }
+
+
     public function nextStep()
     {
+        if ($this->step === 1) {
+            $this->validateOnlyStep1();
+        } elseif ($this->step === 2) {
+            $this->validateOnlyStep2();
+        }
+
         $this->step++;
     }
 
