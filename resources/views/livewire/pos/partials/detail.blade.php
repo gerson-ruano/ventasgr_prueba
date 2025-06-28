@@ -63,7 +63,7 @@
     @endif
 </div>
 
-<div class="md:hidden space-y-4">
+<div class="md:hidden space-y-1">
     @foreach($cart as $item)
         <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-4 space-y-2">
             <div class="flex items-center space-x-4">

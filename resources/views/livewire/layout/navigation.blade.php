@@ -20,7 +20,7 @@ new class extends Component {
     $labelColor = 'text-blue-500'; // Definir el color aquí
     $links = [
     'profile' => __('Perfil'),
-    'dashboard' => __('Inicio'),
+    'home' => __('Inicio'),
     'categories' => __('Categorias'),
     'products' => __('Productos'),
     'coins' => __('Denominaciones'),
@@ -58,7 +58,7 @@ $routeExists = false;
 
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('pos') }}" wire:navigate>
+                    <a href="{{ route('home') }}" wire:navigate>
                         <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"/>
                     </a>
                 </div>

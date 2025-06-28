@@ -14,14 +14,7 @@ use App\Livewire\Cashout;
 use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GraphicsController;
 use App\Livewire\ApiIntegration;
-
-
-
-Route::view('/', 'welcome');
-
-/*Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');*/
+use App\Http\Controllers\HomeController;
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
@@ -29,6 +22,11 @@ Route::fallback(function () {
 
 // Actualizar Tema de Usuario
 Route::middleware('auth')->post('/user/update-theme', [Users::class, 'updateTheme'])->name('user.update-theme');
+
+Route::redirect('/', '/login');
+
+Route::get('/home', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
+Route::get('/admin/{module}', [HomeController::class, 'showModule'])->name('admin.modules.show');
 
 Route::middleware(['auth','checkStatus'])->group(function () {
     Route::view('profile', 'profile')
@@ -48,8 +46,8 @@ Route::middleware(['auth','checkStatus'])->group(function () {
         Route::get('coins', Coins::class)->name('coins');
         Route::get('reports', Reports::class)->name('reports');
         Route::get('cashout', Cashout::class)->name('cashout');
-        Route::get('graphics', [GraphicsController::class, 'index']);
-        Route::get('api', ApiIntegration::class)->name('api.integration');
+        Route::get('graphics', [GraphicsController::class, 'index'])->name('graphics');
+        Route::get('api', ApiIntegration::class)->name('api');
 
         //REPORTE GENERAL DE VENTAS PDF
         Route::get('report/pdf/{user}/{type}/{f1}/{f2}/{selectTipoEstado}', [ExportController::class, 'reportPDF']);
@@ -68,9 +66,6 @@ Route::middleware(['auth','checkStatus'])->group(function () {
         //Reporte general de cierre de caja
         Route::get('report-excel/{userid}/{f1}/{f2}', [ExportController::class, 'reportBoxExcel']);
         //Route::get('report-excel', [ExportController::class,'reportExcel']);
-
-
-
     });
 
     Route::middleware(['role:Admin|Employee|Seller'])->group(function () {
