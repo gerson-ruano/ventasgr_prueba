@@ -25,7 +25,7 @@ class HomeController extends Controller
                     'label' => $module['label'] ?? ucfirst($key),
                     'icon' => $module['icon'] ?? 'fas fa-cube',
                     'route' => isset($module['children'])
-                        ? route('admin.modules.show', ['module' => $key])
+                        ? route('modules.show', ['module' => $key])
                         : route($module['route'] ?? $key),
                     'has_children' => isset($module['children']),
                 ];

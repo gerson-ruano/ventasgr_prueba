@@ -45,6 +45,7 @@ class Asignar extends Component
             'grafics' => 'Estadistica',
             'assign' => 'Asignar',
             'pos' => 'Ventas',
+            'factus' => 'Factus',
             // Agrega más módulos según necesites
         ];
 

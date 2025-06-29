@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Services\ApiAuthService;
@@ -140,6 +141,8 @@ class ApiIntegration extends Component
 
     public function index($page = 1)
     {
+
+        $this->authorize('factus.view', $user = Auth::user());
         $this->apiAuthService = app(ApiAuthService::class);
         if (!$this->apiAuthService) {
             session()->flash('error', 'El servicio de autenticación no está disponible...');
@@ -171,6 +174,7 @@ class ApiIntegration extends Component
 
     public function store()
     {
+        //$this->authorize('factus.create', $user = Auth::user());
         $this->validate();
         $this->apiAuthService = app(ApiAuthService::class);
         if ($this->apiAuthService) {

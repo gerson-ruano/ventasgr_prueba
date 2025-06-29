@@ -26,7 +26,7 @@ Route::middleware('auth')->post('/user/update-theme', [Users::class, 'updateThem
 Route::redirect('/', '/login');
 
 Route::get('/home', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
-Route::get('/admin/{module}', [HomeController::class, 'showModule'])->name('admin.modules.show');
+Route::get('home/{module}', [HomeController::class, 'showModule'])->name('modules.show');
 
 Route::middleware(['auth','checkStatus'])->group(function () {
     Route::view('profile', 'profile')

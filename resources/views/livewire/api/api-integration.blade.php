@@ -38,14 +38,16 @@
             </div>
 
             {{-- Botón adicional --}}
-            <div class="w-full sm:w-auto">
-                @include('livewire.components.button_add', [
-                    'color' => 'success',
-                    'model' => 'crear',
-                    'icon' => 'plus',
-                    'title' => "Agregar factura"
-                ])
-            </div>
+            @can('factus.create')
+                <div class="w-full sm:w-auto">
+                    @include('livewire.components.button_add', [
+                        'color' => 'success',
+                        'model' => 'crear',
+                        'icon' => 'plus',
+                        'title' => "Agregar factura"
+                    ])
+                </div>
+            @endcan
         </div>
 
 
@@ -143,7 +145,8 @@
                             <i class="fas fa-info-circle text-2xl text-yellow-700"></i>
                             <div class="mt-2 text-center">
                                 <h3 class="font-bold text-lg text-yellow-800">No hay documentos encontrados!</h3>
-                                <p class="text-sm text-yellow-700">Seleccionar otro <strong>FILTRO</strong> o ingresar otra descripcion de <strong>DOCUMENTOS</strong></p>
+                                <p class="text-sm text-yellow-700">Seleccionar otro <strong>FILTRO</strong> o ingresar
+                                    otra descripcion de <strong>DOCUMENTOS</strong></p>
                             </div>
                         </div>
                     </div>

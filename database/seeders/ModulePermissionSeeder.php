@@ -112,6 +112,7 @@ class ModulePermissionSeeder extends Seeder
             'grafics' => 'Estadistica',
             'assign' => 'Asigar',
             'pos' => 'Ventas',
+            'factus' => 'Factus',
         ];
         return $traslation[$moduleName] ?? $moduleName;
     }
