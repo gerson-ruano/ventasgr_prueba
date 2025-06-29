@@ -15,6 +15,8 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GraphicsController;
 use App\Livewire\ApiIntegration;
 use App\Http\Controllers\HomeController;
+use App\Livewire\Settings\Components;
+
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
@@ -35,6 +37,7 @@ Route::middleware(['auth','checkStatus'])->group(function () {
 
 //Route::prefix('admin')->middleware(['permission'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
+        Route::get('configuracion', Components::class)->name('configuracion');
         Route::get('users', Users::class)->name('users');
         Route::get('roles', Roles::class)->name('roles');
         Route::get('permisos', Permisos::class)->name('permisos');

@@ -35,7 +35,7 @@
                 </li>
                 <li class="">
                     <a href="{{url('api')}}"
-                       class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Seller|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
+                       class="border dark:border-gray-200 flex items-center {{ Auth::user()->hasRole('Admin|Seller') ? '' : 'opacity-50 pointer-events-none' }}">
                         <i class="fas fa-compress-alt mr-1"></i>Factus
                     </a>
                 </li>
