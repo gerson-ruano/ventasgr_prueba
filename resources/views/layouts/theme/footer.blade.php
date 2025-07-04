@@ -1,6 +1,4 @@
-@php
-    setting('app_name');
-@endphp
+
 <footer class="footer items-center p-4 text-neutral-content">
     <aside class="items-center grid-flow-col">
         <svg width="36" height="36" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd"
@@ -10,7 +8,7 @@
             </path>
         </svg>
         <div>
-            Copyright GERSON RUANO © {{ date('Y') }}  {{ $title ??  setting('app_name') }} All rights reserved.
+            Copyright GERSON RUANO © {{ date('Y') }}   {{ $title ?? setting('app_name')}}  All rights reserved.
         </div>
     </aside>
     <nav class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">

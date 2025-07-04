@@ -6,8 +6,8 @@
 
 
     @if(count($children) > 0)
-        <div class="flex justify-center items-center p-4 py-10">
-            <div class="card w-full max-w-6xl bg-base-100 shadow-xl p-6">
+        <div class="flex justify-center items-center p-4">
+            <div class="card w-full max-w-4xl shadow-xl p-6">
                 <div class="text-center mb-6 mt-4">
                     <h1 class="text-2xl font-bold">Opciones de {{ $moduleLabel }}</h1>
                 </div>

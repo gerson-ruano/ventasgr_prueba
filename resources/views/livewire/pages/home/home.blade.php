@@ -3,16 +3,18 @@
 @section('content')
 
     @if(count($modules) > 0)
-        <div class="flex justify-center items-center p-4 py-10">
-            <div class="card w-full max-w-6xl bg-base-100 shadow-xl p-6">
-                <div class="text-center mb-6">
+    <div class="text-center mt-2">
                     <h1 class="text-2xl font-bold mb-2">Bienvenido a tu Panel de Módulos</h1>
-                    <p class="text-blue-800 font-semibold">Selecciona un módulo para comenzar.</p>
+                    {{--<p class="text-blue-800 font-semibold">Selecciona un módulo para comenzar.</p>--}}
                 </div>
+        <div class="flex justify-center items-center p-4 py-0">
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-6">
+            <div class="card w-full max-w-4xl shadow-md">
+
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
                     @foreach($modules as $module)
-                        <div class="card bg-base-100 shadow-lg p-4 hover:shadow-lg ">
+                        <div class="card bg-base-100 shadow-md p-4 hover:shadow-xl ">
                             <div class="card-body text-center">
                                 <a href="{{ $module['route'] }}" class="btn btn-xs w-full h-full py-6 text-lg flex justify-center items-center gap-2">
                                     <i class="{{ $module['icon'] }}"></i> {{ $module['label'] }}
