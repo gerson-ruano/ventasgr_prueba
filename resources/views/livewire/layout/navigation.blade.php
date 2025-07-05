@@ -32,6 +32,7 @@ new class extends Component {
     'reports' => __('Reportes'),
     'cashout' => __('Cierre de Caja'),
     'graphics' => __('Estadistica'),
+    'configuracion' => __('Configuración'),
     // Añade más rutas aquí según sea necesario
     ];
 $routeExists = false;
@@ -94,22 +95,22 @@ $routeExists = false;
                             <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium
                             rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300
                             focus:outline-none transition ease-in-out duration-150">
-                            {{--<div x-data="{{ json_encode(['name' => auth()->user()->name, 'profile' => auth()->user()->profile]) }}"
-                            x-text="name" x-text="profile"
-                            x-on:profile-updated.window="name = $event.detail.name; profile = $event.detail.profile">
-                            </div>--}}
+                                {{--<div x-data="{{ json_encode(['name' => auth()->user()->name, 'profile' => auth()->user()->profile]) }}"
+                                x-text="name" x-text="profile"
+                                x-on:profile-updated.window="name = $event.detail.name; profile = $event.detail.profile">
+                                </div>--}}
 
-                            <div x-data="{
+                                <div x-data="{
                             name: '{{ auth()->user()->name }}',
                             profile: {{ auth()->user()->profile ? json_encode(auth()->user()->profile) : '{}' }} }">
-                                <p x-text="name"></p>
-                                <template x-if="Object.keys(profile).length !== 0">
-                                    <p x-text="'' + profile"></p>
-                                </template>
-                                <template x-if="Object.keys(profile).length === 0">
-                                    <p>Perfil no configurado</p>
-                                </template>
-                            </div>
+                                    <p x-text="name"></p>
+                                    {{--}}<template x-if="Object.keys(profile).length !== 0">
+                                        <p x-text="'' + profile"></p>
+                                    </template>
+                                    <template x-if="Object.keys(profile).length === 0">
+                                        <p>Perfil no configurado</p>
+                                    </template>--}}
+                                </div>
 
 
                                 <div class="ms-1">
@@ -124,9 +125,23 @@ $routeExists = false;
                         </x-slot>
 
                         <x-slot name="content">
+
                             <x-dropdown-link :href="route('users')" wire:navigate> {{--profile--}}
                                 {{ __('Mi Perfil') }}
                             </x-dropdown-link>
+
+                            <!-- Account Management -->
+                            <div x-data="{
+                            name: '{{ auth()->user()->name }}',
+                            profile: {{ auth()->user()->profile ? json_encode(auth()->user()->profile) : '{}' }} }">
+                                {{--}}<p x-text="name"></p>--}}
+                                <template x-if="Object.keys(profile).length !== 0">
+                                    <p x-text="'' + profile" class="ml-4 mb-1"></p>
+                                </template>
+                                <template x-if="Object.keys(profile).length === 0">
+                                    <p>Perfil no configurado</p>
+                                </template>
+                            </div>
 
                             <!-- Authentication -->
                             <button wire:click="logout" class="w-full text-start">
@@ -152,39 +167,57 @@ $routeExists = false;
                         </svg>
                     </button>
                 </div>
-            </div>
-        </div>
 
-        <!-- Responsive Navigation Menu -->
-        <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-            <div class="pt-4 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('pos')" :active="request()->routeIs('pos')" wire:navigate>
-                    {{ __('Ventas') }}
-                </x-responsive-nav-link>
             </div>
-
-            <!-- Responsive Settings Options -->
-            <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                <div class="px-4">
-                    <div class="font-medium text-base text-gray-800 dark:text-gray-200"
-                         x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
-                         x-on:profile-updated.window="name = $event.detail.name"></div>
-                    <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+            <div class="flex items-end items-right">
+                <div class="sm:-my-px sm:ms-10 sm:flex float-right">
+                    <label class="flex cursor-pointer gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5"/>
+                            <path
+                                d="M12 1v2M12 21v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M1 12h2M21 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+                        </svg>
+                        <input type="checkbox" value="dark" class="toggle theme-controller" id="themeToggle"
+                            {{ auth()->user()->tema == 0 ? 'checked' : '' }} />
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                    </label>
                 </div>
+            </div>
 
-                <div class="mt-3 space-y-1">
-                    <x-responsive-nav-link :href="route('profile')" wire:navigate>
-                        {{ __('Mi Perfil') }}
+            <!-- Responsive Navigation Menu -->
+            <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+                <div class="pt-4 pb-3 space-y-1">
+                    <x-responsive-nav-link :href="route('pos')" :active="request()->routeIs('pos')" wire:navigate>
+                        {{ __('Ventas') }}
                     </x-responsive-nav-link>
+                </div>
 
+                <!-- Responsive Settings Options -->
+                <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
+                    <div class="px-4">
+                        <div class="font-medium text-base text-gray-800 dark:text-gray-200"
+                             x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name"
+                             x-on:profile-updated.window="name = $event.detail.name"></div>
+                        <div class="font-medium text-sm text-gray-500">{{ auth()->user()->email }}</div>
+                    </div>
 
-                    <!-- Authentication -->
-                    <button wire:click="logout" class="w-full text-start">
-                        <x-responsive-nav-link>
-                            {{ __('Salir') }}
+                    <div class="mt-3 space-y-1">
+                        <x-responsive-nav-link :href="route('profile')" wire:navigate>
+                            {{ __('Mi Perfil') }}
                         </x-responsive-nav-link>
-                    </button>
+
+
+                        <!-- Authentication -->
+                        <button wire:click="logout" class="w-full text-start">
+                            <x-responsive-nav-link>
+                                {{ __('Salir') }}
+                            </x-responsive-nav-link>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 </nav>

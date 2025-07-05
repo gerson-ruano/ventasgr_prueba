@@ -31,13 +31,13 @@
     <!-- Table Section -->
     @if (count($permisos) > 0)
         <div class="overflow-x-auto bg-base-300 p-4 rounded-lg shadow-lg max-w-7xl mx-auto">
-            <table class="table-auto w-full">
-                <thead class="bg-base-300 dark:bg-gray-800">
+            <table class="table_custom">
+                <thead>
                 <tr>
-                    <th class="title_table">No.</th>
-                    <th class="title_table">Módulo</th>
-                    <th class="title_table">Permiso</th>
-                    <th class="title_table">Asignar</th>
+                    <th>No.</th>
+                    <th>Módulo</th>
+                    <th>Permiso</th>
+                    <th>Asignar</th>
                     {{--}}<th class="text-lg font-medium py-2 px-4 text-center">Roles con el Permiso</th>--}}
                 </tr>
                 </thead>
@@ -47,19 +47,19 @@
                         $modulo = $permiso->modules->first()->name ?? 'N/A';
                         $isChecked = $permiso->checked ?? false;
                     @endphp
-                    <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="row_table">
+                    <tr>
+                        <td>
                             {{ ($permisos->currentPage() - 1) * $permisos->perPage() + $index + 1 }}
                         </td>
-                        <td class="row_table">
+                        <td>
                             <span class="badge {{ $isChecked ? 'badge-info' : 'badge-' }}">
                                 {{ ucfirst($modulo) }}
                             </span>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <span class="label-text ml-1">{{ explode('.', $permiso->name)[1] ?? '' }}</span>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <div class="flex justify-center items-center">
                                 <label class="cursor-pointer label">
                                     <input type="checkbox" class="checkbox checkbox-info"

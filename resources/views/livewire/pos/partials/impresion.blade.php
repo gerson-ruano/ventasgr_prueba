@@ -5,7 +5,7 @@
 @endphp
 
 @if($itemsQuantity > 0)
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-base-300 rounded-box p-4 m-2">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 bg-base-300 rounded-box p-4 mb-1 ml-2 lg:mb-1 lg:ml-2 lg:mr-2">
         <!-- Información de la Venta -->
         <div class="flex flex-col space-y-2">
             <!-- Información de la Empresa -->
@@ -131,7 +131,7 @@
         </div>
 
         <!-- Botones de Acción -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full mt-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full">
             <button wire:click="saveSaleAndPrint" class="btn btn-accent w-full sm:w-auto">
         <span class="flex items-center justify-center space-x-2">
             <i class="fas fa-cart-plus"></i>

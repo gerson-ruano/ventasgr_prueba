@@ -27,13 +27,13 @@ Route::middleware('auth')->post('/user/update-theme', [Users::class, 'updateThem
 
 Route::redirect('/', '/login');
 
-Route::get('/home', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
-Route::get('home/{module}', [HomeController::class, 'showModule'])->name('modules.show');
-
 Route::middleware(['auth','checkStatus'])->group(function () {
     Route::view('profile', 'profile')
         ->middleware(['auth'])
         ->name('profile');
+
+    Route::get('/home', [HomeController::class, 'index'])->middleware(['auth'])->name('home');
+    Route::get('home/{module}', [HomeController::class, 'showModule'])->name('modules.show');
 
 //Route::prefix('admin')->middleware(['permission'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {

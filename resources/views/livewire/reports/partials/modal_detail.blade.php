@@ -9,36 +9,36 @@
 
         <!-- Table Section -->
         <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
-            <table class="table table-xs">
-                <thead class="bg-base-200 dark:bg-gray-800">
+            <table class="table_custom">
+                <thead>
                 <tr>
-                    <th class="title_table">No.</th>
-                    <th class="title_table">Producto</th>
-                    <th class="title_table">Precio</th>
-                    <th class="title_table">Cantidad</th>
-                    <th class="title_table">Descuento</th>
-                    <th class="title_table">Importe</th>
+                    <th>No.</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Descuento</th>
+                    <th>Importe</th>
                 </tr>
                 </thead>
                 <tbody>
 
                 @foreach($details as $d)
-                    <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="row_table">
+                    <tr>
+                        <td>
                             {{ $loop->iteration }}</td>
                         </td>
-                        <td class="row_table">
+                        <td>
                             {{ $d->product }}</td>
-                        <td class="row_table">
+                        <td>
                             <h6>Q. {{number_format(($d->price) - $d->discount, 2)}}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{number_format($d->quantity,2)}}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{number_format($d->discount,2)}}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{number_format($d->price * $d->quantity,2)}}</h6>
                         </td>
 

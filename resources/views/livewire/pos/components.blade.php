@@ -1,10 +1,10 @@
 <div class="flex flex-col w-full lg:flex-row lg:space-y-0 mt-1">
     <div class="lg:w-3/4">
         <div class="">
-            @include('livewire.pos.partials.detail')
+            @include('livewire.pos.partials.impresion')
         </div>
         <div class="">
-            @include('livewire.pos.partials.impresion')
+            @include('livewire.pos.partials.detail')
         </div>
     </div>
 

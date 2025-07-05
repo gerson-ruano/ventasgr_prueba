@@ -1,5 +1,6 @@
 <div
-    class="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-1 gap-4 flex-grow h-auto sm:h-30 sm:mb-1 card bg-base-300 rounded-box place-items-center mb-1 ml-2 lg:mb-1 lg:ml-0 lg:mr-2">
+    class="flex flex-col sm:flex-row flex-wrap gap-4 justify-center items-center lg:items-start lg:justify-start
+    h-auto sm:h-30 sm:mb-1 card bg-base-300 rounded-box mb-1 ml-2 lg:mb-1 lg:ml-0 lg:mr-2">
     <div class="flex flex-row flex-wrap items-center gap-2 w-full mb-2 mt-1">
         <!-- Caja de búsqueda -->
         <div class="flex-grow">

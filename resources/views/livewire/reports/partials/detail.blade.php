@@ -10,19 +10,19 @@
     @if ($totalProduct = count($data) > 0 )
         <!-- Table Section -->
         <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
-            <table class="table table-xs">
-                <thead class="bg-base-200 dark:bg-gray-800">
+            <table class="table_custom">
+                <thead>
                 <h1 class="font-bold text-lg text-center">REPORTES DE VENTAS</h1>
                 <tr>
-                    <th class="title_table">No.</th>
-                    <th class="title_table">Venta</th>
-                    <th class="title_table">Estado</th>
-                    <th class="title_table">Total</th>
-                    <th class="title_table">Cantidad</th>
-                    <th class="title_table">Usuario</th>
-                    <th class="title_table">Cliente/Vendedor</th>
-                    <th class="title_table">Fecha y Hora</th>
-                    <th class="title_table">Acciones</th>
+                    <th>No.</th>
+                    <th>Venta</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Cantidad</th>
+                    <th>Usuario</th>
+                    <th>Cliente/Vendedor</th>
+                    <th>Fecha y Hora</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -31,13 +31,13 @@
 
                 @foreach($data as $index => $item)
                     {{--dd($item)--}}
-                    <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="row_table">
+                    <tr>
+                        <td>
                             {{ ($data->currentPage() - 1) * $data->perPage() + $index + 1 }}</td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{ $item->id }}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                              <span class="badge
                                  {{ $item->status === 'PAID' ? 'badge-success' : '' }}
                                  {{ $item->status === 'CANCELLED' ? 'badge-warning' : '' }}
@@ -47,20 +47,20 @@
                                 {{ $statusTranslations[$item->status] ?? $item->status }}
                             </span>
                         </td>
-                        <td class="row_table">Q. {{number_format($item->total,2)}}</td>
-                        <td class="row_table">
+                        <td>Q. {{number_format($item->total,2)}}</td>
+                        <td>
                             <h6>{{ $item->items }}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{ $item->user }}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{getNameSeller($item->seller)}}</h6>
                         </td>
-                        <td class="row_table">
+                        <td>
                             <h6>{{ \Carbon\Carbon::parse($item->created_at)->format('d-m-Y H:i:s') }}</h6>
                         </td>
-                        <td class="row_table align-middle">
+                        <td class="align-middle">
                             <div class="flex flex-row items-center justify-center space-x-2">
                                 <button wire:click.prevent="getDetails({{ $item->id }})" title="Detalles"
                                         class="btn btn-sm btn-outline btn-accent">

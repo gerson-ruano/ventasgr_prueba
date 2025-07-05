@@ -6,36 +6,36 @@
     @if ($totalProduct = count($cart) > 0 )
         <!-- Table Section -->
         <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto">
-            <table class="hidden md:table w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="table_custom">
+                <thead>
                 <tr>
-                    <th class="title_table">#</th>
-                    <th class="title_table">Imagen</th>
-                    <th class="title_table">Nombre</th>
-                    <th class="title_table">Precio</th>
-                    <th class="title_table">Cantidad</th>
-                    <th class="title_table">Subtotal</th>
-                    <th class="title_table">Acciones</th>
+                    <th>#</th>
+                    <th>Imagen</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach($cart as $item)
-                    <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                        <td class="row_table">{{ $loop->iteration }}</td>
-                        <td class="row_table">
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>
                             <img
                                 src="{{ asset(is_file(public_path('storage/products/' . $item->options->image)) ? 'storage/products/' . $item->options->image : 'img/noimg.jpg') }}"
-                                class="rounded-lg h-12 w-12 object-cover mx-auto">
+                                class="rounded-lg h-8 w-8 object-cover mx-auto">
                         </td>
-                        <td class="row_table">{{ $item->name }}</td>
-                        <td class="row_table">Q.{{ number_format($item->price, 2) }}</td>
-                        <td class="row_table">
+                        <td>{{ $item->name }}</td>
+                        <td>Q.{{ number_format($item->price, 2) }}</td>
+                        <td>
                             <input type="number" wire:model="quantityInputs.{{ $item->id }}"
                                    wire:change="updateQty({{ $item->id }}, $event.target.value)"
                                    class="w-16 text-center bg-blue-100 border border-blue-500 rounded-lg text-sm"/>
                         </td>
-                        <td class="row_table">Q.{{ number_format($item->price * $item->qty, 2) }}</td>
-                        <td class="row_table">
+                        <td>Q.{{ number_format($item->price * $item->qty, 2) }}</td>
+                        <td>
                             <div class="flex space-x-2 justify-center">
                                 <button wire:click.prevent="increaseQty({{ $item->id }})"
                                         class="btn btn-sm btn-success">

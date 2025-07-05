@@ -56,45 +56,45 @@
         <div
             class="align flex-row border overflow-x-auto bg-base-200 rounded-lg shadow-lg mx-auto ml:mb-1 ml:ml-2 lg:ml-2 lg:mr-2">
             <div class="border overflow-x-auto bg-base-200 rounded-lg shadow-lg w-full mx-auto mb-2">
-                <table class="table table-xs">
-                    <thead class="bg-base-200 dark:bg-gray-800">
+                <table class="table_custom">
+                    <thead>
                     <tr>
-                        <th class="text-lg font-medium py-3 px-4 text-center">#</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">ID</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">Documento</th>
-                        <th class="text-lg font-medium py-3 px-4 text-left">Codigo de Referencia</th>
-                        <th class="text-lg font-medium py-3 px-4 text-left">Cliente</th>
-                        <th class="text-lg font-medium py-3 px-4 text-left">Identificación</th>
-                        <th class="text-lg font-medium py-3 px-4 text-left">Fecha de Validación</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">Estado</th>
-                        <th class="text-lg font-medium py-3 px-4 text-center">Acción</th>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Documento</th>
+                        <th>Codigo de Referencia</th>
+                        <th>Cliente</th>
+                        <th>Identificación</th>
+                        <th>Fecha de Validación</th>
+                        <th>Estado</th>
+                        <th>Acción</th>
                     </tr>
                     </thead>
                     <tbody>
                     @forelse ($datos as $key => $item)
-                        <tr class="bg-white dark:bg-gray-700 border-b dark:border-gray-600">
-                            <td class="py-2 px-4 text-center">{{ $key+1 }}</td>
-                            <td class="py-2 px-4 text-center">{{ $item['id'] }}</td>
-                            <td class="py-2 px-4 text-center">{{ $item['number'] }}</td>
-                            <td class="py-2 px-4 text-left">
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td>{{ $item['id'] }}</td>
+                            <td>{{ $item['number'] }}</td>
+                            <td>
                                     <span
                                         class="badge {{ $item['reference_code'] == null ? 'badge-warning'  : 'badge-white'}} text-uppercase">
                                         {{ $item['reference_code'] == null ? 'Sin codigo de referencia' : $item['reference_code'] }}
                                     </span>
                             </td>
-                            <td class="py-2 px-4 text-left">{{ $item['api_client_name'] }}</td>
-                            <td class="py-2 px-4 text-left">{{ $item['identification'] }}</td>
-                            <td class="py-2 px-4 text-left">
+                            <td>{{ $item['api_client_name'] }}</td>
+                            <td>{{ $item['identification'] }}</td>
+                            <td>
                                     <span
                                         class="badge {{ $item['created_at'] == null ? 'badge-warning'  : 'badge-white'}} text-uppercase">
                                         {{ $item['created_at'] == null ? 'Sin fecha de Validación' : $item['created_at'] }}
                                     </span>
                             </td>
-                            <td class="py-2 px-4 text-center">
+                            <td class="text-center">
                                     <span
                                         class="{{ $item['status'] == '0' ? 'bg-yellow-400' : 'bg-green-500' }} inline-block w-4 h-4 rounded-full"></span>
                             </td>
-                            <td class="py-2 px-4 text-center">
+                            <td class="text-center">
                                 <div class="flex flex-row items-center justify-center space-x-2">
                                     <button class="btn btn-sm btn-success" title="Validar"
                                             wire:click="validates('{{ $item['number'] }}')"
