@@ -3,20 +3,22 @@
 @section('content')
 
     @if(count($modules) > 0)
-    <div class="text-center mt-2">
-                    <h1 class="text-2xl font-bold mb-2">Bienvenido a tu Panel de Módulos</h1>
-                    {{--<p class="text-blue-800 font-semibold">Selecciona un módulo para comenzar.</p>--}}
-                </div>
-        <div class="flex justify-center items-center p-4 py-0">
+        <div class="text-center mt-8">
+            <livewire:components.back-button route="{{ route('home') }}"/>
 
-            <div class="card w-full max-w-4xl shadow-md">
-
-
+            <h1 class="text-2xl font-bold mb-2 dark:text-gray-600">Bienvenido a tu Panel de Módulos</h1>
+            <p class="text-gray-300 font-semibold mb-2">Selecciona un módulo para comenzar.</p>
+        </div>
+        <div class="flex justify-center items-center p-4 py-4">
+            <div class="card w-full max-w-4xl">
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+
                     @foreach($modules as $module)
-                        <div class="card bg-base-100 shadow-md p-4 hover:shadow-xl ">
+                        <div
+                            class="card bg-base-100 text-gray-800 dark:text-dark shadow-xl p-2 hover:shadow-md dark:hover:shadow-2xl dark:hover:bg-white transition-shadow duration-300">
                             <div class="card-body text-center">
-                                <a href="{{ $module['route'] }}" class="btn btn-xs w-full h-full py-6 text-lg flex justify-center items-center gap-2">
+                                <a href="{{ $module['route'] }}"
+                                   class="btn btn-xs w-full h-full py-6 text-lg flex justify-center items-center gap-2 text-gray-600 hover:bg-gray-400 transition-colors duration-300">
                                     <i class="{{ $module['icon'] }}"></i> {{ $module['label'] }}
                                 </a>
                             </div>
@@ -39,7 +41,6 @@
                         </div>--}}
                     @endforeach
                 </div>
-
             </div>
         </div>
     @else
@@ -53,6 +54,5 @@
             </div>
         </div>
     @endif
-
 @endsection
 

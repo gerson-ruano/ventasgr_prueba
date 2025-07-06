@@ -55,6 +55,11 @@
         border-b border-gray-200 dark:border-gray-600;
     }
 
+    .table_compact td,
+    .table_compact th {
+        @apply py-1 px-2 text-xs;
+    }
+
 
     button-primary {
         @apply bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded;

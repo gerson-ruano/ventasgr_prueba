@@ -36,7 +36,8 @@
         "files": [
             "app/Helpers/SaleStatusMessage.php",
             "app/Helpers/NameSeller.php",
-            "app/Helpers/Admin.php"
+            "app/Helpers/Admin.php",
+            "app/Helpers/getUserModules.php"
         ]
     },
     "autoload-dev": {

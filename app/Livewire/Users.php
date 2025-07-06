@@ -18,7 +18,7 @@ class Users extends Component
     use WithFileUploads;
     use WithPagination;
 
-    public $name, $phone, $email, $status, $image, $password, $selected_id, $fileLoaded, $profile;
+    public $name, $phone, $email, $status, $image, $password, $selected_id, $fileLoaded, $profile, $tema;
     public $pageTitle, $componentName, $search, $perfilSeleccionado, $imageUrl;
 
     private $pagination = 10;
@@ -33,6 +33,7 @@ class Users extends Component
             'phone' => 'max:8',
             'status' => 'required|not_in:Elegir',
             'profile' => 'required|not_in:Elegir',
+            'tema' => 'nullable|in:0,1', // Tema del usuario
         ];
 
         $messages = [
@@ -132,7 +133,8 @@ class Users extends Component
                 'phone' => $this->phone,
                 'status' => $this->status,
                 'profile' => $this->profile,
-                'password' => bcrypt($this->password)
+                'password' => bcrypt($this->password),
+                'tema' => 1// Valor por defecto para el tema
             ]);
 
             //$user->syncRoles($this->profile);
@@ -186,6 +188,7 @@ class Users extends Component
         $this->email = $user->email;
         $this->imageUrl = $user->image ? Storage::url('users/' . $user->image) : null;
         $this->password = '';
+        $this->tema = $user->tema ?? 1; // Asignar tema por defecto si no está definido
 
         $this->profile = $user->roles->first()->id ?? $this->profile;
 
@@ -207,6 +210,7 @@ class Users extends Component
                 'phone' => $this->phone,
                 'status' => $this->status,
                 'profile' => $this->profile,
+                'tema' => $this->tema, // Actualizar tema
             ];
 
             if (!empty($this->password)) {

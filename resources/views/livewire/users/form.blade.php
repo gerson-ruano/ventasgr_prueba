@@ -7,6 +7,8 @@
                 {{ $selected_id ? 'Editar Usuario' : 'Nuevo  Usuario' }}
             </h2>
 
+            {{--dd($user)--}}
+
             <form wire:submit.prevent="{{ $selected_id ? 'update' : 'store' }}">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="mb-4">
@@ -49,7 +51,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 w-full">
+                        <div class="flex flex-col items-stretch mb-2 mr-1 ml-1 w-full">
                             @include('livewire.components.select_filtro', [
                                                 'default' => 'Elegir',
                                                 'val_default' => 'Elegir',
@@ -59,8 +61,17 @@
                                             ])
                         </div>
                     </div>
-
                     <div class="mb-4">
+                        <label for="select_teme" class="block text-sm font-medium text-gray-700 text-center mt-1">Tema</label>
+                        <select wire:model="tema" id="select_teme" class="select select-info w-full">
+                            <option value="1" selected>Light</option>
+                            <option value="0" selected>Dark</option>
+                        </select>
+                        @error('tema') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
+                    </div>
+
+
+                    <div class="mb-4 text-center">
                         <label for="image" class="block text-sm font-medium text-gray-700">Imagen</label>
                         @if ($image)
                             <div class="flex justify-center mb-2">
@@ -77,6 +88,8 @@
                                class="file-input file-input-bordered file-input-accent w-full mt-1">
                         @error('image') <span class="text-red-500 text-sm">{{ $message }}</span>@enderror
                     </div>
+
+
                 </div>
 
                 <div class="flex justify-end mt-4">

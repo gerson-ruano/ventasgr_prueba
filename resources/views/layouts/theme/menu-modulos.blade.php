@@ -14,7 +14,7 @@
     }
 </style>
 
-
+{{--}}
 <ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0 z-50">
     <li class="">
         <a href="{{ url('home') }}"
@@ -26,7 +26,6 @@
         <details>
             <summary <a
                 class="border dark:border-gray-200 {{ Auth::user()->hasRole('Admin|Seller|Employee') ? '' : 'opacity-50 pointer-events-none' }}">
-                {{-- }}href="{{url('pos')}}"> --}}
                 <i class="fas fa-shopping-cart"></i>Venta</a>
             </summary>
 
@@ -144,11 +143,47 @@
         </a>
     </li>
     <li>
-        <div>
-            {{-- @include('partials.search')
-            <livewire:components.searchbox :model="'search'" /> --}}
-        </div>
     </li>
+    <li class="ml-auto">
+        <livewire:layout.navigation />
+    </li>
+</ul>
+--}}
+
+<ul class="menu lg:menu-horizontal w-full bg-base-200 lg:mb-0 z-50">
+    <li>
+        <a href="{{ route('home') }}" class="flex items-center">
+            <i class="fas fa-home mr-1"></i>Home
+        </a>
+    </li>
+
+    @foreach(getUserModules() as $key => $module)
+        @if(isset($module['children']))
+            <li>
+                <details>
+                    <summary class="flex items-center cursor-pointer">
+                        <i class="{{ $module['icon'] }} mr-1"></i>{{ $module['label'] }}
+                    </summary>
+                    <ul>
+                        @foreach($module['children'] as $childKey => $child)
+                            <li>
+                                <a href="{{ route($child['route']) }}" class="flex items-center">
+                                    <i class="{{ $child['icon'] }} mr-1"></i>{{ $child['label'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </details>
+            </li>
+        @else
+            <li>
+                <a href="{{ route($module['route']) }}" class="flex items-center">
+                    <i class="{{ $module['icon'] }} mr-1"></i>{{ $module['label'] }}
+                </a>
+            </li>
+        @endif
+    @endforeach
+
     <li class="ml-auto">
         <livewire:layout.navigation />
     </li>
