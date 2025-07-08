@@ -2,7 +2,8 @@
     <table width="100%" cellpadding="0" cellspacing="0" style="text-align: left;">
         <tr>
             <td width="20%" style="vertical-align: top;">
-                <img src="{{ asset('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">
+                {{--}}<img src="{{ asset('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">--}}
+                <img src="{{ $empresa->imagen }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">
             </td>
             <td width="80%">
                 <div class="empresa-header" style="line-height: 1.2;">

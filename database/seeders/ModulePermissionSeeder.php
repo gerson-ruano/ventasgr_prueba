@@ -44,17 +44,23 @@ class ModulePermissionSeeder extends Seeder
                 'categories.update',
                 'categories.delete'
             ],
+            'companies' => [
+                'companies.view',
+                'companies.create',
+                'companies.update',
+                'companies.delete'
+            ],
             'denominations' => [
                 'denominations.view',
                 'denominations.create',
                 'denominations.update',
                 'denominations.delete'
             ],
-            'cierre' => [
-                'cierre.view',
-                'cierre.details',
-                'cierre.pdf',
-                'cierre.excel'
+            'cashout' => [
+                'cashout.view',
+                'cashout.details',
+                'cashout.pdf',
+                'cashout.excel'
             ],
             'reports' => [
                 'reports.view',
@@ -63,9 +69,9 @@ class ModulePermissionSeeder extends Seeder
                 'reports.pdf',
                 'reports.excel'
             ],
-            'grafics' => [
-                'grafics.view',
-                'grafics.details'
+            'graphics' => [
+                'graphics.view',
+                'graphics.details'
             ],
             'assign' => [
                 'assign.view',
@@ -76,6 +82,10 @@ class ModulePermissionSeeder extends Seeder
             'pos' => [
                 'pos.view',
                 'pos.details'
+            ],
+            'api' => [
+                'api.view',
+                'api.create'
             ],
             // Agrega más módulos y sus permisos
         ];
@@ -105,14 +115,15 @@ class ModulePermissionSeeder extends Seeder
             'roles' => 'Roles',
             'products' => 'Productos',
             'categories' => 'Categorias',
+            'companies' => 'Compañías',
             'permissions' => 'Permisos',
-            'denominations' => 'Billetes',
-            'cierre' => 'Cierre de Caja',
+            'denominations' => 'Monedas',
+            'cashout' => 'Cierre Caja',
             'reports' => 'Reportes',
-            'grafics' => 'Estadistica',
-            'assign' => 'Asigar',
+            'graphics' => 'Graficas y Estadistica',
+            'assign' => 'Asignar',
             'pos' => 'Ventas',
-            'factus' => 'Factus',
+            'api' => 'Factus',
         ];
         return $traslation[$moduleName] ?? $moduleName;
     }

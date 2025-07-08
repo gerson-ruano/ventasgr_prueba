@@ -1,6 +1,6 @@
 <div>
     <!-- Header Section -->
-    <div class="flex justify-center items-center mt-1 mb-1 mr-1 ml-1">
+    <div class="flex justify-center items-center mt-4 mb-1 mr-1 ml-1">
         <h4 class="font-bold text-2xl mr-2">
             {{ $componentName }}
         </h4>
@@ -23,9 +23,12 @@
                 @endforeach
             </select>
         </div>
-        @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'syncAllFromModule','icon' => 'check-circle', 'title' => 'Asignar Modulo'])
-        @include('livewire.components.button_add', ['color' => 'primary' ,'model' => 'SyncAll','icon' => 'universal-access', 'title' => 'Asignar Todos'])
-        @include('livewire.components.button_add', ['color' => 'warning' ,'model' => 'Removeall','icon' => 'times-circle', 'title' => 'Revocar Todos'])
+        <div class="flex items-center ml-2 space-x-2">
+            <livewire:components.searchbox :model="'search'"/>
+            @include('livewire.components.button_add', ['color' => 'accent' ,'model' => 'syncAllFromModule','icon' => 'check-circle', 'title' => 'Asignar Modulo'])
+            @include('livewire.components.button_add', ['color' => 'primary' ,'model' => 'SyncAll','icon' => 'universal-access', 'title' => 'Asignar Todos'])
+            @include('livewire.components.button_add', ['color' => 'warning' ,'model' => 'Removeall','icon' => 'times-circle', 'title' => 'Revocar Todos'])
+        </div>
     </div>
 
     <!-- Table Section -->

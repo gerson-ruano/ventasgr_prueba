@@ -38,7 +38,7 @@
             </div>
 
             {{-- Botón adicional --}}
-            @can('factus.create')
+            @can('api.create')
                 <div class="w-full sm:w-auto">
                     @include('livewire.components.button_add', [
                         'color' => 'success',

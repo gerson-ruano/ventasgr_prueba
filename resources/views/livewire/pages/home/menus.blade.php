@@ -9,7 +9,7 @@
             <div class="card w-full max-w-4xl p-6">
                 <div class="text-center mb-6 mt-4">
                     <h1 class="text-2xl font-bold mb-1">Opciones de {{ $moduleLabel }}</h1>
-                    <p class="text-gray-300 font-semibold mb-2">Selecciona una opción para comenzar.</p>
+                    <p class="text-gray-300 font-semibold mb-2">Selecciona una opción para comenzar...</p>
                 </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-6">

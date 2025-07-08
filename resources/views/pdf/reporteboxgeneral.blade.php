@@ -77,7 +77,10 @@
             <table width="100%" cellpadding="0" cellspacing="0" style="text-align: left;">
                 <tr>
                     <td width="20%" style="vertical-align: top; padding: 10px;">
-                        <img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">
+                        {{--dd($empresa->imagen--}}
+
+                        <img src="{{ $empresa->imagen_pdf }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">
+                        {{--}}<img src="{{ public_path('img/ventasgr_logo.png') }}" alt="Logo VentasGR" class="invoice-logo" style="max-width: 80px;">--}}
                     </td>
 
                     <!--td colspan="2" style="padding: 10px; text-align: center;"-->

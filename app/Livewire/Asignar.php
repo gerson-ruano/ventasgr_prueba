@@ -38,14 +38,15 @@ class Asignar extends Component
             'roles' => 'Roles',
             'products' => 'Productos',
             'categories' => 'Categorias',
+            'companies' => 'Compañías',
             'permissions' => 'Permisos',
-            'denominations' => 'Billetes',
-            'cierre' => 'Cierre de Caja',
+            'denominations' => 'Monedas',
+            'cashout' => 'Cierre Caja',
             'reports' => 'Reportes',
-            'grafics' => 'Estadistica',
+            'graphics' => 'Graficas y Estadistica',
             'assign' => 'Asignar',
             'pos' => 'Ventas',
-            'factus' => 'Factus',
+            'api' => 'Factus',
             // Agrega más módulos según necesites
         ];
 

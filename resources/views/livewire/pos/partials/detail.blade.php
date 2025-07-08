@@ -112,7 +112,7 @@
              class="alert alert-warning text-center w-full max-w-lg p-6 bg-gradient-to-r from-yellow-200 via-yellow-300 to-yellow-400 rounded-lg shadow-lg transform transition-transform duration-300 ease-in-out scale-100 hover:scale-105">
             <i class="fas fa-info-circle text-2xl text-yellow-700"></i>
             <div class="mt-2">
-                <h3 class="font-bold text-lg text-yellow-800">No hay productos en la venta!</h3>
+                <h3 class="font-bold text-lg text-yellow-800">No hay productos agregados en la venta!</h3>
                 <p class="text-sm text-yellow-700">Agrega productos, ingresando el CODIGO respectivo ejem. #205</p>
             </div>
         </div>

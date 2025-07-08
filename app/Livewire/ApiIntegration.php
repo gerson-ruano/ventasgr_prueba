@@ -142,7 +142,7 @@ class ApiIntegration extends Component
     public function index($page = 1)
     {
 
-        $this->authorize('factus.view', $user = Auth::user());
+        $this->authorize('api.view', $user = Auth::user());
         $this->apiAuthService = app(ApiAuthService::class);
         if (!$this->apiAuthService) {
             session()->flash('error', 'El servicio de autenticación no está disponible...');

@@ -2392,7 +2392,7 @@ building:
       - apartment
       - business
       - city
-      - company
+      - companies
       - office
       - work
   styles:

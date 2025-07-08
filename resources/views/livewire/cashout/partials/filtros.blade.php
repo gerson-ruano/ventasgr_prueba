@@ -55,6 +55,8 @@
     </div>
 
 
+
+
     <!-- Buttons -->
     {{--}}<div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2">
         <button wire:click.prevent="Consultar()" class="btn btn-accent text-xs mb-1"
@@ -71,7 +73,7 @@
         </button>
 
         @if($userid && $fromDate && $toDate)
-            @can('cierre.pdf')
+            @can('cashout.pdf')
             <a class="btn btn-primary"
                href="{{ url('report/box' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
                target="_blank"><i class="fas fa-file-pdf"></i>
@@ -79,7 +81,7 @@
             </a>
             @endcan
 
-            @can('cierre.excel')
+            @can('cashout.excel')
             <a class="btn btn-primary mb-3"
                href="{{ url('report-excel' . '/' . $userid . '/' . $fromDate . '/' . $toDate) }}"
                target="_blank"><i class="fas fa-file-excel"></i>

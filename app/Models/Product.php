@@ -36,7 +36,7 @@ class Product extends Model
             return asset($imagePath);
         } else {
             // Si la imagen no existe, muestra la imagen por defecto
-            return asset('assets/img/noimg.jpg');
+            return asset('img/noimg.jpg');
         }
     }
 

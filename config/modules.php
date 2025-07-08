@@ -50,7 +50,7 @@ return [
                 'route' => 'reports',
                 'roles' => ['Admin'],
             ],
-            'grapics' => [
+            'graphics' => [
                 'label' => 'Graficas y Estadisticas',
                 'icon' => 'fas fa-chart-bar',
                 'route' => 'graphics',
@@ -75,13 +75,13 @@ return [
                 'route' => 'roles',
                 'roles' => ['Admin'],
             ],
-            'permisos' => [
+            'permissions' => [
                 'label' => 'Permisos',
                 'icon' => 'fas fa-user-lock',
                 'route' => 'permisos',
                 'roles' => ['Admin'],
             ],
-            'asignar' => [
+            'assign' => [
                 'label' => 'Asignar Permisos',
                 'icon' => 'fas fa-check-square',
                 'route' => 'asignar',
@@ -94,13 +94,19 @@ return [
         'icon' => 'fas fa-cogs',
         'roles' => ['Admin'],
         'children' => [
-            'configuracion' => [
+            'config' => [
                 'label' => 'Configuraciones del sistema',
                 'icon' => 'fas fa-sliders-h',
-                'route' => 'configuracion',
+                'route' => 'config',
                 'roles' => ['Admin'],
             ],
-            'coins' => [
+            'companies' => [
+                'label' => 'Compañias',
+                'icon' => 'fas fa-id-card',
+                'route' => 'companies',
+                'roles' => ['Admin'],
+            ],
+            'denominations' => [
                 'label' => 'Monedas',
                 'icon' => 'fas fa-money-bill-wave',
                 'route' => 'coins',

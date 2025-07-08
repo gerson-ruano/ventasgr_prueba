@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'email'=>'toge619@gmail.com',
             'profile'=>'Admin',
             'status'=>'Active',
+            'tema'=> 1,
             'password'=>bcrypt('12341234')
         ]);
         $adminUser->assignRole($adminRole);
@@ -32,6 +33,7 @@ class UserSeeder extends Seeder
             'email'=>'employee@gmail.com',
             'profile'=>'Employee',
             'status'=>'Active',
+            'tema'=> 1,
             'password'=>bcrypt('12341234')
         ]);
         $employeeUser->assignRole($employeeRole);
@@ -41,6 +43,7 @@ class UserSeeder extends Seeder
             'email'=>'seller@gmail.com',
             'profile'=>'Seller',
             'status'=>'Active',
+            'tema'=> 1,
             'password'=>bcrypt('12341234')
         ]);
         $sellerUser->assignRole($sellerRole);

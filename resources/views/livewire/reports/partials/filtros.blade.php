@@ -12,14 +12,7 @@
                 ])
     </div>
     {{--Filtro de TIPO DE REPORTE--}}
-    <div class="flex flex-col items-stretch mb-2 mr-2 ml-2 mt-1 w-full md:w-2/3">
-        {{--@include('livewire.components.select_filtro', [
-                    'default' => 'Elegir',
-                    'val_default' => 0,
-                    'title' => 'Tipo de Reporte',
-                    'model' => 'reportType',
-                    'valores' => $valoresReporte
-                ])--}}
+    <div class="flex flex-col items-stretch mb-1 mr-2 ml-2 mt-1 w-full md:w-2/3">
         @include('livewire.components.select_filtro', [
                             'default' => 'Elegir',
                             'val_default' => 0,
@@ -28,8 +21,30 @@
                             'valores' => $valoresReporte
                         ])
     </div>
+
+    <div class="flex flex-col md:flex-row gap-4 w-full md:w-3/3 items-stretch mr-2 ml-2 mt-1">
+        <!-- Fecha Desde Selector -->
+        <div class="flex-1">
+            <h6 class="label-text text-lg font-medium text-center md:text-left">Fecha desde</h6>
+            <div class="form-control">
+                <input type="text" wire:model="dateFrom" class="input input-bordered flatpickr w-full"
+                       placeholder="Click para elegir" @if ($reportType == 0) disabled @endif>
+            </div>
+        </div>
+
+        <!-- Fecha Hasta Selector -->
+        <div class="flex-1">
+            <h6 class="label-text text-lg font-medium text-center md:text-left">Fecha hasta</h6>
+            <div class="form-control">
+                <input type="text" wire:model="dateTo" class="input input-bordered flatpickr w-full"
+                       placeholder="Click para elegir" @if ($reportType == 0) disabled @endif>
+            </div>
+        </div>
+    </div>
+
+
     {{--Filtro de TIPO DE PAGO--}}
-    <div class="flex flex-col items-stretch mr-2 ml-2 mt-1 w-full md:w-2/3">
+    <div class="flex flex-col items-stretch mb-1 mr-2 ml-2 mt-1 w-full md:w-2/3">
         @include('livewire.components.select_filtro', [
                     'default' => 'Todos',
                     'val_default' => 0,
@@ -39,33 +54,8 @@
                 ])
     </div>
 
-    <!-- Fecha Desde Selector -->
-    <div class="flex flex-col items-stretch w-full md:w-1/3">
-        <div class="w-full">
-            <h6 class="label-text text-lg font-medium text-center">Fecha desde</h6>
-            <div class="form-control">
-                <input type="text" wire:model="dateFrom" class="input input-bordered flatpickr"
-                       placeholder="Click para elegir" @if ($reportType == 0) disabled @endif>
-            </div>
-        </div>
-    </div>
-
-    <!-- Fecha Hasta Selector -->
-    <div class="flex flex-col items-stretch w-full md:w-1/3">
-        <div class="w-full">
-            <h6 class="label-text text-lg font-medium text-center">Fecha hasta</h6>
-            <div class="form-control">
-                <input type="text" wire:model="dateTo" class="input input-bordered flatpickr"
-                       placeholder="Click para elegir"
-                       @if ($reportType == 0 )
-                           disabled
-                    @endif>
-            </div>
-        </div>
-    </div>
-
     <!-- Buttons PDF / EXCEL -->
-    <div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2">
+    <div class="flex flex-wrap justify-center space-y-2 md:space-y-0 md:space-x-2 mb-2 mt-2 w-full md:w-3/3">
         <button wire:click="$refresh" class="btn btn-accent text-xs mb-1">
             <i class="fas fa-paper-plane"></i> Consultar
         </button>

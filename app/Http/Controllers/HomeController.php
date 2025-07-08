@@ -32,7 +32,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('livewire.pages.home.home', compact('modules'));
+        return view('livewire.pages.home.modules', compact('modules'));
     }
 
     public function showModule($module)
@@ -55,7 +55,7 @@ class HomeController extends Controller
             }
         }
 
-        return view('livewire.pages.home.module', [
+        return view('livewire.pages.home.menus', [
             'moduleLabel' => $config['label'] ?? ucfirst($module),
             'children' => $children,
         ]);

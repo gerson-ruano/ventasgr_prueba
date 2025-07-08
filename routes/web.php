@@ -16,16 +16,17 @@ use App\Http\Controllers\GraphicsController;
 use App\Livewire\ApiIntegration;
 use App\Http\Controllers\HomeController;
 use App\Livewire\Settings\Components;
+use App\Livewire\Companies;
 
 
 Route::fallback(function () {
     return response()->view('errors.404', [], 404);
 });
 
+Route::redirect('/', '/login');
+
 // Actualizar Tema de Usuario
 Route::middleware('auth')->post('/user/update-theme', [Users::class, 'updateTheme'])->name('user.update-theme');
-
-Route::redirect('/', '/login');
 
 Route::middleware(['auth','checkStatus'])->group(function () {
     Route::view('profile', 'profile')->name('profile');
@@ -34,7 +35,8 @@ Route::middleware(['auth','checkStatus'])->group(function () {
 
 //Route::prefix('admin')->middleware(['permission'])->group(function () {
     Route::middleware(['role:Admin'])->group(function () {
-        Route::get('configuracion', Components::class)->name('configuracion');
+        Route::get('config', Components::class)->name('config');
+        Route::get('companies', Companies::class)->name('companies');
         Route::get('users', Users::class)->name('users');
         Route::get('roles', Roles::class)->name('roles');
         Route::get('permisos', Permisos::class)->name('permisos');
