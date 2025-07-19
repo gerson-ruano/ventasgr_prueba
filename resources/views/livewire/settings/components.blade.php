@@ -17,7 +17,15 @@
 
                     @switch($setting->type)
                         @case('boolean')
-                            <input type="checkbox" class="toggle" wire:model.lazy="settings.{{ $setting->key }}">
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" class="toggle"
+                                       wire:model.lazy="settings.{{ $setting->key }}"
+                                    @checked($settings[$setting->key] ?? false)>
+
+                                <span class="text-sm font-medium">
+                                    {{ ($settings[$setting->key] ?? false) ? 'Activado' : 'Desactivado' }}
+                                </span>
+                            </div>
                             @break
 
                         @case('number')

@@ -23,11 +23,11 @@
                 <div class="flex items-center space-x-2" style="font-size: 16px;">
                     <strong>VENTA # {{ $getNextSaleNumber }}</strong>
                     <span class="status-message
-        {{ trim($statusMessage) === '"en proceso.."' ? 'text-blue' :
-            (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' :
-            (trim($statusMessage) === '"anulada"' ? 'text-gray' : 'text-green')) }}">
-        {{ $statusMessage }}
-    </span>
+                        {{ trim($statusMessage) === '"en proceso.."' ? 'text-blue' :
+                            (trim($statusMessage) === '"pendiente de pago"' ? 'text-red' :
+                            (trim($statusMessage) === '"anulada"' ? 'text-gray' : 'text-green')) }}">
+                        {{ $statusMessage }}
+                    </span>
                 </div>
                 @if($seller == 'Cliente')
                     <div class="mt-2" style="font-size: 14px;">

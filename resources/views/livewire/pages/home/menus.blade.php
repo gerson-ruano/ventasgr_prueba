@@ -12,19 +12,24 @@
                     <p class="text-gray-300 font-semibold mb-2">Selecciona una opción para comenzar...</p>
                 </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-6">
-                @foreach($children as $child)
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-6">
+                    @foreach($children as $child)
+                        <div class="card bg-base-100 shadow-lg p-4">
+                            <a href="{{ $child['route'] }}"
+                               class="w-full block text-center bg-gray-100 hover:bg-gray-400 transition-colors duration-300 rounded-lg px-4 py-3 text-gray-800">
+                                <div class="flex flex-col items-center justify-center space-y-2">
+                                    <i class="{{ $child['icon'] }} text-2xl"></i>
+                                    <span class="text-sm sm:text-base break-words text-wrap leading-tight">
+                        {{ $child['label'] }}
+                    </span>
+                                </div>
+                            </a>
+                        </div>
+                    @endforeach
+                </div>
 
-                    <div class="card bg-base-100 shadow-lg p-4 text-center">
-                        <a href="{{ $child['route'] }}" class="btn btn-xs sm:btn-sm md:btn-md lg:btn-lg xl:btn-xl text-lg flex justify-center items-center gap-2 text-gray-600 hover:bg-gray-400 transition-colors duration-300">
-                            <i class="fa fa-arrow-right mr-1"></i> <i
-                                class="{{ $child['icon'] }} text-xl leading-none"></i> {{ $child['label'] }}
-                        </a>
-                    </div>
-                @endforeach
-            </div>
 
-    @else
+            @else
         <div class="flex items-center justify-center min-h-screen px-4">
             <div
                 class="card w-full max-w-md p-6 bg-gradient-to-r from-blue-200 via-blue-300 to-blue-400 rounded-lg shadow-lg text-center">

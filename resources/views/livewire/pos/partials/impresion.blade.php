@@ -89,17 +89,17 @@
             <div class="flex justify-between">
                 <span>Ingresado:</span>
                 <span class="{{ $efectivo == 0 ? 'text-red-500' : '' }}">
-                    Q {{ number_format($efectivo, 2) }}
+                    {{$currency}} {{ number_format($efectivo, 2) }}
                 </span>
             </div>
             <div class="flex justify-between">
                 <span>Total:</span>
-                <span>Q {{ number_format($totalPrice, 2) }}</span>
+                <span>{{$currency}} {{ number_format($totalPrice, 2) }}</span>
             </div>
             <div class="flex justify-between">
                 <span>Cambio:</span>
                 <span class="{{ $change < 0 ? 'text-red-400' : '' }}">
-                    {{ $change == 0 ? 'SIN CAMBIO' : 'Q ' . number_format(abs($change), 2) }}
+                    {{ $change == 0 ? 'SIN CAMBIO' : $currency.' ' . number_format(abs($change), 2) }}
                 </span>
             </div>
             <div class="flex justify-between">
@@ -112,20 +112,22 @@
             </div>
             <div class="border-t mt-1 pt-1">
                 <div class="flex justify-between">
-                    <span>IVA (12%):</span>
-                    <span>Q {{ number_format($totalTaxes, 2) }}</span>
+                    <span>IVA ({{ number_format(setting('pos_tax_rate', 0.12) * 100, 0) }}%):</span>
+                    <span>{{$currency}} {{number_format($totalTaxes, 2) }}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span>Descuento:</span>
-                    <span>Q {{ number_format($discount, 2) }}</span>
+                    <span>Descuento ({{ intval(setting('pos_discount_rate', 0.05) * 100) }}%):</span>
+                    <span>{{$currency}} {{ number_format($discount, 2) }}</span>
+
+
                 </div>
                 <div class="flex justify-between">
                     <span>Subtotal:</span>
-                    <span>Q {{ number_format($totalPrice - $discount - $totalTaxes, 2) }}</span>
+                    <span>{{$currency}} {{ number_format($totalPrice - $discount - $totalTaxes, 2) }}</span>
                 </div>
                 <div class="flex justify-between font-bold">
                     <span>Total:</span>
-                    <span>Q {{ number_format($totalPrice, 2) }}</span>
+                    <span>{{$currency}} {{ number_format($totalPrice, 2) }}</span>
                 </div>
             </div>
         </div>

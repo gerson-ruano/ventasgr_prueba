@@ -59,20 +59,25 @@ class Products extends Component
 
     public function render()
     {
-        $query = Product::orderBy('id', 'desc');
+        $showProducts = setting('products_show_stock', true); // Valor por defecto: true
 
-        // Aplicar filtro de búsqueda por nombre
-        if ($this->search) {
-            $query->where('name', 'like', '%' . $this->search . '%');
+        $products = collect(); // Vacío por defecto
+
+        if ($showProducts) {
+            $query = Product::orderBy('id', 'desc');
+
+            if ($this->search) {
+                $query->where('name', 'like', '%' . $this->search . '%');
+            }
+
+            $products = $query->paginate($this->pagination);
         }
-
-        // Obtener productos paginados
-        $products = $query->paginate($this->pagination);
 
 
         return view('livewire.products.components', [
             'products' => $products,
-            'categories' => Category::orderBy('name', 'asc')->get()])
+            'categories' => Category::orderBy('name', 'asc')->get()
+        ])
             ->extends('layouts.app')
             ->section('content');
 

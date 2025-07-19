@@ -23,11 +23,10 @@ class GraphicsController extends Controller
         $productSales = $this->productTop();
         $stockProducts = $this->productosConMenosExistencias();
 
-        $stock = 10; // Valor por defecto
-        if ($stockProducts->isNotEmpty()) {
-            // Si se encontraron productos con stock bajo, obtenemos el stock bajo de la primera posición
-            $stock = $stockProducts->first()->alerts;
-            $datosDeVentas = $this->obtenerDatosDeVentas($stock);
+        $stock = setting('low_stock', 10); // Valor por defecto
+
+        if ($stockProducts->isNotEmpty() && is_numeric($stockProducts->first()->alerts)) {
+            $stock = (int) $stockProducts->first()->alerts;
         }
         // Obtener las ventas con el stock determinado
         $datosDeVentas = $this->obtenerDatosDeVentas($stock);

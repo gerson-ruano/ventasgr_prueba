@@ -156,7 +156,6 @@
             <i class="fas fa-home mr-1"></i>Home
         </a>
     </li>
-
     @foreach(getUserModules() as $key => $module)
         @if(isset($module['children']))
             <li>

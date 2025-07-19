@@ -10,7 +10,7 @@
 {{--<link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />--}}
 
 {{--<partials type="text/javascript" src="{{ asset('js/pages/dashboard.js') }}"></partials>--}}
-<link rel="stylesheet" href="{{'fontawesome-free-5.15.4/css/all.min.css'}}">
+<link rel="stylesheet" href="{{ asset('fontawesome-free-5.15.4/css/all.min.css')}}">
 
 <!-- Scripts -->
 @vite(['resources/js/app.js','resources/css/app.css'])

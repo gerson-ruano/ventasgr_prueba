@@ -9,9 +9,11 @@
 <body class="fondo-app font-sans antialiased min-h-screen flex flex-col">
 
     <!-- Menu Modulos -->
-    @if (!Request::is('home*'))
+    {{--}}@if (!Request::is('home*'))
         @include('layouts.theme.menu-modulos')
-    @endif
+    @endif--}}
+
+    @include('layouts.theme.menu-modulos')
 
 <div class="flex-grow flex flex-col">
 
