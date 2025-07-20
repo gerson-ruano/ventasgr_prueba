@@ -1,7 +1,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-<title>{{  config('app.name')}}</title>
+<title>{{  setting('app_name')}}</title>
 <link rel="shortcut icon" href="{{ asset('img/favicongr.ico') }}">
 {{--<link rel="icon" type="image/x-icon" href="assets/img/favicongr.ico" />--}}
 
@@ -18,15 +18,10 @@
 @livewireStyles
 
 {{--<partials src="//unpkg.com/alpinejs" defer></partials>--}}
-
 <script>
-    // Opcional: para evitar flicker al cambiar el tema
-    const tema = "{{ auth()->user()->tema }}";
-    if (tema == 0) {
-        document.documentElement.classList.add('dark');
-        document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.setAttribute('data-theme', 'light');
-    }
+    // Aplica el tema desde localStorage lo antes posible para evitar parpadeos
+    const theme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
 </script>
+

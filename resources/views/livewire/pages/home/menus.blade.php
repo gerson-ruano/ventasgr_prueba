@@ -8,7 +8,7 @@
         <div class="flex justify-center items-center p-4">
             <div class="card w-full max-w-4xl p-6">
                 <div class="text-center mb-6 mt-4">
-                    <h1 class="text-2xl font-bold mb-1">Opciones de {{ $moduleLabel }}</h1>
+                    <h1 class="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Opciones de {{ $moduleLabel }}</h1>
                     <p class="text-gray-300 font-semibold mb-2">Selecciona una opción para comenzar...</p>
                 </div>
 
@@ -20,8 +20,8 @@
                                 <div class="flex flex-col items-center justify-center space-y-2">
                                     <i class="{{ $child['icon'] }} text-2xl"></i>
                                     <span class="text-sm sm:text-base break-words text-wrap leading-tight">
-                        {{ $child['label'] }}
-                    </span>
+                                        {{ $child['label'] }}
+                                    </span>
                                 </div>
                             </a>
                         </div>

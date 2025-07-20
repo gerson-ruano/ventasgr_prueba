@@ -4,6 +4,7 @@ namespace App\Livewire\Actions;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Http\RedirectResponse;
 
 class Logout
 {
@@ -16,5 +17,6 @@ class Logout
 
         Session::invalidate();
         Session::regenerateToken();
+
     }
 }

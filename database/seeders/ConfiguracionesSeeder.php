@@ -22,7 +22,7 @@ class ConfiguracionesSeeder extends Seeder
             ['key' => 'low_stock', 'value' => '10', 'type' => 'number'],
             ['key' => 'app_name', 'value' => 'Mi Sistema', 'type' => 'string'],
             /*['key' => 'app_logo', 'value' => 'img/ventasgr_logo.png', 'type' => 'string'],*/
-            ['key' => 'app_currency', 'value' => 'QTZ', 'type' => 'select', 'options' => 'QTZ,USD,EUR'],
+            ['key' => 'app_currency', 'value' => 'Q', 'type' => 'select', 'options' => 'Q,$,€'],
             ['key' => 'app_timezone', 'value' => 'America/Guatemala', 'type' => 'string'],
             ['key' => 'app_language', 'value' => 'en', 'type' => 'select', 'options' => 'en,es,fr,de'],
             ['key' => 'max_login_attempts', 'value' => '5', 'type' => 'number'],

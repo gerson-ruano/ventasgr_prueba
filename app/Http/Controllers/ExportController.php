@@ -25,17 +25,18 @@ class ExportController extends Controller
 {
     use PagoTrait;
     public $currentDate;
+    public $currency;
 
     public function __construct()
     {
         // Inicializa la fecha actual al crear la clase
         $this->currentDate = Carbon::now()->format('d-m-Y');
+        $this->currency = setting('app_currency', 'Q');
     }
 
     // REPORTE DE VENTAS GENERAL
     public function reportPDF($userId, $reportType, $dateFrom = null, $dateTo = null, $selectTipoEstado = null)
     {
-
         $data = [];
 
         if ($reportType == 0)  //VENTAS DEL DIA
@@ -72,8 +73,9 @@ class ExportController extends Controller
         }
         $empresa = $this->companyVentas();
         $usuario = $this->currentUser();
+        $currency = $this->currency;
 
-        $pdf = Pdf::loadView('pdf.reporte', compact('data', 'reportType', 'user', 'dateFrom', 'dateTo', 'selectTipoEstado', 'empresa','usuario'));
+        $pdf = Pdf::loadView('pdf.reporte', compact('data', 'reportType', 'user', 'dateFrom', 'dateTo', 'selectTipoEstado', 'empresa','usuario','currency'));
         //$pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
 
         return $pdf->stream("Reporte_{$this->currentDate}.pdf"); //visualizar
@@ -81,7 +83,7 @@ class ExportController extends Controller
     }
 
     // REPORTE DE CIERRE DE CAJA GENERAL
-    public function reportBoxGeneral($userid, $fromDate = null, $toDate = null)
+    public function reportBoxGeneral($userid, $fromDate = null, $toDate = null, $currency = null)
     {
 
         $from = Carbon::parse($fromDate)->startOfDay();
@@ -100,8 +102,9 @@ class ExportController extends Controller
         }
         $empresa = $this->companyVentas();
         $usuario = $this->currentUser();
+        $currency = $this->currency;
 
-        $pdf = Pdf::loadView('pdf.reporteboxgeneral', compact('data', 'user', 'fromDate', 'toDate', 'empresa','usuario'));
+        $pdf = Pdf::loadView('pdf.reporteboxgeneral', compact('data', 'user', 'fromDate', 'toDate', 'empresa','usuario','currency'));
         //$pdf = PDF\Pdf::loadView('pdf.reporte', compact('data', 'reportType','user','dateFrom','dateTo'));
 
         return $pdf->stream("ReporteBox_{$this->currentDate}.pdf"); //visualizar
@@ -118,6 +121,7 @@ class ExportController extends Controller
         $empresa = $this->companyVentas();
         $usuario = $this->currentUser();
         $customerData = json_decode(urldecode(request('customer_data')), true);
+        $currency = $this->currency;
 
         if (!$sale) {
             // Si la venta no existe aun, asignamos un valor predeterminado para evitar null
@@ -143,6 +147,7 @@ class ExportController extends Controller
             'totalTaxes' => $totalTaxes,
             'customer' => $customerData,
             'metodoPago' => $metodoPago,
+            'currency' => $this->currency,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
@@ -179,6 +184,7 @@ class ExportController extends Controller
             'empresa' => $empresa,
             'customer' => $sale->customer_data,
             'metodoPago' => $metodoPago,
+            'currency' => $this->currency,
         ]);
 
         // Devolver el PDF como una respuesta de streaming
@@ -214,6 +220,7 @@ class ExportController extends Controller
             'empresa' => $empresa,
             'customer' => $sale->customer_data,
             'metodoPago' => $metodoPago,
+            'currency' => $this->currency,
         ]);
 
         // Devolver el PDF como una respuesta de streaming

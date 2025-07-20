@@ -332,31 +332,44 @@
     });
 
     // Manejar el evento de cambio de TEMA
-    document.getElementById('themeToggle').addEventListener('change', function () {
+    document.addEventListener('DOMContentLoaded', function () {
         const html = document.documentElement;
-        const isDark = this.checked;
-        const newTheme = isDark ? 'dark' : 'light';
+        const themeToggle = document.getElementById('themeToggle');
 
-        html.setAttribute('data-theme', newTheme);
+        if (themeToggle) {
+            themeToggle.checked = html.classList.contains('dark');
 
-        if (isDark) {
-            html.classList.add('dark');
-        } else {
-            html.classList.remove('dark');
+            themeToggle.addEventListener('change', function () {
+                const isDark = this.checked;
+                const newTheme = isDark ? 'dark' : 'light';
+
+                html.setAttribute('data-theme', newTheme);
+                html.classList.toggle('dark', isDark);
+                localStorage.setItem('theme', newTheme);
+
+                // Guardar en base de datos
+                fetch("{{ route('user.update-theme') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({tema: isDark ? 0 : 1}) // dark=0, light=1
+                }).then(() => {
+                    console.log('Tema actualizado en base de datos');
+                });
+            });
         }
-
-        // Actualiza en la base de datos
-        fetch("{{ route('user.update-theme') }}", {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ tema: isDark ? 0 : 1 })  // dark=0, light=1
-        }).then(() => {
-            console.log('Tema actualizado en base de datos');
-        });
     });
 
+    document.addEventListener('DOMContentLoaded', function () {
+        @auth
+        const userTheme = {{ auth()->user()->tema }}; // 0 = dark, 1 = light
+        const newTheme = userTheme === 0 ? 'dark' : 'light';
+        localStorage.setItem('theme', newTheme);
+        @else
+        localStorage.removeItem('theme'); // Por default será light
+        @endauth
+    });
 </script>

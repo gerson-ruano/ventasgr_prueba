@@ -177,7 +177,7 @@
         <tfoot>
         <tr>
             <td colspan="2"><b>TOTALES:</b></td>
-            <td style="text-align: right;"><b>Q.{{ number_format($data->sum('total'), 2) }}</b></td>
+            <td style="text-align: right;"><b>{{$currency}}. {{ number_format($data->sum('total'), 2) }}</b></td>
             <td><b>{{ $data->sum('items') }}</b></td>
             <td colspan="4"></td>
         </tr>

@@ -87,7 +87,7 @@
                 <td align="center">{{ $loop->iteration }}</td>
                 <td align="center">{{ $item->name }}</td>
                 <td align="center">{{$item->qty}}</td>
-                <td>Q. {{ number_format($item->price, 2) }}</td>
+                <td>{{$currency}}. {{ number_format($item->price, 2) }}</td>
                 <td align="center">{{ $item->subtotal }}</td>
                 <td align="center">
                     @php
@@ -111,9 +111,9 @@
             <td align="center"><span><b>TOTALES:</b></span></td>
             <td colspan="1"></td>
             <td align="center" class="text-center"><strong>{{ $cart->sum('qty') }}</strong></td>
-            <td><strong>Q. {{ number_format($cart->sum('price'), 2) }}</strong></td>
+            <td><strong>{{$currency}}. {{ number_format($cart->sum('price'), 2) }}</strong></td>
             <td align="center">
-                <strong>Q. {{ number_format($cart->sum(function ($item) { return $item->price * $item->qty; }), 2) }}</strong>
+                <strong>{{$currency}}. {{ number_format($cart->sum(function ($item) { return $item->price * $item->qty; }), 2) }}</strong>
             </td>
             <td colspan="1"></td>
 
@@ -138,8 +138,8 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->product->name }}</td>
                 <td>{{ number_format($d->quantity, 2) }}</td>
-                <td>Q. {{ number_format($d->price, 2) }}</td>
-                <td>Q. {{ number_format($d->price * $d->quantity, 2) }}</td>
+                <td>{{$currency}}. {{ number_format($d->price, 2) }}</td>
+                <td>{{$currency}}. {{ number_format($d->price * $d->quantity, 2) }}</td>
             </tr>
         @endforeach
         </tbody>
@@ -147,9 +147,9 @@
         <tr>
             <td colspan="2"><strong>Totales:</strong></td>
             <td><strong>{{ number_format($details->sum('quantity'), 2) }}</strong></td>
-            <td><strong>Q. {{ number_format($details->sum('price'), 2) }}</strong></td>
+            <td><strong>{{$currency}}. {{ number_format($details->sum('price'), 2) }}</strong></td>
             <td>
-                <strong>Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</strong>
+                <strong>{{$currency}}. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</strong>
             </td>
         </tr>
         </tfoot>
@@ -171,11 +171,11 @@
     </thead>
     <tbody>
     <tr>
-        <td>Q. {{ number_format(($efectivo - $change) - $discount - $totalTaxes, 2) }}</td>
-        <td>Q. {{ number_format($efectivo, 2) }}</td>
-        <td>Q. {{ number_format($change, 2) }}</td>
-        <td>Q. {{ number_format($discount, 2) }}</td>
-        <td>Q. {{ number_format($totalTaxes, 2) }}</td>
+        <td>{{$currency}}. {{ number_format(($efectivo - $change) - $discount - $totalTaxes, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($efectivo, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($change, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($discount, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($totalTaxes, 2) }}</td>
         <td>{{ $usuario->name }}</td>
         <td>{{ \Carbon\Carbon::now()->format('H:i:s d-m-Y') }}</td>
     </tr>

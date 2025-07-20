@@ -83,8 +83,8 @@
             <td>{{ $loop->iteration }}</td>
             <td>{{ $d->product->name }}</td>
             <td>{{ number_format($d->quantity, 2) }}</td>
-            <td>Q. {{ number_format($d->price, 2) }}</td>
-            <td>Q. {{ number_format($d->price * $d->quantity, 2) }}</td>
+            <td>{{$currency}}. {{ number_format($d->price, 2) }}</td>
+            <td>{{$currency}}. {{ number_format($d->price * $d->quantity, 2) }}</td>
         </tr>
     @endforeach
     </tbody>
@@ -92,8 +92,8 @@
     <tr>
         <td colspan="2"><strong>Totales:</strong></td>
         <td><strong>{{ number_format($details->sum('quantity'), 2) }}</strong></td>
-        <td><strong>Q. {{ number_format($details->sum('price'), 2) }}</strong></td>
-        <td><strong>Q. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</strong>
+        <td><strong>{{$currency}}. {{ number_format($details->sum('price'), 2) }}</strong></td>
+        <td><strong>{{$currency}}. {{ number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) }}</strong>
         </td>
     </tr>
     </tfoot>
@@ -116,11 +116,11 @@
     <tbody>
     <tr>
         <td>
-            Q. {{ number_format(($sale->cash - $sale->change) - $sale->details->first()->discount - $sale->taxes, 2) }}</td>
-        <td>Q. {{ number_format($sale->cash, 2) }}</td>
-        <td>Q. {{ number_format($sale->change, 2) }}</td>
-        <td>Q. {{ number_format($sale->taxes, 2) }}</td>
-        <td>Q. {{ $sale->details->first()->discount }}</td>
+            {{$currency}}. {{ number_format(($sale->cash - $sale->change) - $sale->details->first()->discount - $sale->taxes, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($sale->cash, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($sale->change, 2) }}</td>
+        <td>{{$currency}}. {{ number_format($sale->taxes, 2) }}</td>
+        <td>{{$currency}}. {{ $sale->details->first()->discount }}</td>
         <td>{{ $statusTranslations[$sale->status] ?? $sale->status }}</td>
         <td>{{ \Carbon\Carbon::parse($sale->created_at)->format('d-m-Y H:i') }}</td>
         @if($sale->created_at != $sale->updated_at)
