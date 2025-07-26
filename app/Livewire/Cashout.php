@@ -21,6 +21,8 @@ class Cashout extends Component
     public $isModalOpen = false;
     public $saleId;
 
+    public $currency = '';
+
     public function paginationView()
     {
         return 'vendor.livewire.tailwind';
@@ -34,6 +36,7 @@ class Cashout extends Component
         $this->total = 0;
         $this->sales = [];
         $this->details = [];
+        $this->currency = setting('app_currency', 'Q');
     }
 
     public function render()

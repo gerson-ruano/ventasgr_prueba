@@ -106,7 +106,7 @@
         <th>Subtotal</th>
         <th>Efectivo</th>
         <th>Cambio</th>
-        <th>Impuestos</th>
+        <th>Iva</th>
         <th>Descuento</th>
         <th>Estado</th>
         <th>Ingreso</th>

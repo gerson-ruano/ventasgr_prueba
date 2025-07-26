@@ -7,7 +7,7 @@
             @if ($d->value > 0)
                 <div class="mt-2 mb-2 mr-2 ml-2">
                     <button wire:click.prevent="ACash({{ $d->value }})" class="btn btn-info btn-block text-xs">
-                        Q {{ number_format($d->value, 2, '.', '') }}
+                        {{$currency}} {{ number_format($d->value, 2, '.', '') }}
                     </button>
                 </div>
             @endif
@@ -18,7 +18,7 @@
             <button wire:click.prevent="ACash(0)"
                 class="btn btn-primary btn-block text-xs {{ $efectivo >= $totalPrice ? 'btn-disabled opacity-50' : '' }}"
                 {{ $efectivo >= $totalPrice ? 'disabled' : '' }}>
-                Q Exacto
+                {{$currency}} Exacto
             </button>
         </div>
     </div>

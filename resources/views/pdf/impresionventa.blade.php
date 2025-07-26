@@ -164,7 +164,7 @@
         <th>Efectivo</th>
         <th>Cambio</th>
         <th>Descuento</th>
-        <th>Impuestos</th>
+        <th>IVA</th>
         <th>Colaborador</th>
         <th>Fecha Ingreso</th>
     </tr>

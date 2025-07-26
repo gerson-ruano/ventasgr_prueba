@@ -45,7 +45,7 @@ class Pos extends Component
         $this->updateQuantityProducts();
         $this->getNextSaleNumber();
         $this->empresa = $this->companyVentas();
-        $this->currency = setting('app_currency', 'QtZ'); // Obtener la moneda configurada
+        $this->currency = setting('app_currency', 'Q'); // Obtener la moneda configurada
     }
 
     protected $rules = [
@@ -253,7 +253,8 @@ class Pos extends Component
             $totalSale += $item->price * $item->qty; // Calcular el total de la venta
         }
 
-        $generalTaxRate = setting('pos_tax_rate', 0.12); // Impuesto general del 12% (puedes cambiarlo)
+        $generalTaxRatePercent = setting('pos_tax_rate', 0.12); // Impuesto general del 12% (puedes cambiarlo)
+        $generalTaxRate = $generalTaxRatePercent / 100;
         $totalTaxes = $totalSale * $generalTaxRate; // Calcular el total de impuestos
 
         return [
@@ -352,8 +353,10 @@ class Pos extends Component
             $this->totalPrice += $item->price * $item->qty;
         }
 
-        $discountRate = setting('pos_discount_rate', 0.00);
+        $discountRatePercent = min(max(setting('pos_discount_rate', 0.00), 0), 100);
+        $discountRate = $discountRatePercent / 100;
         $this->discount = round($this->totalPrice * $discountRate, 2);
+        //dd($this->discount);
         $this->totalPrice -= $this->discount;
     }
 
@@ -582,7 +585,7 @@ class Pos extends Component
             $this->tipoPago = 0;
             $this->vendedorSeleccionado = 0;
             $this->getNextSaleNumber();
-            $this->dispatch('noty-done', type: 'success', message: 'Venta realizada con éxito');
+            $this->dispatch('noty-done', type: 'success', message: 'Venta realizada con éxito ' . $this->nextSaleNumber - 1);
             //return redirect()->to('pos');
             //$this->emit('print-ticket', $sale->id);
 

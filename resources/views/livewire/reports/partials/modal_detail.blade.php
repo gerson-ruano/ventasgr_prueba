@@ -30,13 +30,13 @@
                         <td>
                             {{ $d->product }}</td>
                         <td>
-                            <h6>Q. {{number_format(($d->price) - $d->discount, 2)}}</h6>
+                            <h6>{{$currency}}. {{number_format(($d->price) - $d->discount, 2)}}</h6>
                         </td>
                         <td>
                             <h6>{{number_format($d->quantity,2)}}</h6>
                         </td>
                         <td>
-                            <h6>{{number_format($d->discount,2)}}</h6>
+                            <h6>{{$currency}}. {{number_format($d->discount,2)}}</h6>
                         </td>
                         <td>
                             <h6>{{number_format($d->price * $d->quantity,2)}}</h6>
@@ -71,7 +71,7 @@
                         <h5 class="text-center"></h5>
                     </td>
                     <td>
-                        <h5 class="text-center">Q. {{number_format($sumDetails,2)}}</h5>
+                        <h5 class="text-center">{{$currency}}. {{number_format($sumDetails,2)}}</h5>
                     </td>
                 </tr>
             </table>

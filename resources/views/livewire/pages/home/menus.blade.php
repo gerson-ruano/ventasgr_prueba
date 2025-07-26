@@ -8,7 +8,7 @@
         <div class="flex justify-center items-center p-4">
             <div class="card w-full max-w-4xl p-6">
                 <div class="text-center mb-6 mt-4">
-                    <h1 class="text-2xl font-bold mb-2 text-gray-800 dark:text-white">Opciones de {{ $moduleLabel }}</h1>
+                    <h1 class="text-2xl font-bold mb-2 text-gray-300">Opciones de {{ $moduleLabel }}</h1>
                     <p class="text-gray-300 font-semibold mb-2">Selecciona una opción para comenzar...</p>
                 </div>
 

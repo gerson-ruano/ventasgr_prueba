@@ -112,11 +112,11 @@
             </div>
             <div class="border-t mt-1 pt-1">
                 <div class="flex justify-between">
-                    <span>IVA ({{ number_format(setting('pos_tax_rate', 0.12) * 100, 0) }}%):</span>
+                    <span>IVA ({{ setting('pos_tax_rate', 0.12) }}%):</span>
                     <span>{{$currency}} {{number_format($totalTaxes, 2) }}</span>
                 </div>
                 <div class="flex justify-between">
-                    <span>Descuento ({{ intval(setting('pos_discount_rate', 0.05) * 100) }}%):</span>
+                    <span>Descuento ({{ setting('pos_discount_rate', 0.00) }}%):</span>
                     <span>{{$currency}} {{ number_format($discount, 2) }}</span>
 
 

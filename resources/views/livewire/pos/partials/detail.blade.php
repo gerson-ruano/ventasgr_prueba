@@ -28,13 +28,13 @@
                                 class="rounded-lg h-8 w-8 object-cover mx-auto">
                         </td>
                         <td>{{ $item->name }}</td>
-                        <td>Q.{{ number_format($item->price, 2) }}</td>
+                        <td>{{$currency}}. {{ number_format($item->price, 2) }}</td>
                         <td>
                             <input type="number" wire:model="quantityInputs.{{ $item->id }}"
                                    wire:change="updateQty({{ $item->id }}, $event.target.value)"
                                    class="w-16 text-center bg-blue-100 border border-blue-500 rounded-lg text-sm"/>
                         </td>
-                        <td>Q.{{ number_format($item->price * $item->qty, 2) }}</td>
+                        <td>{{$currency}}. {{ number_format($item->price * $item->qty, 2) }}</td>
                         <td>
                             <div class="flex space-x-2 justify-center">
                                 <button wire:click.prevent="increaseQty({{ $item->id }})"
@@ -72,7 +72,7 @@
                     class="h-16 w-16 rounded object-cover"/>
                 <div>
                     <h2 class="font-semibold text-gray-800 dark:text-gray-100">{{ $item->name }}</h2>
-                    <p class="text-gray-500 text-sm dark:text-gray-300">Q.{{ number_format($item->price, 2) }}</p>
+                    <p class="text-gray-500 text-sm dark:text-gray-300">{{$currency}}.{{ number_format($item->price, 2) }}</p>
                 </div>
             </div>
 
@@ -86,7 +86,7 @@
             <div class="flex justify-between">
                 <span class="text-sm font-medium text-gray-600 dark:text-gray-300">Subtotal:</span>
                 <span class="text-gray-800 font-bold dark:text-gray-100">
-                    Q.{{ number_format($item->price * $item->qty, 2) }}
+                    {{$currency}}.{{ number_format($item->price * $item->qty, 2) }}
                 </span>
             </div>
 

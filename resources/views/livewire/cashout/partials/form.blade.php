@@ -32,13 +32,13 @@
                                 <td>
                                     {{ $d->product }}</td>
                                 <td>
-                                    <h6>Q. {{number_format(($d->price) - $d->discount,2)}}</h6>
+                                    <h6>{{$currency}}. {{number_format(($d->price) - $d->discount,2)}}</h6>
                                 </td>
                                 <td>
                                     <h6>{{number_format($d->quantity,2)}}</h6>
                                 </td>
                                 <td>
-                                    <h6>{{number_format($d->discount,2)}}</h6>
+                                    <h6>{{$currency}}. {{number_format($d->discount,2)}}</h6>
                                 </td>
                                 <td>
                                     <h6>{{number_format($d->price * $d->quantity,2)}}</h6>
@@ -74,7 +74,7 @@
                                     @endphp
                                 @endforeach
                                 <td>
-                                    <h6 class="">Q. {{number_format($mytotal,2)}}</h6>
+                                    <h6 class="">{{$currency}}. {{number_format($mytotal,2)}}</h6>
                                 </td>
                             @endif
                         </tr>

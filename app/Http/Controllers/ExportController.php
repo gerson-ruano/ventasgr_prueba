@@ -25,7 +25,7 @@ class ExportController extends Controller
 {
     use PagoTrait;
     public $currentDate;
-    public $currency;
+    public $currency = 'Q'; // Moneda por defecto
 
     public function __construct()
     {

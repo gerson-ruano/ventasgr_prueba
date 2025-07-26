@@ -13,12 +13,18 @@ class ConfiguracionesSeeder extends Seeder
     /**
      * Run the database seeds.
      */
+
+
     public function run(): void
     {
+        /*DB::statement('SET FOREIGN_KEY_CHECKS=0;'); // Desactivar llaves foráneas (opcional, si hay relaciones)
+        Setting::truncate(); // Elimina todo y reinicia los IDs
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');*/
+
         $settings = [
             ['key' => 'products_show_stock', 'value' => 'true', 'type' => 'boolean'],
-            ['key' => 'pos_tax_rate', 'value' => '0.12', 'type' => 'number'],
-            ['key' => 'pos_discount_rate', 'value' => '0.05', 'type' => 'number'],
+            ['key' => 'pos_tax_rate', 'value' => '12', 'type' => 'number'],
+            ['key' => 'pos_discount_rate', 'value' => '0', 'type' => 'number'],
             ['key' => 'low_stock', 'value' => '10', 'type' => 'number'],
             ['key' => 'app_name', 'value' => 'Mi Sistema', 'type' => 'string'],
             /*['key' => 'app_logo', 'value' => 'img/ventasgr_logo.png', 'type' => 'string'],*/

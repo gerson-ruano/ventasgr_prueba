@@ -25,7 +25,7 @@
                         <td>
                             <h6>{{ $item->id }}</h6>
                         </td>
-                        <td>Q. {{number_format($item->total,2)}}</td>
+                        <td>{{$currency}}. {{number_format($item->total,2)}}</td>
                         <td>
                             <h6>{{ $item->items }}</h6>
                         </td>

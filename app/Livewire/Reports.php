@@ -27,6 +27,7 @@ class Reports extends Component
     public $isModalOpen = false;
     public $currentModal = '';
     public $selectedStatus;
+    public $currency = '';
 
     public function paginationView()
     {
@@ -45,6 +46,7 @@ class Reports extends Component
         $this->saleId = 0;
         $this->valoresReporte = $this->tipoReporte();
         $this->valoresPago = $this->tipoPago();
+        $this->currency = setting('app_currency', 'Q');
 
     }
 

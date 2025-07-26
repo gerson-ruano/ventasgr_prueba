@@ -121,7 +121,7 @@
         <th>Efectivo</th>
         <th>Cambio</th>
         <th>Descuentos</th>
-        <th>Impuestos</th>
+        <th>IVA</th>
         <th>Ingreso</th>
         <th>Modificado</th>
     </tr>
