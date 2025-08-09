@@ -110,9 +110,6 @@
 </table>
 <br>
 
-<!--div class="total text-center"><br>
-    <h6>Total: Q. {{-- number_format($details->sum(function($d) { return $d->price * $d->quantity; }), 2) --}}</h6>
-</div-->
 
 <table class="table-items">
     <thead>
