@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);*/
 
-        $this->call(CompanySeeder::class);
         $this->call(DenominationSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(ProductSeeder::class);
@@ -28,5 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ModuleSeeder::class);
         $this->call(ModulePermissionSeeder::class);
         $this->call(ConfiguracionesSeeder::class);
+        $this->call(CompanySeeder::class);
     }
 }

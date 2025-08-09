@@ -82,14 +82,14 @@
                             'id' => 'chartProductTop',
                             'title' => 'productos más vendidos',
                             'data' => $productSales,
-                            'height' => 'h-[350px]',
+                            'height' => 'h-[400px]',
                             'checkEmpty' => fn($data) => empty($data) || count($data) == 0
                         ],
                         [
                             'id' => 'chartReport',
                             'title' => 'productos en el stock',
                             'data' => $totalStock,
-                            'height' => 'h-[350px]',
+                            'height' => 'h-[400px]',
                             'checkEmpty' => fn($data) => empty($data)
                         ],
                         [
@@ -103,7 +103,7 @@
                             'id' => 'chartIngresos',
                             'title' => 'Ingresos',
                             'data' => $totalMoney,
-                            'height' => 'h-[350px]',
+                            'height' => 'h-[400px]',
                             'checkEmpty' => fn($data) => empty($data) || count($data) == 0
                         ],
                         [

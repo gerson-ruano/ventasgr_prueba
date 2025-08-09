@@ -13,6 +13,7 @@ use App\Models\SaleDetail;
 use DB;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
+
 class Pos extends Component
 {
     public $totalPrice, $itemsQuantity, $change, $tipoPago, $vendedorSeleccionado;
